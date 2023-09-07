@@ -1,1 +1,11 @@
-<p>sidebar-menu works!</p>
+<div #mySidenav class="sidenav" qms-scrollbar [class.full-height]="!isShowText">
+  <app-menu-item [selectedMenuItem]="selectedMenuItem" [isShowText]="isExpand" [items]="menus"></app-menu-item>
+
+  <!-- <div class="logo-bottom position-with-sidebar">
+      <img *ngIf="isExpand" [src]="assetsPath + '/image/layout/icon/workplace-safety-logo-non-version.png'"
+          style="filter: grayscale(100%);" />
+  </div>
+  <div class="logo-bottom position-with-sidebar-logo-icon">
+      <img *ngIf="!isExpand" [src]="assetsPath + '/image/layout/icon/workplace-safety-logo-icon.png'" />
+  </div> -->
+</div>
