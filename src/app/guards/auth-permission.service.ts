@@ -38,15 +38,16 @@ export class AuthPermissionService implements CanActivate, CanActivateChild, Can
     }
 
     if (data.controller && !data.action) {
-        return true;
+      return true;
     }
     else if (data.controller && data.action) {
-        return true;
+      return true;
     }
 
     // Navigate to the login page with extras
     this.router.navigate(['/not-permission']);
-    ToastService.error('Are you sure have permission to access page?');
+    // ToastService.error('Are you sure have permission to access page?');
+    console.log("Are you sure have permission to access page?")
     return false;
-}
+  }
 }

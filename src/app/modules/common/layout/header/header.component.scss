@@ -1,0 +1,89 @@
+@import "src/styles/global/_color.scss";
+
+.spacer {
+  flex: 1;
+}
+
+.toolbar-container {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: $ems-primary-dark;
+  color: $ems-primary-button-text-color;
+  font-weight: 600;
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+
+  .collapse-icon {
+    cursor: pointer;
+    margin-left: 10px;
+    margin-right: 10px;
+
+    &:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid #ffffff;
+    }
+
+    &:hover {
+      border-radius: 50%;
+      background-color: #ffffff20;
+      background: rgba(255, 255, 255, 0.12);
+    }
+  }
+
+  img {
+    margin: 0 16px;
+  }
+
+  #twitter-logo {
+    height: 40px;
+    margin: 0 16px;
+  }
+
+  .right-content {
+    margin-right: 20px;
+    display: flex;
+
+    qms-badges {
+      margin-left: -10px;
+      margin-top: -8px;
+      font-family: none;
+    }
+  }
+
+  .menu-item-icon {
+    margin: 0 5px;
+    width: fit-content;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .mg-l-3 {
+    margin-left: 3px;
+  }
+
+  .popup-header-hidden {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .popup-header-hidden:focus {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    z-index: 10000000;
+    text-decoration: underline;
+    left: 0;
+    padding: 10px;
+    color: #2b2b2b;
+    background-color: #fff062;
+  }
+}

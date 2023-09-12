@@ -29,7 +29,8 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   exports: [
-    SidebarMenuComponent
+    SidebarMenuComponent,
+    HeaderComponent
   ]
 })
 export class AppCommonModule { }

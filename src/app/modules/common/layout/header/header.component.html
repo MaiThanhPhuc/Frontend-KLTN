@@ -1,1 +1,29 @@
-<p>header works!</p>
+<div class="toolbar-container" role="banner">
+  <a id="popupJumpToChemical" tabindex="0" class="popup-header-hidden" (keydown)="onKeyDown($event)">Jump to
+    chemical</a>
+  <button #menu class="collapse-icon" (mouseout)="onMouseOut()" (mousedown)="onMouseDown()" (click)="onClicked()"
+    mat-icon-button>
+    <mat-icon class="mat-icon-rtl-mirror">
+      menu
+    </mat-icon>
+  </button>
+  <span>test title</span>
+  <div class="spacer"></div>
+  <div class="right-content">
+    <div *ngFor="let item of rightIcons">
+      <button id="toolbar-icon-{{ item.icon }}" tabindex="-1" (click)="onIconClicked(item.icon)"
+        *ngIf="item.icon != 'notifications'" class="menu-item-icon" mat-icon-button>
+        <span *ngIf="item.icon == 'notifications'" class="d-flex mt-2">
+          <mat-icon>notifications</mat-icon>
+          <!-- <qms-badges *ngIf="notifications" [color]="'orange'" [type]="'1'" [contents]="notifications" [size]="'medium'"
+            [icon]="'notifications'">
+          </qms-badges> -->
+        </span>
+        <mat-icon *ngIf="item.icon != 'notifications'" class="material-icons-outlined mat-icon-rtl-mirror">
+          {{item.icon}}
+        </mat-icon>
+        <span class="mg-l-3">{{item.tooltip}}</span>
+      </button>
+    </div>
+  </div>
+</div>

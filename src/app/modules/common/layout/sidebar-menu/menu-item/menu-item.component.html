@@ -1,131 +1,55 @@
 <div class="menu-item-container">
   <ng-container *ngFor="let item of items">
-    <ng-container *ngIf="item.isCheckPermission; else noCheckPermision">
-      <ng-container *ngIf="item.children.length > 0">
-        <ng-container *ngIf="item.controller != 'riskAnalysis' && item.icon != 'insert_chart_outline'">
-          <mat-expansion-panel [expanded]="item.controller == selectedController"
-            *hasPermission="[item.controller , null]" [hideToggle]="!isShowText">
-            <mat-expansion-panel-header class="none-padding-left menu-item-row"
-              [class.active-expand]="isActiveModule(item.url)" [class.none-padding-right]="!isShowText"
-              (click)="onHeaderPanelClicked(item)">
-              <mat-panel-title>
-                <div style="padding: 8px; text-decoration: none;">
-                  <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                    <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                      {{item.icon}}
-                    </mat-icon>
-                    <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-                  </button>
-                  <span *ngIf="isShowText" class="menu-item-title" id="menu-{{item.id}}">{{item.text}}
-                  </span>
-                </div>
-              </mat-panel-title>
-            </mat-expansion-panel-header>
-            <ng-container *ngIf="isShowText">
-              <ng-container *ngFor="let child of item.children">
-                <div class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active"
-                  [routerLink]="[child.url]">
-                  <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                    <mat-icon class="material-icons-outlined mat-icon-rtl-mirror">
-                      {{child.icon}}
-                    </mat-icon>
-                  </button>
-                  <span *ngIf="isShowText" id="menu-child-{{child.id}}"
-                    [ngClass]="child.text == managerUser ? 'menu-item-title-child border-top' : 'menu-item-title-child'">{{child.text}}</span>
-                </div>
-              </ng-container>
+    <ng-container *ngIf="item.isTitle && isShowText">
+      <div class="menu-item-title menu-group border-top ">{{item.text}}</div>
+    </ng-container>
+    <ng-container *ngIf="item.children.length > 0 && !item.isTitle">
+      <ng-container>
+        <mat-expansion-panel [hideToggle]="!isShowText">
+          <mat-expansion-panel-header class="none-padding-left menu-item-row"
+            [class.active-expand]="isActiveModule(item.url)" [class.none-padding-right]="!isShowText"
+            (click)="onHeaderPanelClicked(item)">
+            <mat-panel-title>
+              <div style="padding: 8px; text-decoration: none; display: flex; align-items: center;">
+                <button tabindex="-1" class="menu-item-icon" mat-icon-button>
+                  <mat-icon class="material-icons-outlined mat-icon-rtl-mirror">
+                    {{item.icon}}
+                  </mat-icon>
+                </button>
+                <span *ngIf="isShowText" class="menu-item-title" id="menu-{{item.id}}">{{item.text}}
+                </span>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <ng-container *ngIf="isShowText">
+            <ng-container *ngFor="let child of item.children">
+              <div class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active" [routerLink]="[child.url]">
+                <button tabindex="-1" class="menu-item-icon" mat-icon-button>
+                  <mat-icon class="material-icons-outlined ">
+                    {{child.icon}}
+                  </mat-icon>
+                </button>
+                <span *ngIf="isShowText" id="menu-child-{{child.id}}"
+                  [ngClass]="child.text == managerUser ? 'menu-item-title-child border-top' : 'menu-item-title-child'">{{child.text}}</span>
+              </div>
             </ng-container>
-          </mat-expansion-panel>
-        </ng-container>
-        <ng-container *ngIf="item.controller == 'riskAnalysis' || item.icon == 'insert_chart_outline'">
-          <a *hasPermission="[item.controller , item.action]" class="menu-item-row" (click)="closeMenu(item)"
-            routerLinkActive="active" [routerLink]="[item.url]">
-            <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-              <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                {{item.icon}}
-              </mat-icon>
-              <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-            </button>
-            <span *ngIf="isShowText" class="menu-item-title">{{item.text}}</span>
-          </a>
-        </ng-container>
-      </ng-container>
-      <ng-container *ngIf="item.children.length == 0">
-        <ng-container *ngIf="item.controller != 'riskAnalysis'">
-          <div *ngIf="item.icon != 'insert_chart_outline' && item.icon != 'find_replace' && !item.isNormalHref">
-            <div *hasPermission="[item.controller , null]" class="menu-item-row" (click)="closeMenu(item)"
-              routerLinkActive="active" [routerLink]="[item.url]">
-              <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                  {{item.icon}}
-                </mat-icon>
-                <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-              </button>
-              <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-            </div>
-          </div>
-          <div *ngIf="item.icon != 'insert_chart_outline' && item.icon != 'find_replace' && item.isNormalHref">
-            <a *hasPermission="[item.controller , item.action]" class="menu-item-row" (click)="closeMenu(item)"
-              routerLinkActive="active" [href]="[item.url]" target="_blank">
-              <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                  {{item.icon}}
-                </mat-icon>
-                <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-              </button>
-              <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-            </a>
-          </div>
-          <div *ngIf="item.icon != 'insert_chart_outline' && item.icon == 'find_replace'">
-            <div *hasPermission="[item.controller , item.action]" class="menu-item-row" (click)="closeMenu(item)"
-              routerLinkActive="active" [routerLink]="[item.url]">
-              <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                  {{item.icon}}
-                </mat-icon>
-                <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-
-              </button>
-              <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-            </div>
-          </div>
-
-        </ng-container>
-        <ng-container *ngIf="item.controller == 'riskAnalysis' || item.icon == 'insert_chart_outline'">
-          <a *hasPermission="[item.controller , item.action]" class="menu-item-row" (click)="closeMenu(item)"
-            routerLinkActive="active" [routerLink]="[item.url]">
-            <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-              <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-                {{item.icon}}
-              </mat-icon>
-              <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-            </button>
-            <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-          </a>
-        </ng-container>
+          </ng-container>
+        </mat-expansion-panel>
       </ng-container>
     </ng-container>
-    <ng-template #noCheckPermision>
-      <div *ngIf='!item.isNormalHref' class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active"
-        [routerLink]="[item.url]">
-        <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-          <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-            {{item.icon}}
-          </mat-icon>
-          <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-        </button>
-        <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-      </div>
-      <a *ngIf='item.isNormalHref' class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active"
-        [href]="[item.url]" target="_blank">
-        <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-          <mat-icon class="material-icons-outlined mat-icon-rtl-mirror" *ngIf='!item.isIconHref'>
-            {{item.icon}}
-          </mat-icon>
-          <img src='{{item.icon}}' *ngIf='item.isIconHref' />
-        </button>
-        <span *ngIf="isShowText" class="menu-item-title border-top border-bottom">{{item.text}}</span>
-      </a>
-    </ng-template>
+    <ng-container *ngIf="item.children.length == 0 && !item.isTitle">
+      <ng-container>
+        <div *ngIf="item.icon != 'insert_chart_outline' && item.icon != 'find_replace' ">
+          <div class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active" [routerLink]="[item.url]">
+            <button tabindex="-1" class="menu-item-icon" mat-icon-button>
+              <mat-icon class="material-icons-outlined ">
+                {{item.icon}}
+              </mat-icon>
+            </button>
+            <span *ngIf="isShowText" class="menu-item-title">{{item.text}}</span>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
   </ng-container>
 </div>

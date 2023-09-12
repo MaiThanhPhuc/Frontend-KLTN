@@ -1,3 +1,36 @@
-.example-container {
-  height: calc(100vh - 80px);
+@import "src/styles/global/_size.scss";
+
+.sidenav {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  margin-top: 60px;
+  border-right: 1px solid #d4d5d6;
+  background: white;
+  height: calc(100% - 64px);
+  overflow-y: auto;
+  bottom: 15%;
+  position: absolute;
+  width: $side-bar-max-width;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.logo-bottom {
+  position: sticky;
+  left: 8px;
+}
+
+.position-with-sidebar {
+  margin-left: 12px;
+  top: 93%;
+}
+
+.position-with-sidebar-logo-icon {
+  margin-left: 8px;
+  top: 88%;
 }

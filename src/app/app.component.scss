@@ -1,0 +1,25 @@
+@import "src/styles/global/_color.scss";
+@import "src/styles/global/_size.scss";
+
+.main-container {
+  overflow-x: hidden;
+  height: 100%;
+}
+
+.right-content {
+  position: relative;
+  width: 100%;
+  margin-top: 60px;
+  height: calc(100% - 60px);
+  transition: 0.4s;
+  margin-left: $side-bar-max-width;
+  // background: #f5f5f5;
+}
+
+.main-sm {
+  padding-left: 60px;
+}
+
+.main-md {
+  padding-left: 300px;
+}
