@@ -45,7 +45,22 @@ export class SidebarMenuComponent {
     const holidays: MenuItem = new MenuItem('holidays', "Holidays", "/company/holidays", 'event_note', false);
     const employee: MenuItem = new MenuItem('employee', "Employee", "/company/employee", 'assignment_ind', false);
 
-    this.menus = [homeTitle, dashBoard, workLog, leaves, request, calendar, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, holidays, employee]
+    this.menus = [homeTitle, dashBoard, workLog, ...this.initSidebarAdminMenu(), leaves, request, calendar, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, holidays, employee]
+  }
+
+  initSidebarAdminMenu(): MenuItem[] {
+    const isAdmin = true;
+
+    const admin: MenuItem = new MenuItem('', "Admin", "", '', true);
+    const adminCompany: MenuItem = new MenuItem('adminCompany', "Company Management", "/admin/company", 'apartment', false);
+    const adminEmployee: MenuItem = new MenuItem('adminEmployee', "Employee", "/admin/company/employee", '', false);
+    const adminTeam: MenuItem = new MenuItem('adminTeam', "Team", "/admin/company/team", '', false);
+    const adminDeparment: MenuItem = new MenuItem('adminDeparment', "Department", "/admin/company/department", '', false);
+    const adminOffice: MenuItem = new MenuItem('adminOffice', "Office", "/admin/company/office", '', false);
+    adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice]
+    const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
+    const adminHolidays: MenuItem = new MenuItem('adminHolidays', "Holidays Management", "/admin/holidays", 'event_available', false);
+    return isAdmin ? [admin, adminCompany, adminLeaveTypes, adminHolidays] : []
   }
   ngOnInit(): void {
     this.listeningEvent();

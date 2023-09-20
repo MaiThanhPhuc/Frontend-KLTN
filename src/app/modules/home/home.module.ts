@@ -4,16 +4,26 @@ import { CommonModule } from '@angular/common';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-
+import { WorkLogTimesheetComponent } from './components/work-log-timesheet/work-log-timesheet.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { UserLeaveTableComponent } from './components/dashboard/user-leave-table/user-leave-table.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    DashboardComponent
+    DashboardComponent,
+    WorkLogTimesheetComponent,
+    UserLeaveTableComponent
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule
   ]
+  , exports: [UserLeaveTableComponent]
 })
 export class HomeModule { }

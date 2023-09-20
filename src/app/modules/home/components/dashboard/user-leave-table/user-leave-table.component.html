@@ -1,0 +1,38 @@
+<div class="user-leave-table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 ">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>
+        Leave Type
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>
+        Total
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.total}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="remaining">
+      <th mat-header-cell *matHeaderCellDef>
+        Remaining
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.remaining}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="taken">
+      <th mat-header-cell *matHeaderCellDef>
+        Taken
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.taken}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

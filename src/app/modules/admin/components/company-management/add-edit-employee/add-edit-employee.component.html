@@ -1,0 +1,151 @@
+<div class="add-edit-emp-container">
+  <div class="content">
+    <div class="basic-info">
+      <div class="header">
+        Basic infomation
+      </div>
+      <div class="row">
+        <div *ngFor="let item of basicInfoField" class="field-item col-3">
+          <div *ngIf="item.isDate; else selectOptions">
+            <mat-label>{{item.label}}</mat-label>
+            <mat-form-field>
+              <input matInput [matDatepicker]="picker" [required]="item.isRequired">
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <ng-template #selectOptions>
+            <ng-container *ngIf="item.isOption; else default">
+              <mat-label>{{item.label}}</mat-label>
+              <mat-form-field>
+                <mat-select [required]="item.isRequired">
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </ng-template>
+
+          <ng-template #default>
+            <mat-label>{{item.label}}</mat-label>
+            <mat-form-field>
+              <input [required]="item.isRequired" [type]="item.isNumber ? 'number' : 'text'" matInput
+                [value]="item.value">
+            </mat-form-field>
+          </ng-template>
+        </div>
+
+      </div>
+    </div>
+    <div class="company-info">
+      <div>
+        Company information
+      </div>
+      <div class="row">
+        <div *ngFor="let item of companyInfoField" class="field-item col-3">
+          <ng-container *ngIf="item.isOption; else default">
+            <mat-label>{{item.label}}</mat-label>
+            <mat-form-field>
+              <mat-select>
+                <mat-option *ngFor="let option of item.options" value="option">{{option}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-container>
+          <ng-template #default>
+            <mat-label>{{item.label}}</mat-label>
+            <mat-form-field>
+              <input matInput [value]="item.value">
+            </mat-form-field>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+    <div class="leave-type">
+      <div>
+        Leave Type
+      </div>
+      <div>
+
+        <mat-table class="leaveTypeTable" #table [dataSource]="dataSource">
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="leaveTypeName">
+            <mat-header-cell *matHeaderCellDef> Leave Type </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.total}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="default">
+            <mat-header-cell *matHeaderCellDef> Default </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+                value={{element.default}}>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="remaining">
+            <mat-header-cell *matHeaderCellDef> Remaining </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              {{element.remaining}}
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="taken">
+            <mat-header-cell *matHeaderCellDef> Taken </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+                value={{element.taken}}>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="bonus">
+            <mat-header-cell *matHeaderCellDef> Bonus </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+                value={{element.bonus}}>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="paid">
+            <mat-header-cell *matHeaderCellDef> Paid </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput value={{element.paid}}>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="forward">
+            <mat-header-cell *matHeaderCellDef> Forward </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+                value={{element.forward}}>
+            </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <span class="button-icon" (click)="onChangeStatus(element)">
+                <mat-icon *ngIf="!element.isEdit">
+                  edit
+                </mat-icon>
+                <mat-icon *ngIf="element.isEdit">
+                  save
+                </mat-icon>
+              </span>
+            </mat-cell>
+          </ng-container>
+
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+      </div>
+    </div>
+  </div>
+</div>

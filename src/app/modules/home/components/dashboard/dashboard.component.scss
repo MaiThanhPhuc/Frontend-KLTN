@@ -1,0 +1,43 @@
+.dashboard-container {
+  .greeting {
+    height: 100px;
+    z-index: 0;
+
+    &-content {
+      width: 100%;
+      padding: 16px;
+      background-color: #927474;
+      border-radius: 0 0 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      color: #fff;
+      font-style: normal;
+
+      &-title {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 48px;
+      }
+
+      &-sub-title {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: 130%;
+      }
+    }
+  }
+
+  .dashboard-content {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .dashboard-absent {
+    padding: 24px;
+  }
+
+  .dashboard-board {
+    padding: 16px;
+  }
+}

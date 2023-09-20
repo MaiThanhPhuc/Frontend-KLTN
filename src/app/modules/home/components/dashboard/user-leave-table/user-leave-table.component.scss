@@ -1,0 +1,13 @@
+.user-leave-table {
+  padding: 24px;
+  border-radius: 8px;
+  background-color: #fff;
+
+  .mat-column-name {
+    flex: none;
+  }
+
+  .mat-mdc-table {
+    box-shadow: none;
+  }
+}
