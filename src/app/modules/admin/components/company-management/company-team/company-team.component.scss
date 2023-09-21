@@ -1,0 +1,39 @@
+@import "src/styles/global/_global.scss";
+
+.company-team-container {
+  margin: 24px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+
+  .header {
+
+    span {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .button-add-emp {
+      margin: 16px 0;
+    }
+  }
+
+  .content {
+    margin: 24px;
+
+    .team-table {
+      .mat-column-action {
+        flex: none;
+      }
+
+      .button-icon {
+        cursor: pointer;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+    }
+  }
+}

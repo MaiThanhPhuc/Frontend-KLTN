@@ -1,4 +1,5 @@
 export interface IEmployee {
+  code: string;
   firstName: string;
   lastName: string;
   birthday: Date;
@@ -16,6 +17,27 @@ export interface IEmployee {
   jobLeaveId: string;
   healthyId: string;
 }
+
+export class AbsentEmployeeInfo {
+  code: string;
+  name: string;
+  date: string;
+  office: string;
+  department: string;
+  team: string;
+  role: string;
+}
+
+export class EmployeeInfo {
+  code: string;
+  name: string;
+  email: string;
+  office: string;
+  department: string;
+  team: string;
+  role: string;
+}
+
 
 
 export const BasicInfoEmployeeField = [

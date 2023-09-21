@@ -31,13 +31,38 @@
   .dashboard-content {
     display: flex;
     flex-direction: row;
+    margin: 16px 8px;
   }
 
   .dashboard-absent {
     padding: 24px;
+    background-color: #fff;
+    border-radius: 8px;
+
+    &-header {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .divider {
+      width: 100%;
+      height: 0px;
+      left: 0px;
+      margin-top: 16px;
+      border-top: 0.5px solid #000000;
+    }
   }
 
-  .dashboard-board {
-    padding: 16px;
+  .dashboard-table {
+    .mat-mdc-table {
+      box-shadow: none;
+    }
+
+    .mat-column-date {
+      flex: none;
+      width: 80px;
+    }
+
+
   }
 }

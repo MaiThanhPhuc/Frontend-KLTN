@@ -13,13 +13,21 @@ import { AddEditEmployeeComponent } from './components/company-management/add-ed
 const routes: Routes = [{
   path: '', component: AdminComponent,
   children: [
+    { path: '', redirectTo: '/company/employee', pathMatch: 'full' },
     {
-      path: 'company', component: CompanyManagementComponent, children: [
+      path: 'company', component: CompanyManagementComponent,
+      children: [
+        {
+          path: '', redirectTo: '/company/employee', pathMatch: 'full'
+        },
         {
           path: 'employee', component: CompanyEmployeeComponent
         },
         {
           path: 'employee/:id', component: AddEditEmployeeComponent
+        },
+        {
+          path: 'employee/add', component: AddEditEmployeeComponent
         },
         {
           path: 'team', component: CompanyTeamComponent
