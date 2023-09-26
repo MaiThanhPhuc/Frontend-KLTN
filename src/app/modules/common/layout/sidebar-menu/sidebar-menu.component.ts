@@ -57,7 +57,8 @@ export class SidebarMenuComponent {
     const adminTeam: MenuItem = new MenuItem('adminTeam', "Team", "/admin/company/team", '', false);
     const adminDeparment: MenuItem = new MenuItem('adminDeparment', "Department", "/admin/company/department", '', false);
     const adminOffice: MenuItem = new MenuItem('adminOffice', "Office", "/admin/company/office", '', false);
-    adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice]
+    const archive: MenuItem = new MenuItem('archive', "Archive", "/admin/company/archive", '', false);
+    adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice, archive]
     const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
     const adminHolidays: MenuItem = new MenuItem('adminHolidays', "Holidays Management", "/admin/holidays", 'event_available', false);
     return isAdmin ? [admin, adminCompany, adminLeaveTypes, adminHolidays] : []

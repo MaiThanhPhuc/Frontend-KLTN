@@ -1,13 +1,17 @@
-<div class="company-employee-container">
+<div class="archive-container">
   <div class="header">
     <span>
-      Employees
+      Offices
     </span>
     <div class="divider"></div>
     <div class="button-action">
-      <a mat-flat-button color="primary" class="button-add-emp" routerLink="add">
-        Add Employee
-      </a>
+      <mat-button-toggle-group (change)="onChangeSelectTable()" [(ngModel)]="selectedTable" class="btn-group"
+        name="favoriteColor" aria-label="Favorite Color">
+        <mat-button-toggle [value]="tableMode.employee">Employee</mat-button-toggle>
+        <mat-button-toggle [value]="tableMode.team">Team</mat-button-toggle>
+        <mat-button-toggle [value]="tableMode.department">Department</mat-button-toggle>
+        <mat-button-toggle [value]="tableMode.office">Office</mat-button-toggle>
+      </mat-button-toggle-group>
       <mat-form-field appearance="outline">
         <input matInput placeholder="Search">
         <mat-icon matIconPrefix>search</mat-icon>
@@ -16,8 +20,8 @@
   </div>
 
   <div class="content">
-    <div class="employee-table">
-      <table mat-table [dataSource]="dataSource" matSort>
+    <div class="office-table">
+      <table mat-table [dataSource]="dataSourceOffice" matSort>
 
         <ng-container matColumnDef="code">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
@@ -31,22 +35,32 @@
 
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
-          <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.email}}</td>
         </ng-container>
 
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-          <td mat-cell *matCellDef="let row"> {{row.team}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.team}}</td>
         </ng-container>
 
         <ng-container matColumnDef="department">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
-          <td mat-cell *matCellDef="let row"> {{row.department}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.department}}</td>
         </ng-container>
 
         <ng-container matColumnDef="office">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Office </th>
-          <td mat-cell *matCellDef="let row"> {{row.office}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.office}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="deleteDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete Date </th>
+          <td mat-cell *matCellDef="let row"> {{row.createDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="role">
@@ -55,32 +69,18 @@
         </ng-container>
 
         <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef></th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
           <td mat-cell *matCellDef="let row">
-            <span [matMenuTriggerFor]="menu" class="button-icon">
+            <span class="button-icon" (click)="restoreItem(row)">
               <mat-icon>
-                more_vert
+                history
               </mat-icon>
             </span>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="onNavigateEdit(row)">
-                <mat-icon>
-                  edit
-                </mat-icon>
-                Edit
-              </button>
-              <button mat-menu-item (click)="archiveEmployee(row)">
-                <mat-icon>
-                  archive
-                </mat-icon>
-                Archive
-              </button>
-            </mat-menu>
           </td>
         </ng-container>
 
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef=" currentDisplayTable"></tr>
+        <tr mat-row *matRowDef="let row; columns: currentDisplayTable;"></tr>
 
         <!-- Row shown when there is no matching data. -->
         <tr class="mat-row" *matNoDataRow>

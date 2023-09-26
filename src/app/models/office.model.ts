@@ -2,5 +2,6 @@ export class OfficeModel {
   code: string;
   name: string;
   address: string;
-  phone: number;
+  phone?: number;
+  createDate?: Date;
 }

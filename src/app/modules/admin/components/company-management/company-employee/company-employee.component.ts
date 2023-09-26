@@ -5,6 +5,11 @@ import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeInfo, IEmployee } from 'src/app/models/employee.model';
 import { Router } from '@angular/router';
+import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
+import { MatDialog } from '@angular/material/dialog';
+import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
+import { takeUntil } from 'rxjs';
+import { BaseComponent } from 'src/app/utils/base.component';
 
 const NAMES: string[] = [
   'Maia',
@@ -32,21 +37,24 @@ const NAMES: string[] = [
   templateUrl: './company-employee.component.html',
   styleUrls: ['./company-employee.component.scss']
 })
-export class CompanyEmployeeComponent implements AfterViewInit {
-  displayedColumns: string[] = ['code', 'name', 'email', 'office', 'department', 'team', 'role', 'action'];
+export class CompanyEmployeeComponent extends BaseComponent implements AfterViewInit {
+  displayedColumns: string[] = ['code', 'name', 'email', 'team', 'department', 'office', 'role', 'action'];
   dataSource: MatTableDataSource<EmployeeInfo>;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
 
 
   constructor(private _liveAnnouncer: LiveAnnouncer,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) {
+    super()
     // Create 100 users
     const users = Array.from({ length: 20 }, (_, k) => createNewUser(k + 1));
 
     // Assign the data to the data source for the table to render
     this.dataSource = new MatTableDataSource(users);
+
   }
 
   ngAfterViewInit() {
@@ -78,6 +86,23 @@ export class CompanyEmployeeComponent implements AfterViewInit {
   onNavigateEdit(item: EmployeeInfo) {
     console.log("test");
     this.router.navigate(['admin/company/employee', item.code])
+  }
+
+  archiveEmployee(item: EmployeeInfo): void {
+    const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
+    inputPopupData.submitButton = "Confirm"
+    inputPopupData.cancelButton = "Cancel"
+    inputPopupData.content = "Do you want to archive this deaprtment ?"
+    inputPopupData.primarySubmit = true;
+    const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
+      autoFocus: false,
+      width: '400px',
+      disableClose: true
+    });
+    confirmDeletePopup.componentInstance.data = inputPopupData;
+    confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      console.log("test");
+    });
   }
 }
 

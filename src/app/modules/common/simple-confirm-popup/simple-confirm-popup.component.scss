@@ -1,0 +1,41 @@
+@import "src/styles/global/_color.scss";
+
+.simple-popup-container {
+  .header {
+    margin-bottom: 24px;
+    margin-top: 10px;
+    display: flex;
+
+    h5 {
+      width: 90%;
+      font-weight: 600;
+    }
+
+    mat-icon {
+      width: 10%;
+      text-align: end;
+      cursor: pointer;
+    }
+  }
+
+  .text-break {
+    color: #000;
+  }
+
+  .primary-submit-btn {
+    color: white;
+    background-color: $ems-primary-button-background-color;
+  }
+
+  .btn-group {
+    margin-top: 10px;
+    float: right;
+    color: $ems-text-confirm-color;
+  }
+
+  .c-btn-group-simple-confirm {
+    button:first-child {
+      margin-right: 10px;
+    }
+  }
+}

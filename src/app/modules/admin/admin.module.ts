@@ -19,11 +19,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatMenuModule } from '@angular/material/menu';
+import { AddEditCommonPopupComponent } from './components/company-management/add-edit-common-popup/add-edit-common-popup.component';
+import { ArchiveComponent } from './components/company-management/archive/archive.component';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { AddEditLeaveTypePopupComponent } from './components/leave-type-management/add-edit-leave-type-popup/add-edit-leave-type-popup.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -35,6 +39,9 @@ import { MatButtonModule } from '@angular/material/button';
     CompanyDepartmentComponent,
     CompanyOfficeComponent,
     AddEditEmployeeComponent,
+    AddEditCommonPopupComponent,
+    ArchiveComponent,
+    AddEditLeaveTypePopupComponent,
   ],
   imports: [
     CommonModule,
@@ -51,7 +58,11 @@ import { MatButtonModule } from '@angular/material/button';
     FormsModule,
     MatIconModule,
     RouterModule,
-    MatButtonModule
+    MatButtonModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatButtonToggleModule,
+    ReactiveFormsModule,
   ]
 })
 export class AdminModule { }

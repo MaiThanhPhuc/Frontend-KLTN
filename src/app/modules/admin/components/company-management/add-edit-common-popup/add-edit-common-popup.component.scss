@@ -1,0 +1,19 @@
+@import 'src/styles/global/_color.scss';
+
+.change-info-container {
+  position: relative;
+  padding: 16px 24px;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+  }
+
+}

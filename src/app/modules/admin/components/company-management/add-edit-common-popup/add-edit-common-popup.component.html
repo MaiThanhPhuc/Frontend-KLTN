@@ -1,0 +1,115 @@
+<div class="change-info-container">
+
+  <div class="header">
+    <div class="title">{{title}}</div>
+    <div class="">
+      <button tabindex="-1" mat-icon-button color="light" (click)="closePopup()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-body">
+    <ng-container [ngSwitch]="mode">
+      <div *ngSwitchCase="EditMode.OFFICE">
+        <div>
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Name</mat-label>
+            <input id="name" type="text" matInput>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Address</mat-label>
+            <input id="address" type="text" matInput>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Phone</mat-label>
+            <input id="phone" type="number" matInput>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container [ngSwitch]="mode">
+      <div *ngSwitchCase="EditMode.DEPARTMENT">
+        <div>
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Name</mat-label>
+            <input id="name" type="text" matInput>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Office</mat-label>
+            <mat-select [required]="true">
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Manager</mat-label>
+            <mat-select [required]="true">
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-container [ngSwitch]="mode">
+      <div *ngSwitchCase="EditMode.TEAM">
+        <div>
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Name</mat-label>
+            <input id="name" type="text" matInput>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Department</mat-label>
+            <mat-select [required]="true">
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="d-block">
+            <mat-label>Leader</mat-label>
+            <mat-select [required]="true">
+              <mat-option value="one">First option</mat-option>
+              <mat-option value="two">Second option</mat-option>
+            </mat-select>
+            <mat-error>Invalid input
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+  <div class="footer d-flex justify-content-end">
+    <button id="btn-save" mat-flat-button color="primary" [style.width.px]='100' (click)="onSubmitForm()">
+      {{isEdit ? "Edit" : "Save"}}
+    </button>
+  </div>
+</div>

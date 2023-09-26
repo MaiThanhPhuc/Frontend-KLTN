@@ -5,3 +5,10 @@ export interface UserLeaveTypeItem {
   remaining: number;
   taken: number;
 }
+
+export class LeaveType {
+  code: number;
+  name: string;
+  allowance: number;
+  description: string;
+}

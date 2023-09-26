@@ -1,0 +1,45 @@
+<div class="add-edit-leave-type-container">
+
+  <div class="header">
+    <div class="title">Leave Type Management</div>
+    <div class="">
+      <button tabindex="-1" mat-icon-button color="light" (click)="closePopup()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-body">
+    <div>
+      <div>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Name</mat-label>
+          <input required id="name" type="text" matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Allowance</mat-label>
+          <input required id="address" type="number" matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Description</mat-label>
+          <textarea required id="Description" placeholder="Description" type="text" matInput></textarea>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+    </div>
+
+  </div>
+  <div class="footer d-flex justify-content-end">
+    <button id="btn-save" mat-flat-button color="primary" [style.width.px]='100' (click)="onSubmitForm()">
+      {{isEdit ? "Edit" : "Save"}}
+    </button>
+  </div>
+</div>
