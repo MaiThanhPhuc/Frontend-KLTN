@@ -28,6 +28,7 @@ import { AddEditCommonPopupComponent } from './components/company-management/add
 import { ArchiveComponent } from './components/company-management/archive/archive.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AddEditLeaveTypePopupComponent } from './components/leave-type-management/add-edit-leave-type-popup/add-edit-leave-type-popup.component';
+import { AppCommonModule } from '../common/app-common.module';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -63,6 +64,7 @@ import { AddEditLeaveTypePopupComponent } from './components/leave-type-manageme
     MatSelectModule,
     MatButtonToggleModule,
     ReactiveFormsModule,
+    AppCommonModule
   ]
 })
 export class AdminModule { }

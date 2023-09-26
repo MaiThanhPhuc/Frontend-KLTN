@@ -13,13 +13,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
 import { SimpleConfirmPopupComponent } from './simple-confirm-popup/simple-confirm-popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { LoadingComponent } from './loading/loading.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     SidebarMenuComponent,
     HeaderComponent,
     FooterComponent,
     MenuItemComponent,
-    SimpleConfirmPopupComponent
+    SimpleConfirmPopupComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
@@ -30,12 +33,14 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatExpansionModule,
     MatIconModule,
     RouterModule,
-    MatDialogModule
+    MatDialogModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     SidebarMenuComponent,
     HeaderComponent,
-    SimpleConfirmPopupComponent
+    SimpleConfirmPopupComponent,
+    LoadingComponent
   ]
 })
 export class AppCommonModule { }

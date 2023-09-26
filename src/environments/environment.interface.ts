@@ -3,15 +3,9 @@ export interface IEnvironment {
   enableDashboard?: boolean;
   hasAdminRole?: boolean;
   cookieName?: string;
-  version: string;
   isAnonymous?: boolean;
   appSettings?: string;
   production?: boolean;
   assetsPath?: string;
   baseUrl?: string;
-}
-
-
-export interface IAppModuleConfig {
-
 }

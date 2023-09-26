@@ -7,21 +7,21 @@
 import { IEnvironment } from './environment.interface';
 
 // The list of file replacements can be found in `angular.json`.
-// export function mergeNewSettings(newConfig: any): any {
-//   environment = Object.assign(newConfig, environment);
-//   return environment;
-// }
+export function mergeNewSettings(newConfig: any): any {
+  environment = Object.assign(newConfig, environment);
+  return environment;
+}
 
 // export function mergeNewSetting(key: any, value: any): void {
 //   environment[key] = value;
 // }
 
-// export let environment: IEnvironment = {
-//   appSettings: '/environments/appSettings.json',
-//   production: false,
-//   baseUrl: '/',
-//   assetsPath: '/assets'
-// };
+export let environment: IEnvironment = {
+  appSettings: '/environments/appSettings.json',
+  production: false,
+  baseUrl: '/',
+  assetsPath: '/assets'
+};
 
 /*
  * For easier debugging in development mode, you can import the following file
