@@ -20,7 +20,7 @@ export class BaseService {
 
   protected resolveHeader(): HttpHeaders {
     let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `Jwt token`);
+    // headers = headers.set('Authorization', `Jwt token`);
     return headers;
   }
 
@@ -39,7 +39,7 @@ export class BaseService {
   }
 
   protected post(url: string, data: any): Observable<any> {
-    return this.http.post(this.resolveBaseUrl() + url, {
+    return this.http.post(this.resolveBaseUrl() + url, data, {
       headers: this.resolveHeader()
     });
   }

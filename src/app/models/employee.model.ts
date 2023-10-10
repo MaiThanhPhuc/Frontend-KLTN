@@ -1,3 +1,5 @@
+import { Constants } from "../constants";
+
 export interface IEmployee {
   code: string;
   firstName: string;
@@ -6,7 +8,6 @@ export interface IEmployee {
   email: string;
   gender: string;
   phone: number;
-  taxCode: number;
   citizenId: number;
   status: number;
   role: number;
@@ -15,7 +16,24 @@ export interface IEmployee {
   teamId: string;
   officeId: string;
   jobLeaveId: string;
-  healthyId: string;
+}
+
+export class Employee {
+  code: string;
+  firstName: string;
+  lastName: string;
+  birthday: Date;
+  email: string;
+  gender: string;
+  phone: number;
+  citizenId: number;
+  status: number;
+  role: number;
+  contract: string;
+  departmentId: string;
+  teamId: string;
+  officeId: string;
+  jobLeaveId: string;
 }
 
 export class AbsentEmployeeInfo {
@@ -54,17 +72,26 @@ export const BasicInfoEmployeeField = [
     value: "",
   },
   {
+    key: "email",
+    label: "Email",
+    isRequired: true,
+    value: "",
+  }
+  ,
+  {
+    key: "password",
+    label: "Password",
+    isRequired: false,
+    isDisable: true,
+    value: "",
+    isPassword: true
+  },
+  {
     key: "birthday",
     label: "Birthday",
     isRequired: true,
     value: "",
     isDate: true
-  },
-  {
-    key: "email",
-    label: "Email",
-    isRequired: true,
-    value: "",
   },
   {
     key: "phone",
@@ -86,8 +113,8 @@ export const BasicInfoEmployeeField = [
     isRequired: true,
     value: "",
     isOption: true,
-    options: ["Actived", "Deactived"]
-  },
+    options: Constants.EmployeeStatus
+  }
 ]
 
 export const CompanyInfoEmployeeField = [
@@ -135,4 +162,9 @@ export const LeaveTypeFieldDemo = [
     bonus: 1,
     forward: 1,
   }
+]
+
+export const AllDataEmployee = [
+  BasicInfoEmployeeField,
+  CompanyInfoEmployeeField
 ]

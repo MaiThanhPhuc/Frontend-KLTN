@@ -29,6 +29,7 @@ import { ArchiveComponent } from './components/company-management/archive/archiv
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { AddEditLeaveTypePopupComponent } from './components/leave-type-management/add-edit-leave-type-popup/add-edit-leave-type-popup.component';
 import { AppCommonModule } from '../common/app-common.module';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -65,6 +66,14 @@ import { AppCommonModule } from '../common/app-common.module';
     MatButtonToggleModule,
     ReactiveFormsModule,
     AppCommonModule
-  ]
+  ],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        subscriptSizing: 'dynamic'
+      }
+    }
+  ],
 })
 export class AdminModule { }

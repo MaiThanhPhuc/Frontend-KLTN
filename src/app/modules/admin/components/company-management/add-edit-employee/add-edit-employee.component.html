@@ -1,27 +1,31 @@
 <div class="add-edit-emp-container">
-  <div class="content">
+  <div class="content" [formGroup]="employeeDataFormGroup">
+    <div class="header">
+      {{isEdit ? "Edit Employee" : "Add Employee"}}
+    </div>
+    <div class="divider"></div>
     <div class="basic-info">
-      <div class="header">
+      <div class="sub-header">
         Basic infomation
       </div>
       <div class="row">
-        <div *ngFor="let item of basicInfoField" class="field-item col-3">
-          <div *ngIf="item.isDate; else selectOptions">
+        <div *ngFor="let item of allDataEmployee[0]" class="field-item col-3">
+          <ng-container *ngIf="item.isDate; else selectOptions">
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field>
-              <input matInput [matDatepicker]="picker" [required]="item.isRequired">
+              <input [formControlName]="item.key" [(ngModel)]="item.value" matInput [matDatepicker]="picker"
+                [required]="item.isRequired">
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
-          </div>
+          </ng-container>
 
           <ng-template #selectOptions>
             <ng-container *ngIf="item.isOption; else default">
               <mat-label>{{item.label}}</mat-label>
               <mat-form-field>
                 <mat-select [required]="item.isRequired">
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
+                  <mat-option *ngFor="let option of item.options" [value]="option.id">{{option.text}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </ng-container>
@@ -29,21 +33,33 @@
 
           <ng-template #default>
             <mat-label>{{item.label}}</mat-label>
-            <mat-form-field>
+            <mat-form-field *ngIf="!item.isPassword">
               <input [required]="item.isRequired" [type]="item.isNumber ? 'number' : 'text'" matInput
-                [value]="item.value">
+                [value]="item.value" [formControlName]="item.key" [(ngModel)]='item.value'>
             </mat-form-field>
+            <div *ngIf="item.isPassword" class="password_field">
+              <mat-form-field class="w-100">
+                <input *ngIf="item.isPassword" readonly="true" [type]="hidePassword ? 'password' : 'text'" matInput
+                  [value]="item.value" [formControlName]="item.key" [(ngModel)]='item.value' />
+                <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
+                  [attr.aria-label]="'hide password'" [attr.aria-pressed]="hidePassword">
+                  <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+              <button class="button-icon" mat-icon-button (click)="onChangePassword()">
+                <mat-icon>change_circle</mat-icon>
+              </button>
+            </div>
           </ng-template>
         </div>
-
       </div>
     </div>
     <div class="company-info">
-      <div>
+      <div class="sub-header">
         Company information
       </div>
       <div class="row">
-        <div *ngFor="let item of companyInfoField" class="field-item col-3">
+        <div *ngFor="let item of allDataEmployee[1]" class="field-item col-3">
           <ng-container *ngIf="item.isOption; else default">
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field>
@@ -55,18 +71,22 @@
           <ng-template #default>
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field>
-              <input matInput [value]="item.value">
+              <input matInput [(ngModel)]='item.value' [value]="item.value">
             </mat-form-field>
           </ng-template>
         </div>
       </div>
     </div>
+    <div class="button-save">
+      <button mat-flat-button color="primary" class="button-add-emp" (click)="save()">
+        Save
+      </button>
+    </div>
     <div class="leave-type">
-      <div>
-        Leave Type
+      <div class="sub-header">
+        Leave Type Management
       </div>
       <div>
-
         <mat-table class="leaveTypeTable" #table [dataSource]="dataSource">
 
           <!-- Name Column -->
