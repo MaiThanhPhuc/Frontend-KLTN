@@ -6,6 +6,7 @@ import { HasUnsavedData } from 'src/app/interfaces/unsave-data';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { takeUntil } from 'rxjs/operators';
+import { EmployeeService } from '../../../services/employee.service';
 
 export interface LeaveTypeItem {
   id: number,
@@ -49,7 +50,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   employeeDataFormGroup: FormGroup = new FormGroup({});
   dataSave = {} as any;
   constructor(
-    private adminService: AdminService
+    private employeeService: EmployeeService
   ) {
     super()
   }
@@ -64,7 +65,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
 
   save() {
     this.parseDataToObject()
-    this.adminService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+    this.employeeService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       console.log(res);
     })
   }

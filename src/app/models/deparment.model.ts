@@ -3,4 +3,5 @@ export class DepartmentModel {
   name: string;
   office: string;
   manager: string;
+  _id?: string;
 }

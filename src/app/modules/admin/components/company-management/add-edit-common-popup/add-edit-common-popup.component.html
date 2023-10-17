@@ -11,98 +11,93 @@
 
   <div class="form-body">
     <ng-container [ngSwitch]="mode">
-      <div *ngSwitchCase="EditMode.OFFICE">
-        <div>
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Name</mat-label>
-            <input id="name" type="text" matInput>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+      <div class="form-wrapper" *ngSwitchCase="EditMode.OFFICE" [formGroup]="officeDataFormGroup">
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Name</mat-label>
+          <input [(ngModel)]="officeData.name" [formControlName]="'name'" required id="name" type="text" matInput>
+          <mat-error *ngIf="getFormControlByKey('name').touched">Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Address</mat-label>
-            <input id="address" type="text" matInput>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Address</mat-label>
+          <input [(ngModel)]="officeData.address" [formControlName]="'address'" required id="address" type="text"
+            matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Phone</mat-label>
-            <input id="phone" type="number" matInput>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Phone</mat-label>
+          <input [(ngModel)]="officeData.phone" [formControlName]="'phone'" id="phone" type="number" matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-        </div>
       </div>
     </ng-container>
 
     <ng-container [ngSwitch]="mode">
-      <div *ngSwitchCase="EditMode.DEPARTMENT">
-        <div>
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Name</mat-label>
-            <input id="name" type="text" matInput>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+      <div class="form-wrapper" *ngSwitchCase="EditMode.DEPARTMENT" [formGroup]="departmentDataFormGroup">
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Name</mat-label>
+          <input [(ngModel)]="departmentData.name" [formControlName]="'name'" id="name" type="text" matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Office</mat-label>
-            <mat-select [required]="true">
-              <mat-option value="one">First option</mat-option>
-              <mat-option value="two">Second option</mat-option>
-            </mat-select>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Office</mat-label>
+          <mat-select [(ngModel)]="departmentData.office" [formControlName]="'office'" [required]="true">
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Manager</mat-label>
-            <mat-select [required]="true">
-              <mat-option value="one">First option</mat-option>
-              <mat-option value="two">Second option</mat-option>
-            </mat-select>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Manager</mat-label>
+          <mat-select [(ngModel)]="departmentData.manager" [formControlName]="'manager'" [required]="true">
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-        </div>
       </div>
     </ng-container>
 
     <ng-container [ngSwitch]="mode">
-      <div *ngSwitchCase="EditMode.TEAM">
-        <div>
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Name</mat-label>
-            <input id="name" type="text" matInput>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+      <div class="form-wrapper" *ngSwitchCase="EditMode.TEAM" [formGroup]="teamDataFormGroup">
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Name</mat-label>
+          <input [(ngModel)]="teamData.name" [formControlName]="'name'" required id="name" type="text" matInput>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Department</mat-label>
-            <mat-select [required]="true">
-              <mat-option value="one">First option</mat-option>
-              <mat-option value="two">Second option</mat-option>
-            </mat-select>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Department</mat-label>
+          <mat-select [(ngModel)]="teamData.department" [formControlName]="'department'" [required]="true">
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-          <mat-form-field appearance="fill" class="d-block">
-            <mat-label>Leader</mat-label>
-            <mat-select [required]="true">
-              <mat-option value="one">First option</mat-option>
-              <mat-option value="two">Second option</mat-option>
-            </mat-select>
-            <mat-error>Invalid input
-            </mat-error>
-          </mat-form-field>
+        <mat-form-field appearance="fill" class="d-block">
+          <mat-label>Leader</mat-label>
+          <mat-select [(ngModel)]="teamData.leader" [formControlName]="'leader'" [required]="true">
+            <mat-option value="one">First option</mat-option>
+            <mat-option value="two">Second option</mat-option>
+          </mat-select>
+          <mat-error>Invalid input
+          </mat-error>
+        </mat-form-field>
 
-        </div>
       </div>
     </ng-container>
 

@@ -48,7 +48,7 @@
               </mat-icon>
             </span>
             <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="openAddEditPopup()">
+              <button mat-menu-item (click)="openAddEditPopup(row)">
                 <mat-icon>
                   edit
                 </mat-icon>
@@ -77,3 +77,5 @@
     </div>
   </div>
 </div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>

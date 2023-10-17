@@ -14,6 +14,16 @@
       font-size: 18px;
       font-weight: 600;
     }
+
   }
 
+  .form-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer {
+    margin-top: 16px;
+  }
 }

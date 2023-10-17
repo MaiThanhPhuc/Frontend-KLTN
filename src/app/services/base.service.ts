@@ -9,12 +9,12 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BaseService {
-  constructor(public http: HttpClient,
+  constructor(private http: HttpClient,
     // private localStorage: LocalStorage
   ) {
   }
 
-  public resolveBaseUrl(): string {
+  private resolveBaseUrl(): string {
     return environment.apiUrl || "";
   }
 
@@ -24,7 +24,7 @@ export class BaseService {
     return headers;
   }
 
-  public download(url: string): Observable<any> {
+  private download(url: string): Observable<any> {
     const fullurl = url.startsWith('http') ? url : this.resolveBaseUrl() + url;
     const headers = this.resolveHeader();
     return this.http.get(fullurl, {
@@ -45,7 +45,7 @@ export class BaseService {
   }
 
   protected put(url: string, data: any): Observable<any> {
-    return this.http.put(this.resolveBaseUrl() + url, {
+    return this.http.put(this.resolveBaseUrl() + url, data, {
       headers: this.resolveHeader()
     });
   }

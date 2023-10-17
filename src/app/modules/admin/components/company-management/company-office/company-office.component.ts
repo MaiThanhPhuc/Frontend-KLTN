@@ -9,13 +9,8 @@ import { AddEditCommonPopupComponent } from '../add-edit-common-popup/add-edit-c
 import { BaseComponent } from 'src/app/utils/base.component';
 import { takeUntil } from 'rxjs/operators';
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
+import { AdminService } from '../../../services/admin.service';
 
-
-const ELEMENT_DATA: OfficeModel[] = [
-  { code: "1", name: 'Hydrogen', address: "test", phone: 1232 },
-  { code: "2", name: 'test', address: "test", phone: 123 },
-  { code: "3", name: 'test1', address: "test", phone: 133 },
-];
 @Component({
   selector: 'app-company-office',
   templateUrl: './company-office.component.html',
@@ -23,17 +18,40 @@ const ELEMENT_DATA: OfficeModel[] = [
 })
 export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['code', 'name', 'address', 'phone', 'action'];
-  dataSource: MatTableDataSource<OfficeModel> = new MatTableDataSource(ELEMENT_DATA);
+  dataSource: MatTableDataSource<OfficeModel> = new MatTableDataSource();
+
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
+  officeDate: OfficeModel;
+  isLoading = false;
+
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
+    private adminService: AdminService
   ) {
     super();
   }
   ngOnInit() {
 
+    this.loadData();
+
+    if (!this.officeDate) {
+      this.officeDate = {
+        name: '',
+        address: ""
+      }
+    }
+  }
+
+  loadData() {
+    this.isLoading = true
+    this.adminService.getAllOffice().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: OfficeModel[]) => {
+      if (res) console.log(res);
+      this.dataSource = new MatTableDataSource(res);
+      this.isLoading = false
+    });
+    this.isLoading = false
   }
 
   archiveOffice(item: OfficeModel): void {
@@ -53,7 +71,8 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     });
   }
 
-  openAddEditPopup(): void {
+  openAddEditPopup(item?: OfficeModel): void {
+    console.log(item);
     this.dialogRef = this.dialog.open(AddEditCommonPopupComponent, {
       width: `500px`,
       disableClose: true
@@ -61,11 +80,36 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.OFFICE;
-      this.dialogRef.componentInstance.officeData = ELEMENT_DATA[0];
+      this.dialogRef.componentInstance.officeData = item ? item : this.officeDate;
 
-      this.dialogRef.componentInstance.onSubmitOffice.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: OfficeModel) => {
-        console.log(123);
+      this.dialogRef.componentInstance.onSubmitOffice.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: OfficeModel) => {
+        if (dataSave) this.onSaveOffice(dataSave)
+      });
+
+      this.dialogRef.componentInstance.onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: OfficeModel) => {
+        this.loadData()
       });
     }
+  }
+
+  onSaveOffice(data: OfficeModel) {
+    this.isLoading = true;
+    console.log(data);
+    if (data._id) {
+      this.adminService.updateOfficeById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    } else {
+      this.adminService.createOffice(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    }
+
   }
 }

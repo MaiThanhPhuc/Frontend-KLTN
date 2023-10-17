@@ -5,6 +5,7 @@ import { OfficeModel } from 'src/app/models/office.model';
 import { TeamModel } from 'src/app/models/team.model';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { EditMode } from './add-edit-common.model';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-edit-common-popup',
@@ -21,6 +22,23 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   @Output() onSubmitTeam: EventEmitter<TeamModel> = new EventEmitter();
   @Output() onSubmitDepartment: EventEmitter<DepartmentModel> = new EventEmitter();
   @Output() onSubmitOffice: EventEmitter<OfficeModel> = new EventEmitter();
+  @Output() onClose: EventEmitter<OfficeModel> = new EventEmitter();
+
+  officeDataFormGroup: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    address: new FormControl('', Validators.required),
+    phone: new FormControl(''),
+  });
+  departmentDataFormGroup: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    office: new FormControl('', Validators.required),
+    manager: new FormControl('', Validators.required),
+  });
+  teamDataFormGroup: FormGroup = new FormGroup({
+    name: new FormControl('', Validators.required),
+    department: new FormControl('', Validators.required),
+    leader: new FormControl('', Validators.required),
+  });
 
   dtNow: Date = new Date();
 
@@ -74,5 +92,19 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
 
   closePopup(): void {
     this.dialogRef.close(true);
+    this.onClose.emit();
+  }
+
+
+
+  getFormControlByKey(key: string) {
+    switch (this.mode) {
+      case EditMode.TEAM:
+        return this.teamDataFormGroup.controls[`${key}`];
+      case EditMode.DEPARTMENT:
+        return this.departmentDataFormGroup.controls[`${key}`];
+      default:
+        return this.officeDataFormGroup.controls[`${key}`];
+    }
   }
 }
