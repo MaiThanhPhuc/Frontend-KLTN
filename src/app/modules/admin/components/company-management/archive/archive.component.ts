@@ -17,9 +17,9 @@ const ELEMENT_DATA1: OfficeModel[] = [
 ];
 
 const ELEMENT_DATA2: DepartmentModel[] = [
-  { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
-  { code: "2", name: 'test', office: "test", manager: "bod" },
-  { code: "3", name: 'test1', office: "test", manager: "bod" },
+  // { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
+  // { code: "2", name: 'test', office: "test", manager: "bod" },
+  // { code: "3", name: 'test1', office: "test", manager: "bod" },
 ];
 
 const ELEMENT_DATA3: TeamModel[] = [

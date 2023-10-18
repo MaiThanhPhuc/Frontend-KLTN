@@ -49,8 +49,7 @@
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Office</mat-label>
           <mat-select [(ngModel)]="departmentData.office" [formControlName]="'office'" [required]="true">
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+            <mat-option *ngFor="let option of allDataOffice" [value]="option._id">{{option.name}}</mat-option>
           </mat-select>
           <mat-error>Invalid input
           </mat-error>
@@ -58,7 +57,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Manager</mat-label>
-          <mat-select [(ngModel)]="departmentData.manager" [formControlName]="'manager'" [required]="true">
+          <mat-select [(ngModel)]="departmentData.manager" [formControlName]="'manager'">
             <mat-option value="one">First option</mat-option>
             <mat-option value="two">Second option</mat-option>
           </mat-select>

@@ -9,11 +9,8 @@ import { BaseComponent } from 'src/app/utils/base.component';
 import { AddEditCommonPopupComponent } from '../add-edit-common-popup/add-edit-common-popup.component';
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { takeUntil } from 'rxjs';
-const ELEMENT_DATA: DepartmentModel[] = [
-  { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
-  { code: "2", name: 'test', office: "test", manager: "bod" },
-  { code: "3", name: 'test1', office: "test", manager: "bod" },
-];
+import { AdminService } from '../../../services/admin.service';
+import { OfficeModel } from 'src/app/models/office.model';
 @Component({
   selector: 'app-company-department',
   templateUrl: './company-department.component.html',
@@ -23,15 +20,19 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
   displayedColumns: string[] = ['code', 'name', 'office', 'manager', 'action'];
   dataSource: MatTableDataSource<DepartmentModel>;
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
+  dataOffice: OfficeModel[];
+  isLoading = false;
   constructor(
     private router: Router,
     private dialog: MatDialog,
+    private adminService: AdminService
   ) {
     super()
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
+    this.loadData()
   }
 
   archiveDepartment(item: DepartmentModel): void {
@@ -59,12 +60,42 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.DEPARTMENT;
-      this.dialogRef.componentInstance.departmentData = ELEMENT_DATA[0];
 
-      this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: DepartmentModel) => {
-        console.log(123);
+      this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: DepartmentModel) => {
+        if (dataSave) this.onSaveOffice(dataSave)
       });
     }
+  }
+
+  loadData() {
+    this.isLoading = true
+    this.adminService.getAllDepartment().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: DepartmentModel[]) => {
+      if (res) console.log(res);
+      this.dataSource = new MatTableDataSource(res);
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  onSaveOffice(data: DepartmentModel) {
+    this.isLoading = true;
+    console.log(data);
+    if (data._id) {
+      this.adminService.updateDepartmentById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    } else {
+      this.adminService.createDepartment(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    }
+
   }
 
 }

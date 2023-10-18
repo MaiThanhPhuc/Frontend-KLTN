@@ -6,6 +6,8 @@ import { TeamModel } from 'src/app/models/team.model';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { EditMode } from './add-edit-common.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AdminService } from '../../../services/admin.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-add-edit-common-popup',
@@ -24,6 +26,7 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   @Output() onSubmitOffice: EventEmitter<OfficeModel> = new EventEmitter();
   @Output() onClose: EventEmitter<OfficeModel> = new EventEmitter();
 
+  allDataOffice: OfficeModel[];
   officeDataFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -41,11 +44,12 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   });
 
   dtNow: Date = new Date();
-
+  isLoading = false;
   get EditMode() { return EditMode; }
 
   title = '';
-  constructor(private dialogRef: MatDialogRef<AddEditCommonPopupComponent>
+  constructor(private dialogRef: MatDialogRef<AddEditCommonPopupComponent>,
+    private adminService: AdminService
   ) {
     super();
   }
@@ -57,6 +61,7 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
         break;
       case EditMode.DEPARTMENT:
         this.title = 'Department Infomation';
+        this.loadDataOffice();
         break;
       case EditMode.OFFICE:
         this.title = 'Office Infomation';
@@ -95,7 +100,17 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     this.onClose.emit();
   }
 
+  loadDataOffice() {
+    this.isLoading = true
+    this.adminService.getAllOffice().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: OfficeModel[]) => {
+      if (res) {
+        this.allDataOffice = res
+      }
 
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
 
   getFormControlByKey(key: string) {
     switch (this.mode) {
