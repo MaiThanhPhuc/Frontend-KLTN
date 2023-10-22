@@ -30,6 +30,7 @@ $Frontend-KLTN-theme: mat.define-light-theme((color: (primary: $Frontend-KLTN-pr
 @include mat.all-component-themes($Frontend-KLTN-theme);
 
 /* You can add global styles to this file, and also import other style files */
+@import "styles/global/_color.scss";
 
 html,
 body {
@@ -52,4 +53,24 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
   /* Firefox */
+}
+
+.toast-success {
+  --mdc-snackbar-container-color: #28a745;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.toast-infor {
+  --mdc-snackbar-container-color: #40a9ff;
+  --mat-snack-bar-button-color: #fff;
+}
+
+.toast-warning {
+  --mdc-snackbar-container-color: #ffc107;
+  --mat-snack-bar-button-color: #343a40;
+}
+
+
+.mat-snack-bar-container-custom {
+  margin: 74px 24px 24px 24px !important;
 }

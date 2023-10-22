@@ -1,60 +1,44 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeInfo, IEmployee } from 'src/app/models/employee.model';
+import { Employee, EmployeeInfo, IEmployee, SearchModal, SearchEmployeeResponse } from 'src/app/models/employee.model';
 import { Router } from '@angular/router';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { MatDialog } from '@angular/material/dialog';
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/utils/base.component';
-
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
+import { EmployeeService } from '../../../services/employee.service';
 @Component({
   selector: 'app-company-employee',
   templateUrl: './company-employee.component.html',
   styleUrls: ['./company-employee.component.scss']
 })
-export class CompanyEmployeeComponent extends BaseComponent implements AfterViewInit {
+export class CompanyEmployeeComponent extends BaseComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['code', 'name', 'email', 'team', 'department', 'office', 'role', 'action'];
-  dataSource: MatTableDataSource<EmployeeInfo>;
+  dataSource: MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
-
-
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 1;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  isLoading = false
+  keyword = ''
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
     private dialog: MatDialog,
+    private employeeService: EmployeeService
   ) {
     super()
-    // Create 100 users
-    const users = Array.from({ length: 20 }, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
-
+    this.dataSource = new MatTableDataSource();
+  }
+  ngOnInit(): void {
+    this.initParamSearch();
+    this.getDataEmployee();
   }
 
   ngAfterViewInit() {
@@ -62,25 +46,40 @@ export class CompanyEmployeeComponent extends BaseComponent implements AfterView
     this.dataSource.sort = this.sort;
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.getDataEmployee();
+  }
 
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  getDataEmployee() {
+    this.isLoading = true
+
+    this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result)
+      }
+      this.isLoading = false
+    })
+  }
+
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
     }
   }
 
-  announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-      this._liveAnnouncer.announce('Sorting cleared');
-    }
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.getDataEmployee();
   }
 
   onNavigateEdit(item: EmployeeInfo) {
@@ -104,23 +103,4 @@ export class CompanyEmployeeComponent extends BaseComponent implements AfterView
       console.log("test");
     });
   }
-}
-
-
-
-function createNewUser(id: number): EmployeeInfo {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
-  return {
-    code: id.toString(),
-    name: name,
-    email: "test@gmail.com",
-    department: "test",
-    office: "UTE",
-    role: "member",
-    team: "FE"
-  };
 }

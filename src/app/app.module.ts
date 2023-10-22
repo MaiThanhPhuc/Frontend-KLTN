@@ -15,31 +15,6 @@ export function StartupServiceFactory(http: HttpClient) {
   return () => {
     return http.get(`${environment.appSettings}`).toPromise().then(settings => {
       mergeNewSettings(settings);
-      // update apiUrl to make sure when deployinig API + angular in same server,
-      // we dont need to set apiUrl anymore.
-      // if (environment.apiUrl && !environment.apiUrl.startsWith('http')) {
-      //   environment.apiUrl = `${window.location.protocol}//${window.location.host}${environment.apiUrl}`;
-      // }
-
-      // if (!environment.handbookDomain) {
-      //   environment.handbookDomain = `${window.location.protocol}//${window.location.host}/`;
-      // }
-
-      // if (environment.sdsPortalUrl && environment.sdsPortalUrl.startsWith('http://')
-      //   && environment.apiUrl && environment.apiUrl.startsWith('https://')) {
-      //   environment.sdsPortalUrl = environment.sdsPortalUrl.replace('http://', 'https://');
-      // }
-      // // ensure compatibility.
-      // if (!environment.baseUrl) {
-      //   environment.baseUrl = '/chemical-db/';
-      // }
-      // if (!environment.sdsPortalEnable && !environment.sdsPortalAdmin55Enable && !environment.sdsPortalSIKTEnable) {
-      //   return getServerConfigs(http);
-      // }
-
-      // return Promise.all([environment.sdsPortalEnable ? challengeSdsPortal(http, localStorage) : RefreshTokenLoginSdsManager(localStorage),
-      // challengeSdsPortalSecond(http, localStorage)
-      //   , getServerConfigs(http)]);
     });
   };
 }

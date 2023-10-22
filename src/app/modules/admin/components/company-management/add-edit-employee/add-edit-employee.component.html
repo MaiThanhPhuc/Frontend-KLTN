@@ -5,11 +5,11 @@
     </div>
     <div class="divider"></div>
     <div class="basic-info">
-      <div class="sub-header">
-        Basic infomation
-      </div>
-      <div class="row">
-        <div *ngFor="let item of allDataEmployee[0]" class="field-item col-3">
+      <div *ngFor="let temp of allDataEmployee" class="row">
+        <div *ngIf="temp.isLabel" class="sub-header">
+          {{temp.label}}
+        </div>
+        <div *ngFor="let item of temp.fields" class="field-item col-3">
           <ng-container *ngIf="item.isDate; else selectOptions">
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field>
@@ -24,7 +24,7 @@
             <ng-container *ngIf="item.isOption; else default">
               <mat-label>{{item.label}}</mat-label>
               <mat-form-field>
-                <mat-select [required]="item.isRequired">
+                <mat-select [required]="item.isRequired" [(ngModel)]="item.value" [formControlName]="item.key">
                   <mat-option *ngFor="let option of item.options" [value]="option.id">{{option.text}}</mat-option>
                 </mat-select>
               </mat-form-field>
@@ -34,8 +34,10 @@
           <ng-template #default>
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field *ngIf="!item.isPassword">
-              <input [required]="item.isRequired" [type]="item.isNumber ? 'number' : 'text'" matInput
+              <input [required]="item.isRequired" [type]="item.isCustomType ? item.type : 'text'" matInput
                 [value]="item.value" [formControlName]="item.key" [(ngModel)]='item.value'>
+              <mat-error *ngIf="getFormControlByKey(item.key).touched">Invalid input
+              </mat-error>
             </mat-form-field>
             <div *ngIf="item.isPassword" class="password_field">
               <mat-form-field class="w-100">
@@ -50,29 +52,6 @@
                 <mat-icon>change_circle</mat-icon>
               </button>
             </div>
-          </ng-template>
-        </div>
-      </div>
-    </div>
-    <div class="company-info">
-      <div class="sub-header">
-        Company information
-      </div>
-      <div class="row">
-        <div *ngFor="let item of allDataEmployee[1]" class="field-item col-3">
-          <ng-container *ngIf="item.isOption; else default">
-            <mat-label>{{item.label}}</mat-label>
-            <mat-form-field>
-              <mat-select>
-                <mat-option *ngFor="let option of item.options" value="option">{{option}}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </ng-container>
-          <ng-template #default>
-            <mat-label>{{item.label}}</mat-label>
-            <mat-form-field>
-              <input matInput [(ngModel)]='item.value' [value]="item.value">
-            </mat-form-field>
           </ng-template>
         </div>
       </div>
@@ -170,3 +149,5 @@
     </div>
   </div>
 </div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>

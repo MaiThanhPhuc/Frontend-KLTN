@@ -8,6 +8,10 @@ import { EditMode } from './add-edit-common.model';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AdminService } from '../../../services/admin.service';
 import { takeUntil } from 'rxjs';
+import { OptionModel } from 'src/app/models/optionsModel';
+import { EmployeeService } from '../../../services/employee.service';
+import { Employee, SearchModal, SearchEmployeeResponse } from 'src/app/models/employee.model';
+import { Constants } from 'src/app/constants';
 
 @Component({
   selector: 'app-add-edit-common-popup',
@@ -26,7 +30,11 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   @Output() onSubmitOffice: EventEmitter<OfficeModel> = new EventEmitter();
   @Output() onClose: EventEmitter<OfficeModel> = new EventEmitter();
 
-  allDataOffice: OfficeModel[];
+  allOfficeOptions: OptionModel[];
+  allDepartmentOptions: OptionModel[];
+  allTeamOptions: OptionModel[];
+  allManagerOptions: OptionModel[];
+  allLeaderOptions: OptionModel[];
   officeDataFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
@@ -42,6 +50,7 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     department: new FormControl('', Validators.required),
     leader: new FormControl('', Validators.required),
   });
+  paramSearch: SearchModal = {};
 
   dtNow: Date = new Date();
   isLoading = false;
@@ -49,7 +58,8 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
 
   title = '';
   constructor(private dialogRef: MatDialogRef<AddEditCommonPopupComponent>,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private employeeService: EmployeeService
   ) {
     super();
   }
@@ -58,10 +68,13 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     switch (this.mode) {
       case EditMode.TEAM:
         this.title = 'Team Infomation';
+        this.getAllLeader()
+        this.loadDataDepartment()
         break;
       case EditMode.DEPARTMENT:
         this.title = 'Department Infomation';
         this.loadDataOffice();
+        this.getAllManager();
         break;
       case EditMode.OFFICE:
         this.title = 'Office Infomation';
@@ -75,7 +88,7 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
         this.submitTeam()
         break;
       case EditMode.DEPARTMENT:
-        this.submitDepartment()
+        this.submitDepartment();
         break;
       case EditMode.OFFICE:
         this.submitOffice()
@@ -104,7 +117,55 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     this.isLoading = true
     this.adminService.getAllOffice().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: OfficeModel[]) => {
       if (res) {
-        this.allDataOffice = res
+        this.allOfficeOptions = res.map(item => new OptionModel(item.name, item._id))
+      }
+
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  loadDataDepartment() {
+    this.isLoading = true
+    this.adminService.getAllDepartment().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: DepartmentModel[]) => {
+      if (res) {
+        this.allDepartmentOptions = res.map(item => new OptionModel(item.name, item._id))
+      }
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  loadDataTeam() {
+    this.isLoading = true
+    this.adminService.getAllTeam().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: TeamModel[]) => {
+      if (res) {
+        this.allTeamOptions = res.map(item => new OptionModel(item.name, item._id))
+      }
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  getAllManager() {
+    this.isLoading = true
+    this.paramSearch.role = Constants.ManagerRole.id
+    this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
+      if (res) {
+        this.allManagerOptions = res.result.map(item => new OptionModel(`${item.firstName} ${item.lastName}`, item._id))
+      }
+
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  getAllLeader() {
+    this.isLoading = true
+    this.paramSearch.role = Constants.LeaderRole.id
+    this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
+      if (res) {
+        this.allLeaderOptions = res.result.map(item => new OptionModel(`${item.firstName} ${item.lastName}`, item._id))
       }
 
       this.isLoading = false

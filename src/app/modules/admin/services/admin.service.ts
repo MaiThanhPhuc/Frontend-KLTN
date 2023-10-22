@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { DepartmentModel } from 'src/app/models/deparment.model';
-import { IEmployee } from 'src/app/models/employee.model';
-import { OfficeModel } from 'src/app/models/office.model';
-import { TeamModel } from 'src/app/models/team.model';
+import { DepartmentModel, SearchDepartmentResponse } from 'src/app/models/deparment.model';
+import { IEmployee, SearchModal } from 'src/app/models/employee.model';
+import { OfficeModel, SearchOfficeResponse } from 'src/app/models/office.model';
+import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { BaseService } from 'src/app/services/base.service';
 @Injectable({
   providedIn: 'root'
@@ -55,5 +55,14 @@ export class AdminService extends BaseService {
 
   getTeamById(id: string): Observable<TeamModel[]> {
     return this.get(`admin/getTeamById/${id}`);
+  }
+  searchTeam(request: SearchModal): Observable<SearchTeamResponse> {
+    return this.get(`admin/searchTeam`, request);
+  }
+  searchDepartment(request: SearchModal): Observable<SearchDepartmentResponse> {
+    return this.get(`admin/searchDepartment`, request);
+  }
+  searchOffice(request: SearchModal): Observable<SearchOfficeResponse> {
+    return this.get(`admin/searchOffice`, request);
   }
 }

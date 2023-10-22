@@ -23,9 +23,9 @@ const ELEMENT_DATA2: DepartmentModel[] = [
 ];
 
 const ELEMENT_DATA3: TeamModel[] = [
-  { code: "1", name: 'Hydrogen', department: "test", leader: "jack" },
-  { code: "2", name: 'test', department: "test", leader: "jack" },
-  { code: "3", name: 'test1', department: "test", leader: "jack" },
+  // { code: "1", name: 'Hydrogen', department: "test", leader: "jack" },
+  // { code: "2", name: 'test', department: "test", leader: "jack" },
+  // { code: "3", name: 'test1', department: "test", leader: "jack" },
 ];
 
 enum TableMode {

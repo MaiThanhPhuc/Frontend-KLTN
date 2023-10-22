@@ -1,6 +1,10 @@
 import { Constants } from "../constants";
+import { DepartmentModel } from "./deparment.model";
+import { OfficeModel } from "./office.model";
+import { TeamModel } from "./team.model";
 
 export interface IEmployee {
+  _id: string;
   code: string;
   firstName: string;
   lastName: string;
@@ -19,9 +23,11 @@ export interface IEmployee {
 }
 
 export class Employee {
+  _id: string;
   code: string;
   firstName: string;
   lastName: string;
+  fullName?: string;
   birthday: Date;
   email: string;
   gender: string;
@@ -30,10 +36,31 @@ export class Employee {
   status: number;
   role: number;
   contract: string;
-  departmentId: string;
-  teamId: string;
-  officeId: string;
+  department: DepartmentModel;
+  team: TeamModel;
+  office: OfficeModel;
   jobLeaveId: string;
+}
+
+export class SearchModal {
+  keyword?: string;
+  pageIndex?: number;
+  limit?: number;
+  role?: number;
+  status?: number;
+  sortBy?: string;
+  officeId?: string;
+  departmentId?: string;
+  teamId?: string;
+}
+
+export class SearchEmployeeResponse {
+  msg: string;
+  result: Employee[];
+  totalItems: number;
+  toltalPage: number;
+  limit: number;
+  currentPage: number;
 }
 
 export class AbsentEmployeeInfo {
@@ -60,96 +87,102 @@ export class EmployeeInfo {
 
 export const BasicInfoEmployeeField = [
   {
-    key: "firstName",
-    label: "First Name",
-    isRequired: true,
-    value: "",
+    isLabel: true,
+    label: "Basic infomation",
+    fields: [
+      {
+        key: "firstName",
+        label: "First Name",
+        isRequired: true,
+        value: "",
+      },
+      {
+        key: "lastName",
+        label: "Last Name",
+        isRequired: true,
+        value: "",
+      },
+      {
+        key: "email",
+        label: "Email",
+        isRequired: true,
+        value: "",
+        type: 'email',
+        isCustomType: true
+      },
+      {
+        key: "password",
+        label: "Password",
+        isRequired: false,
+        isDisable: true,
+        value: "",
+        isPassword: true
+      },
+      {
+        key: "birthday",
+        label: "Birthday",
+        isRequired: true,
+        value: "",
+        isDate: true
+      },
+      {
+        key: "phone",
+        label: "Phone",
+        isRequired: true,
+        value: "",
+        type: 'number',
+        isCustomType: true
+      },
+      {
+        key: "role",
+        label: "Role",
+        isRequired: true,
+        value: "",
+        isOption: true,
+        options: Constants.EmployeeRole
+      },
+      {
+        key: "status",
+        label: "Status",
+        isRequired: true,
+        value: "",
+        isOption: true,
+        options: Constants.EmployeeStatus
+      },
+    ]
   },
-  {
-    key: "lastName",
-    label: "Last Name",
-    isRequired: true,
-    value: "",
-  },
-  {
-    key: "email",
-    label: "Email",
-    isRequired: true,
-    value: "",
-  }
-  ,
-  {
-    key: "password",
-    label: "Password",
-    isRequired: false,
-    isDisable: true,
-    value: "",
-    isPassword: true
-  },
-  {
-    key: "birthday",
-    label: "Birthday",
-    isRequired: true,
-    value: "",
-    isDate: true
-  },
-  {
-    key: "phone",
-    label: "Phone",
-    isRequired: true,
-    value: "",
-    isNumber: true
-  },
-  {
-    key: "citizenNumber",
-    label: "Citizen Number",
-    isRequired: true,
-    value: "",
-    isNumber: true
-  },
-  {
-    key: "status",
-    label: "Status",
-    isRequired: true,
-    value: "",
-    isOption: true,
-    options: Constants.EmployeeStatus
-  }
-]
 
-export const CompanyInfoEmployeeField = [
   {
-    key: "officeId",
-    label: "Office",
-    isRequired: true,
-    value: "UTE Corp",
-    isOption: true,
-    options: ["UTE Corp"]
+    isLabel: true,
+    label: "Company information",
+    fields: [
+      {
+        key: "office",
+        label: "Office",
+        isRequired: false,
+        value: "UTE Corp",
+        isOption: true,
+        options: ["UTE Corp"]
+      },
+      {
+        key: "department",
+        label: "Department",
+        isRequired: false,
+        value: "",
+        isOption: true,
+        options: [""]
+      },
+      {
+        key: "team",
+        label: "Team",
+        isRequired: false,
+        value: "",
+        isOption: true,
+        options: [""]
+      },
+    ]
   },
-  {
-    key: "deparmentId",
-    label: "Department",
-    isRequired: true,
-    value: "",
-    isOption: true,
-    options: [""]
-  },
-  {
-    key: "teamId",
-    label: "Team",
-    isRequired: true,
-    value: "",
-    isOption: true,
-    options: [""]
-  },
-  {
-    key: "role",
-    label: "Role",
-    isRequired: true,
-    value: "Member",
-    isOption: true,
-    options: ["Admin", "Manager", "Leader", "Member"]
-  }
+
 ]
 
 export const LeaveTypeFieldDemo = [
@@ -164,7 +197,5 @@ export const LeaveTypeFieldDemo = [
   }
 ]
 
-export const AllDataEmployee = [
-  BasicInfoEmployeeField,
-  CompanyInfoEmployeeField
-]
+export const AllDataEmployee = BasicInfoEmployeeField;
+

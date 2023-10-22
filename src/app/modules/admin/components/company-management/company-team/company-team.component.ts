@@ -9,13 +9,8 @@ import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.mod
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { takeUntil } from 'rxjs/operators';
+import { AdminService } from '../../../services/admin.service';
 
-
-const ELEMENT_DATA: TeamModel[] = [
-  { code: "1", name: 'Hydrogen', department: "test", leader: "jack" },
-  { code: "2", name: 'test', department: "test", leader: "jack" },
-  { code: "3", name: 'test1', department: "test", leader: "jack" },
-];
 @Component({
   selector: 'app-company-team',
   templateUrl: './company-team.component.html',
@@ -25,16 +20,19 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
   displayedColumns: string[] = ['code', 'name', 'department', 'leader', 'action'];
   dataSource: MatTableDataSource<TeamModel>;
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
-
+  isLoading = false
   constructor(
     private router: Router,
     private dialog: MatDialog,
+    private adminService: AdminService
   ) {
     super();
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
   }
+
   ngOnInit() {
+    this.loadData()
   }
+
 
   archiveTeam(item: TeamModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
@@ -61,11 +59,43 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.TEAM;
-      this.dialogRef.componentInstance.teamData = ELEMENT_DATA[0];
 
-      this.dialogRef.componentInstance.onSubmitTeam.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user: TeamModel) => {
-        console.log(123);
+      this.dialogRef.componentInstance.onSubmitTeam.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: TeamModel) => {
+        if (dataSave) this.onSaveTeam(dataSave)
       });
     }
   }
+
+  loadData() {
+    this.isLoading = true
+    this.adminService.getAllTeam().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: TeamModel[]) => {
+      if (res) console.log(res);
+
+      this.dataSource = new MatTableDataSource(res);
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  onSaveTeam(data: TeamModel) {
+    this.isLoading = true;
+    console.log(data);
+    if (data._id) {
+      this.adminService.updateTeamById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    } else {
+      this.adminService.createTeam(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    }
+
+  }
+
 }

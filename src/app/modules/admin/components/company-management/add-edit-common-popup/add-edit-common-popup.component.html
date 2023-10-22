@@ -23,15 +23,13 @@
           <mat-label>Address</mat-label>
           <input [(ngModel)]="officeData.address" [formControlName]="'address'" required id="address" type="text"
             matInput>
-          <mat-error>Invalid input
+          <mat-error *ngIf="getFormControlByKey('name').touched">Invalid input
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Phone</mat-label>
           <input [(ngModel)]="officeData.phone" [formControlName]="'phone'" id="phone" type="number" matInput>
-          <mat-error>Invalid input
-          </mat-error>
         </mat-form-field>
 
       </div>
@@ -42,27 +40,24 @@
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Name</mat-label>
           <input [(ngModel)]="departmentData.name" [formControlName]="'name'" id="name" type="text" matInput>
-          <mat-error>Invalid input
+          <mat-error *ngIf="getFormControlByKey('name').touched">Invalid input
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Office</mat-label>
           <mat-select [(ngModel)]="departmentData.office" [formControlName]="'office'" [required]="true">
-            <mat-option *ngFor="let option of allDataOffice" [value]="option._id">{{option.name}}</mat-option>
+            <mat-option *ngFor="let option of allOfficeOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
-          <mat-error>Invalid input
+          <mat-error *ngIf="getFormControlByKey('office').touched">Invalid input
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Manager</mat-label>
           <mat-select [(ngModel)]="departmentData.manager" [formControlName]="'manager'">
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+            <mat-option *ngFor="let option of allManagerOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
-          <mat-error>Invalid input
-          </mat-error>
         </mat-form-field>
 
       </div>
@@ -80,8 +75,7 @@
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Department</mat-label>
           <mat-select [(ngModel)]="teamData.department" [formControlName]="'department'" [required]="true">
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+            <mat-option *ngFor="let option of allDepartmentOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input
           </mat-error>
@@ -90,8 +84,7 @@
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Leader</mat-label>
           <mat-select [(ngModel)]="teamData.leader" [formControlName]="'leader'" [required]="true">
-            <mat-option value="one">First option</mat-option>
-            <mat-option value="two">Second option</mat-option>
+            <mat-option *ngFor="let option of allLeaderOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input
           </mat-error>

@@ -34,7 +34,7 @@ export class BaseService {
 
   protected get(url: string, params: any = {},): Observable<any> {
     return this.http.get(this.resolveBaseUrl() + url, {
-      headers: this.resolveHeader()
+      headers: this.resolveHeader(), params: params
     });
   }
 

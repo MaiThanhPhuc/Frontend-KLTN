@@ -10,3 +10,12 @@ export class OfficeModel {
   //   this.address = address
   // }
 }
+
+export class SearchOfficeResponse {
+  msg: string;
+  result: OfficeModel[];
+  totalItems: number;
+  toltalPage: number;
+  limit: number;
+  currentPage: number;
+}

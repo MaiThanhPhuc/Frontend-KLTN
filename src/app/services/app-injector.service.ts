@@ -13,7 +13,6 @@ export class AppInjector {
 
   static getService(type: any) {
     const injector = AppInjector.getInjector();
-    // tslint:disable-next-line: deprecation
     const service = injector.get(type);
     return service;
   }

@@ -37,10 +37,14 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     this.loadData();
 
     if (!this.officeDate) {
-      this.officeDate = {
-        name: '',
-        address: ""
-      }
+      this.initOfficeData()
+    }
+  }
+
+  initOfficeData() {
+    this.officeDate = {
+      name: '',
+      address: ""
     }
   }
 
@@ -72,11 +76,11 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
   }
 
   openAddEditPopup(item?: OfficeModel): void {
-    console.log(item);
     this.dialogRef = this.dialog.open(AddEditCommonPopupComponent, {
       width: `500px`,
       disableClose: true
     });
+    this.initOfficeData()
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.OFFICE;

@@ -62,7 +62,7 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
       this.dialogRef.componentInstance.mode = EditMode.DEPARTMENT;
 
       this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: DepartmentModel) => {
-        if (dataSave) this.onSaveOffice(dataSave)
+        if (dataSave) this.onSaveDepartment(dataSave)
       });
     }
   }
@@ -71,13 +71,14 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     this.isLoading = true
     this.adminService.getAllDepartment().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: DepartmentModel[]) => {
       if (res) console.log(res);
+
       this.dataSource = new MatTableDataSource(res);
       this.isLoading = false
     });
     this.isLoading = false
   }
 
-  onSaveOffice(data: DepartmentModel) {
+  onSaveDepartment(data: DepartmentModel) {
     this.isLoading = true;
     console.log(data);
     if (data._id) {
