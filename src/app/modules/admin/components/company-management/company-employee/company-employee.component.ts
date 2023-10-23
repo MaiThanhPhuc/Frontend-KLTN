@@ -11,23 +11,25 @@ import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confi
 import { takeUntil } from 'rxjs';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { EmployeeService } from '../../../services/employee.service';
+import { Constants } from 'src/app/constants';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 @Component({
   selector: 'app-company-employee',
   templateUrl: './company-employee.component.html',
   styleUrls: ['./company-employee.component.scss']
 })
-export class CompanyEmployeeComponent extends BaseComponent implements OnInit, AfterViewInit {
+export class CompanyEmployeeComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = ['code', 'name', 'email', 'team', 'department', 'office', 'role', 'action'];
   dataSource: MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
   paramSearch: SearchModal = {};
   pageSize = 5;
-  pageIndex = 1;
+  pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
   countAllData = 0
-  isLoading = false
   keyword = ''
+  isLoading = false
   constructor(private _liveAnnouncer: LiveAnnouncer,
     private router: Router,
     private dialog: MatDialog,
@@ -39,11 +41,6 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit, A
   ngOnInit(): void {
     this.initParamSearch();
     this.getDataEmployee();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
   }
 
   handlePageEvent(event: PageEvent) {
@@ -82,16 +79,15 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit, A
     this.getDataEmployee();
   }
 
-  onNavigateEdit(item: EmployeeInfo) {
-    console.log("test");
-    this.router.navigate(['admin/company/employee', item.code])
+  onNavigateEdit(item: Employee) {
+    this.router.navigate([`admin/company/employee/edit/${item._id}`])
   }
 
-  archiveEmployee(item: EmployeeInfo): void {
+  archiveEmployee(item: Employee): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
     inputPopupData.cancelButton = "Cancel"
-    inputPopupData.content = "Do you want to archive this deaprtment ?"
+    inputPopupData.content = "Do you want to archive this employee ?"
     inputPopupData.primarySubmit = true;
     const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
       autoFocus: false,
@@ -100,7 +96,20 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit, A
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      console.log("test");
+      if(confirm){
+        this.isLoading= true
+        item.status = Constants.EmployeeStatus[1].id
+        this.employeeService.updateEmployeeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res =>{
+          if(res){
+            ToastService.success("Archive employee success")
+            this.getDataEmployee();
+          }
+          this.isLoading= false
+        })
+
+      }
     });
   }
+
+
 }

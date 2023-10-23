@@ -9,8 +9,8 @@
         Add Office
       </button>
       <mat-form-field appearance="outline">
-        <input matInput placeholder="Search">
-        <mat-icon matIconPrefix>search</mat-icon>
+        <input [(ngModel)]="keyword" (change)="onSearchKeyword()" matInput placeholder="Search">
+        <mat-icon class="cusor-pointer" matIconPrefix>search</mat-icon>
       </mat-form-field>
     </div>
   </div>
@@ -73,7 +73,8 @@
         </tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      <mat-paginator (page)="handlePageEvent($event)" [pageSizeOptions]="pageSizeOptions" [length]="countAllData"
+        [pageIndex]="pageIndex" [pageSize]="pageSize" aria-label="Select page of users"></mat-paginator>
     </div>
   </div>
 </div>

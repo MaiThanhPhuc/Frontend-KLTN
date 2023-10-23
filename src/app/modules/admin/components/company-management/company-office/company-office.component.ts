@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { OfficeModel } from 'src/app/models/office.model';
+import { OfficeModel, SearchOfficeResponse } from 'src/app/models/office.model';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { AddEditCommonPopupComponent } from '../add-edit-common-popup/add-edit-common-popup.component';
@@ -10,6 +10,8 @@ import { BaseComponent } from 'src/app/utils/base.component';
 import { takeUntil } from 'rxjs/operators';
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { AdminService } from '../../../services/admin.service';
+import { SearchModal } from 'src/app/models/employee.model';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-company-office',
@@ -18,12 +20,17 @@ import { AdminService } from '../../../services/admin.service';
 })
 export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['code', 'name', 'address', 'phone', 'action'];
-  dataSource: MatTableDataSource<OfficeModel> = new MatTableDataSource();
+  dataSource: MatTableDataSource<OfficeModel>;
 
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
   officeDate: OfficeModel;
   isLoading = false;
-
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
 
   constructor(
     private router: Router,
@@ -33,31 +40,42 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     super();
   }
   ngOnInit() {
-
+    this.initParamSearch();
     this.loadData();
-
-    if (!this.officeDate) {
-      this.initOfficeData()
+  }
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
     }
   }
-
-  initOfficeData() {
-    this.officeDate = {
-      name: '',
-      address: ""
-    }
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadData();
   }
-
   loadData() {
     this.isLoading = true
-    this.adminService.getAllOffice().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: OfficeModel[]) => {
-      if (res) console.log(res);
-      this.dataSource = new MatTableDataSource(res);
+    this.adminService.searchOffice(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchOfficeResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+      }
       this.isLoading = false
     });
     this.isLoading = false
   }
 
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.loadData();
+  }
   archiveOffice(item: OfficeModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
@@ -80,11 +98,8 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
       width: `500px`,
       disableClose: true
     });
-    this.initOfficeData()
     if (this.dialogRef && this.dialogRef.componentInstance) {
-      const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.OFFICE;
-      this.dialogRef.componentInstance.officeData = item ? item : this.officeDate;
 
       this.dialogRef.componentInstance.onSubmitOffice.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: OfficeModel) => {
         if (dataSave) this.onSaveOffice(dataSave)

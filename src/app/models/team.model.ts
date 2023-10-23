@@ -6,6 +6,7 @@ export class TeamModel {
   name: string;
   department: DepartmentModel;
   leader: Employee;
+  status: number;
   _id?: string;
 }
 

@@ -16,4 +16,7 @@ export class Constants {
   public static ManagerRole = new OptionModel("Manager", 1)
   public static LeaderRole = new OptionModel("Leader", 2)
   public static MemberRole = new OptionModel("Member", 3)
+
+  public static ActiveStatus = new OptionModel("Active", 0)
+  public static DeactiveStatus = new OptionModel("Deactive", 1)
 }

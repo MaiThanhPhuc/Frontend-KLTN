@@ -1,11 +1,13 @@
+import { Employee } from "./employee.model";
 import { OfficeModel } from "./office.model";
 
 export class DepartmentModel {
   code: string;
   name: string;
   office: OfficeModel[];
-  manager?: string;
+  manager?: Employee;
   _id?: string;
+  status: number;
 }
 
 export class SearchDepartmentResponse {

@@ -24,10 +24,10 @@
           <ng-container *ngIf="isShowText">
             <ng-container *ngFor="let child of item.children">
               <div class="menu-item-row" (click)="closeMenu(item)" routerLinkActive="active" [routerLink]="[child.url]">
-                <button tabindex="-1" class="menu-item-icon" mat-icon-button>
-                  <mat-icon class="material-icons-outlined ">
+                <button [disabled]="true" tabindex="-1" mat-icon-button>
+                  <!-- <mat-icon class="material-icons-outlined ">
                     {{child.icon}}
-                  </mat-icon>
+                  </mat-icon> -->
                 </button>
                 <span *ngIf="isShowText" id="menu-child-{{child.id}}"
                   [ngClass]="child.text == managerUser ? 'menu-item-title-child border-top' : 'menu-item-title-child'">{{child.text}}</span>

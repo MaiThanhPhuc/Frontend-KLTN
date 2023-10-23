@@ -5,6 +5,7 @@ export class OfficeModel {
   phone?: string;
   createDate?: Date;
   _id?: string
+  status?: number;
   // constructor(name: string, address: string) {
   //   this.name = name;
   //   this.address = address

@@ -88,7 +88,7 @@
         </tr>
       </table>
 
-      <mat-paginator (page)="handlePageEvent($event)" [pageSizeOptions]="[5, 10, 25]" [length]="countAllData"
+      <mat-paginator (page)="handlePageEvent($event)" [pageSizeOptions]="pageSizeOptions" [length]="countAllData"
         [pageIndex]="pageIndex" [pageSize]="pageSize" aria-label="Select page of users"></mat-paginator>
     </div>
   </div>

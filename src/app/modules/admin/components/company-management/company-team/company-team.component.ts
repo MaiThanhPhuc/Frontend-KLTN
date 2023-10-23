@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { TeamModel } from 'src/app/models/team.model';
+import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { AddEditCommonPopupComponent } from '../add-edit-common-popup/add-edit-common-popup.component';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
@@ -10,6 +10,10 @@ import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confi
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { takeUntil } from 'rxjs/operators';
 import { AdminService } from '../../../services/admin.service';
+import { SearchModal } from 'src/app/models/employee.model';
+import { PageEvent } from '@angular/material/paginator';
+import { Constants } from 'src/app/constants';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 
 @Component({
   selector: 'app-company-team',
@@ -21,6 +25,12 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
   dataSource: MatTableDataSource<TeamModel>;
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
   isLoading = false
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -30,15 +40,28 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
   }
 
   ngOnInit() {
+    this.initParamSearch();
     this.loadData()
   }
 
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
+    }
+  }
+
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadData();
+  }
 
   archiveTeam(item: TeamModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
     inputPopupData.cancelButton = "Cancel"
-    inputPopupData.content = "Do you want to archive this offices ?"
+    inputPopupData.content = "Do you want to archive this team ?"
     inputPopupData.primarySubmit = true;
     const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
       autoFocus: false,
@@ -47,7 +70,18 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().subscribe(confirm => {
-      console.log("test");
+      if(confirm){
+        this.isLoading= true
+        item.status = Constants.DeactiveStatus.id
+        this.adminService.updateTeamById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res =>{
+          if(res){
+            ToastService.success("Archive employee success")
+            this.loadData();
+          }
+          this.isLoading= false
+        })
+
+      }
     });
   }
 
@@ -68,13 +102,25 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
 
   loadData() {
     this.isLoading = true
-    this.adminService.getAllTeam().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: TeamModel[]) => {
-      if (res) console.log(res);
-
-      this.dataSource = new MatTableDataSource(res);
+    this.adminService.searchTeam(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchTeamResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+      }
       this.isLoading = false
     });
     this.isLoading = false
+  }
+
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.loadData();
   }
 
   onSaveTeam(data: TeamModel) {

@@ -2,8 +2,8 @@ import { MatSnackBarConfig, MatSnackBarHorizontalPosition, MatSnackBarVerticalPo
 import { AppInjector } from 'src/app/services/app-injector.service';
 
 export class ToastService {
-  static horizontalPosition: MatSnackBarHorizontalPosition = 'right';
-  static verticalPosition: MatSnackBarVerticalPosition = 'top';
+  static horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  static verticalPosition: MatSnackBarVerticalPosition = 'bottom';
   static actionButtonLabel = 'Close';
   static action = true;
   static setAutoHide = true;

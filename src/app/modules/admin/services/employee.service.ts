@@ -7,7 +7,7 @@ import { BaseService } from 'src/app/services/base.service';
   providedIn: 'root'
 })
 export class EmployeeService extends BaseService {
-  createEmployee(request: IEmployee): Observable<Employee> {
+  createEmployee(request: Employee): Observable<Employee> {
     return this.post("employee", request);
   }
 
@@ -15,7 +15,7 @@ export class EmployeeService extends BaseService {
     return this.get(`employee/${employeeId}`);
   }
 
-  updateEmployeeById(request: IEmployee): Observable<boolean> {
+  updateEmployeeById(request: Employee): Observable<boolean> {
     return this.put(`employee/${request._id}`, request);
   }
 

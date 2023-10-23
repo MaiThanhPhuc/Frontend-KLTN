@@ -91,6 +91,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       });
 
       if (this.employeeId) {
+        this.isEdit = true
         this.loadDataEmployee()
       } else {
         this.mapDataToForm(this.dataEmployee);
@@ -225,4 +226,9 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   getFormControlByKey(key: string) {
     return this.employeeDataFormGroup.controls[`${key}`];
   }
+
+  cancel(){
+    this.router.navigate([`admin/company/employee`])
+  }
+
 }

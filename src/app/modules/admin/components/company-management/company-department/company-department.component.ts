@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { DepartmentModel } from 'src/app/models/deparment.model';
+import { DepartmentModel, SearchDepartmentResponse } from 'src/app/models/deparment.model';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { BaseComponent } from 'src/app/utils/base.component';
@@ -11,6 +11,8 @@ import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { takeUntil } from 'rxjs';
 import { AdminService } from '../../../services/admin.service';
 import { OfficeModel } from 'src/app/models/office.model';
+import { SearchModal } from 'src/app/models/employee.model';
+import { PageEvent } from '@angular/material/paginator';
 @Component({
   selector: 'app-company-department',
   templateUrl: './company-department.component.html',
@@ -22,6 +24,12 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
   dialogRef: MatDialogRef<AddEditCommonPopupComponent>;
   dataOffice: OfficeModel[];
   isLoading = false;
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -32,9 +40,32 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
   }
 
   ngOnInit() {
+    this.initParamSearch();
     this.loadData()
   }
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
+    }
+  }
 
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadData();
+  }
+
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.loadData();
+  }
   archiveDepartment(item: DepartmentModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
@@ -58,7 +89,6 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
-      const data = Object.assign({}, this.dataSource);
       this.dialogRef.componentInstance.mode = EditMode.DEPARTMENT;
 
       this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: DepartmentModel) => {
@@ -69,11 +99,13 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
 
   loadData() {
     this.isLoading = true
-    this.adminService.getAllDepartment().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: DepartmentModel[]) => {
-      if (res) console.log(res);
+    this.adminService.searchDepartment(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchDepartmentResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+        this.isLoading = false
+      }
 
-      this.dataSource = new MatTableDataSource(res);
-      this.isLoading = false
     });
     this.isLoading = false
   }
@@ -83,10 +115,11 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     console.log(data);
     if (data._id) {
       this.adminService.updateDepartmentById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res){
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     } else {
       this.adminService.createDepartment(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
