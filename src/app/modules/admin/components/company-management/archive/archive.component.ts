@@ -3,30 +3,18 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { takeUntil } from 'rxjs';
-import { DepartmentModel } from 'src/app/models/deparment.model';
-import { OfficeModel } from 'src/app/models/office.model';
+import { DepartmentModel, SearchDepartmentResponse } from 'src/app/models/deparment.model';
+import { OfficeModel, SearchOfficeResponse } from 'src/app/models/office.model';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
-import { TeamModel } from 'src/app/models/team.model';
+import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { BaseComponent } from 'src/app/utils/base.component';
-
-const ELEMENT_DATA1: OfficeModel[] = [
-  { code: "1", name: 'Hydrogen', address: "test", createDate: new Date("20-2-2000") },
-  { code: "2", name: 'test', address: "test", createDate: new Date("20-2-2000") },
-  { code: "3", name: 'test1', address: "test", createDate: new Date("20-2-2000") },
-];
-
-const ELEMENT_DATA2: DepartmentModel[] = [
-  // { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
-  // { code: "2", name: 'test', office: "test", manager: "bod" },
-  // { code: "3", name: 'test1', office: "test", manager: "bod" },
-];
-
-const ELEMENT_DATA3: TeamModel[] = [
-  // { code: "1", name: 'Hydrogen', department: "test", leader: "jack" },
-  // { code: "2", name: 'test', department: "test", leader: "jack" },
-  // { code: "3", name: 'test1', department: "test", leader: "jack" },
-];
+import { AdminService } from '../../../services/admin.service';
+import { Employee, SearchEmployeeResponse, SearchModal } from 'src/app/models/employee.model';
+import { PageEvent } from '@angular/material/paginator';
+import { EmployeeService } from '../../../services/employee.service';
+import { Constants } from 'src/app/constants';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 
 enum TableMode {
   employee = 0,
@@ -34,7 +22,6 @@ enum TableMode {
   department = 2,
   office = 3,
 }
-
 
 @Component({
   selector: 'app-archive',
@@ -45,45 +32,54 @@ export class ArchiveComponent extends BaseComponent implements OnInit {
 
   selectedTable?: TableMode = TableMode.employee;
   currentDisplayTable: string[] = [];
-  displayedEmployeeColumns: string[] = ['code', 'name', 'team', 'department', 'role', 'action'];
-  displayedTeamColumns: string[] = ['code', 'name', 'department', 'deleteDate', 'action'];
-  displayedDepartmentColumns: string[] = ['code', 'name', 'office', 'deleteDate', 'action'];
-  displayedOfficeColumns: string[] = ['code', 'name', 'address', 'deleteDate', 'action'];
-  dataSourceOffice: MatTableDataSource<any> = new MatTableDataSource(ELEMENT_DATA1);
+  displayedEmployeeColumns: string[] = ['code', 'firstName', 'lastName', 'team', 'department', 'role', 'action'];
+  displayedTeamColumns: string[] = ['code', 'name', 'department', 'updateDate', 'action'];
+  displayedDepartmentColumns: string[] = ['code', 'name', 'office', 'updateDate', 'action'];
+  displayedOfficeColumns: string[] = ['code', 'name', 'address', 'updateDate', 'action'];
+
+  isLoading = false;
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
+
+  dataSource: any;
+
   get tableMode() { return TableMode; }
   constructor(
     private dialog: MatDialog,
+    private adminService: AdminService,
+    private employeeService: EmployeeService
   ) {
     super();
   }
 
   ngOnInit(): void {
     this.currentDisplayTable = this.displayedEmployeeColumns;
+    this.loadData();
   }
 
 
   onChangeSelectTable() {
-    console.log(this.selectedTable);
     switch (this.selectedTable) {
       case TableMode.employee:
         this.currentDisplayTable = this.displayedEmployeeColumns;
-        this.dataSourceOffice = new MatTableDataSource(ELEMENT_DATA1);
         break;
       case TableMode.team:
         this.currentDisplayTable = this.displayedTeamColumns;
-        this.dataSourceOffice = new MatTableDataSource(ELEMENT_DATA3);
         break;
       case TableMode.department:
         this.currentDisplayTable = this.displayedDepartmentColumns;
-        this.dataSourceOffice = new MatTableDataSource(ELEMENT_DATA2);
         break;
       case TableMode.office:
         this.currentDisplayTable = this.displayedOfficeColumns;
-        this.dataSourceOffice = new MatTableDataSource(ELEMENT_DATA1);
         break;
       default:
         break;
     }
+    this.loadData();
   }
 
   restoreItem(item: any): void {
@@ -109,7 +105,6 @@ export class ArchiveComponent extends BaseComponent implements OnInit {
         break;
     }
 
-
     const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
       autoFocus: false,
       width: '400px',
@@ -117,8 +112,165 @@ export class ArchiveComponent extends BaseComponent implements OnInit {
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      console.log("test");
+      if (confirm) {
+        switch (this.selectedTable) {
+          case TableMode.employee:
+            this.restoreEmployee(item);
+            break;
+          case TableMode.team:
+            this.restoreTeam(item);
+            break;
+          case TableMode.department:
+            this.restoreDepartment(item)
+            break;
+          case TableMode.office:
+            this.restoreOffice(item);
+            break;
+          default:
+            break;
+        }
+      }
     });
+  }
+
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
+    }
+  }
+
+  loadData() {
+    this.paramSearch.status = Constants.DeactiveStatus.id
+    switch (this.selectedTable) {
+      case TableMode.employee:
+        this.getDataEmployee();
+        break;
+      case TableMode.team:
+        this.loadDataTeam();
+        break;
+      case TableMode.department:
+        this.loadDataDepartment()
+        break;
+      case TableMode.office:
+        this.loadDataOffice();
+        break;
+      default:
+        break;
+    }
+  }
+
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadData();
+  }
+
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.loadData();
+  }
+
+  loadDataDepartment() {
+    this.isLoading = true
+    this.adminService.searchDepartment(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchDepartmentResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+        this.isLoading = false
+      }
+
+    });
+    this.isLoading = false
+  }
+
+  getDataEmployee() {
+    this.isLoading = true
+    this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result)
+      }
+      this.isLoading = false
+    })
+  }
+
+  loadDataOffice() {
+    this.isLoading = true
+    this.adminService.searchOffice(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchOfficeResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+      }
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  loadDataTeam() {
+    this.isLoading = true
+    this.adminService.searchTeam(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchTeamResponse) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+      }
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  restoreEmployee(item: Employee) {
+    this.isLoading = true
+    item.status = Constants.ActiveStatus.id
+    this.employeeService.updateEmployeeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) {
+        ToastService.success("Restore employee success!")
+        this.getDataEmployee();
+      }
+      this.isLoading = false
+    })
+  }
+
+  restoreTeam(item: TeamModel) {
+    this.isLoading = true
+    item.status = Constants.ActiveStatus.id
+    this.adminService.updateTeamById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) {
+        ToastService.success("Restore team success")
+        this.loadDataTeam();
+      }
+      this.isLoading = false
+    })
+  }
+
+  restoreDepartment(item: DepartmentModel) {
+    this.isLoading = true
+    item.status = Constants.ActiveStatus.id
+    this.adminService.updateDepartmentById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) {
+        ToastService.success("Restore department success")
+        this.loadDataDepartment();
+      }
+      this.isLoading = false
+    })
+  }
+
+  restoreOffice(item: OfficeModel) {
+    this.isLoading = true
+    item.status = Constants.ActiveStatus.id
+    this.adminService.updateOfficeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) {
+        ToastService.success("Restore office success")
+        this.loadDataOffice();
+      }
+      this.isLoading = false
+    })
   }
 
 }

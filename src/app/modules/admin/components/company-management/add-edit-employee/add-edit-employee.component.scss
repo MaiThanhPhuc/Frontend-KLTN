@@ -88,7 +88,12 @@
   }
 
   .leave-type {
-    margin-top: 24px;
+    margin-top: 32px;
+
+    .add-leave-type-box {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
 

@@ -9,6 +9,9 @@ import { BaseComponent } from 'src/app/utils/base.component';
 import { takeUntil } from 'rxjs';
 import { AddEditLeaveTypePopupComponent } from './add-edit-leave-type-popup/add-edit-leave-type-popup.component';
 import { LeaveType } from 'src/app/models/leaveType.model';
+import { LeaveTypeService } from '../../services/leaveType.service';
+import { SearchModal } from 'src/app/models/employee.model';
+import { PageEvent } from '@angular/material/paginator';
 const ELEMENT_DATA: DepartmentModel[] = [
   // { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
   // { code: "2", name: 'test', office: "test", manager: "bod" },
@@ -23,22 +26,58 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
   displayedColumns: string[] = ['code', 'name', 'allowance', 'description', 'action'];
   dataSource: MatTableDataSource<DepartmentModel>;
   dialogRef: MatDialogRef<AddEditLeaveTypePopupComponent>;
+
+  isLoading = false
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
+
   constructor(
     private router: Router,
     private dialog: MatDialog,
+    private leaveTypeService: LeaveTypeService
   ) {
     super()
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
+    this.initParamSearch();
+    this.loadData();
+  }
+
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword
+    }
+  }
+
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadData();
+  }
+
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
+    } else {
+      this.paramSearch.pageIndex = event.pageIndex + 1
+    }
+    this.paramSearch.limit = event.pageSize
+    this.loadData();
   }
 
   deleteLeaveType(item: LeaveType): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
     inputPopupData.cancelButton = "Cancel"
-    inputPopupData.content = "Do you want to delete this leave type?"
+    inputPopupData.content = "Do you want to delete this leave type ?"
     inputPopupData.primarySubmit = true;
     const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
       autoFocus: false,
@@ -46,8 +85,15 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
       disableClose: true
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
-    confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      console.log("test");
+    confirmDeletePopup.afterClosed().subscribe(confirm => {
+      this.isLoading = true
+      // this.leaveTypeService.de(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      //   if (res) {
+      //     ToastService.success("Archive office success")
+      //     this.loadData();
+      //   }
+      //   this.isLoading = false
+      // })
     });
   }
 
@@ -58,6 +104,48 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
+
+      this.dialogRef.componentInstance.onSubmit.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: LeaveType) => {
+        if (dataSave) this.onSaveDepartment(dataSave)
+      });
+
+      this.dialogRef.componentInstance.onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+        this.loadData()
+      });
     }
+  }
+
+  onSaveDepartment(data: LeaveType) {
+    this.isLoading = true;
+    if (data._id) {
+      this.leaveTypeService.updateLeaveTypeById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
+        this.isLoading = false
+      });
+    } else {
+      this.leaveTypeService.createLeaveType(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
+        if (res) console.log(res);
+        this.isLoading = false
+        this.loadData();
+        this.dialogRef.close()
+      });
+    }
+
+  }
+
+  loadData() {
+    this.isLoading = true
+    this.leaveTypeService.searchLeaveType(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+        this.isLoading = false
+      }
+
+    });
+    this.isLoading = false
   }
 }

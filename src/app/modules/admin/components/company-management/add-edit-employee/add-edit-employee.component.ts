@@ -16,6 +16,10 @@ import { DepartmentModel } from 'src/app/models/deparment.model';
 import { TeamModel } from 'src/app/models/team.model';
 import { OptionModel } from 'src/app/models/optionsModel';
 import { Constants } from 'src/app/constants';
+import { LeaveTypeService } from '../../../services/leaveType.service';
+import { EmployeeLeaveTypeRequest, LeaveType, LeaveTypePopupModel } from 'src/app/models/leaveType.model';
+import { MatDialog } from '@angular/material/dialog';
+import { LeaveTypePopupComponent } from './leave-type-popup/leave-type-popup.component';
 
 export interface LeaveTypeItem {
   id: number,
@@ -38,6 +42,8 @@ const ELEMENT_DATA: LeaveTypeItem[] = [
   { id: 4, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
   { id: 4, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
 ];
+
+
 
 @Component({
   selector: 'app-add-edit-employee',
@@ -62,11 +68,16 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   allDepartment: OptionModel[];
   allTeam: OptionModel[];
   paramSearch: SearchModal;
+  allLeaveTypeOptions: OptionModel[];
+  leaveTypeSelected: OptionModel[];
+  leaveTypes = new FormControl('');
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private router: Router,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private leaveTypeService: LeaveTypeService,
+    private dialog: MatDialog,
   ) {
     super()
   }
@@ -75,17 +86,17 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   }
 
   ngOnInit(): void {
-    // this.getAllLeader();
     combineLatest(
       this.adminService.getAllOffice(),
       this.adminService.getAllDepartment(),
       this.adminService.getAllTeam(),
-    ).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([officeData, departmentData, teamData]) => {
+      this.leaveTypeService.getAllLeaveType()
+    ).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([officeData, departmentData, teamData, leaveTypeData]) => {
       if (!officeData) return;
       this.allOffice = officeData.map(item => new OptionModel(item.name, item._id))
       this.allDepartment = departmentData.map(item => new OptionModel(item.name, item._id))
       this.allTeam = teamData.map(item => new OptionModel(item.name, item._id))
-
+      this.allLeaveTypeOptions = leaveTypeData.map(item => new OptionModel(item.name, item._id))
       this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
         this.employeeId = params['id'];
       });
@@ -99,28 +110,13 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     })
   }
 
-  getAllLeader() {
-    this.isLoading = true
-    this.paramSearch = {
-      role: Constants.LeaderRole.id
-    }
-    this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
-      if (res) {
-        console.log(res);
-      }
-
-      this.isLoading = false
-    });
-    this.isLoading = false
-  }
-
   loadDataEmployee() {
     this.isLoading = true;
-    this.employeeService.getEmployeeById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Employee) => {
+    this.employeeService.getEmployeeById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if (res) {
-        console.log(res);
-        this.mapDataToForm(res)
+        this.mapDataToForm(res.employeeInfo)
       }
+
       this.isLoading = false
     })
   }
@@ -141,6 +137,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     }
     this.employeeService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Employee) => {
       if (res) {
+        this.employeeId = res._id
         this.mapDataToForm(res)
       }
       ToastService.success("Create employee success")
@@ -227,8 +224,33 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     return this.employeeDataFormGroup.controls[`${key}`];
   }
 
-  cancel(){
+  cancel() {
     this.router.navigate([`admin/company/employee`])
   }
+  onSelectLeaveType() {
+    const inputPopupData: LeaveTypePopupModel = new LeaveTypePopupModel();
+    inputPopupData.leaveTypeOption = this.allLeaveTypeOptions;
+    const selectLeaveTypePopup = this.dialog.open(LeaveTypePopupComponent, {
+      autoFocus: false,
+      width: '500px',
+      disableClose: true
+    });
+    selectLeaveTypePopup.componentInstance.data = inputPopupData;
+    selectLeaveTypePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      if (confirm) {
+        this.onSaveLeaveType();
+      }
+    });
+  }
 
+  onSaveLeaveType() {
+    this.isLoading = true
+    const request = new EmployeeLeaveTypeRequest();
+    request.employee = this.employeeId;
+    request.leaveType = this.allLeaveTypeOptions.filter(item => item.checked === true).map(item => item.id)
+    this.leaveTypeService.addEmployeeLeaveType(request).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) this.isLoading = false
+      ToastService.success("Add leave type success")
+    })
+  }
 }

@@ -11,7 +11,7 @@ export class EmployeeService extends BaseService {
     return this.post("employee", request);
   }
 
-  getEmployeeById(employeeId: string): Observable<Employee> {
+  getEmployeeById(employeeId: string): Observable<any> {
     return this.get(`employee/${employeeId}`);
   }
 

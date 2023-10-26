@@ -68,6 +68,8 @@
       <div class="sub-header">
         Leave Type Management
       </div>
+      <button [disabled]="!employeeId" mat-flat-button color="primary" (click)="onSelectLeaveType()">Add Leave
+        Type</button>
       <div>
         <mat-table class="leaveTypeTable" #table [dataSource]="dataSource">
 

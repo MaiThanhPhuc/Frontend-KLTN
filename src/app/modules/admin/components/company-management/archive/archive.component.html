@@ -21,7 +21,7 @@
 
   <div class="content">
     <div class="office-table">
-      <table mat-table [dataSource]="dataSourceOffice" matSort>
+      <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="code">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Code </th>
@@ -32,6 +32,14 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
           <td mat-cell *matCellDef="let row"> {{row.name}}</td>
         </ng-container>
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> FirstName </th>
+          <td mat-cell *matCellDef="let row"> {{row.firstName}}</td>
+        </ng-container>
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> LastName </th>
+          <td mat-cell *matCellDef="let row"> {{row.lastName}}</td>
+        </ng-container>
 
         <ng-container matColumnDef="email">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
@@ -40,17 +48,17 @@
 
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-          <td mat-cell *matCellDef="let row"> {{row.team}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.team?.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="department">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
-          <td mat-cell *matCellDef="let row"> {{row.department}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.department?.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="office">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Office </th>
-          <td mat-cell *matCellDef="let row"> {{row.office}}</td>
+          <td mat-cell *matCellDef="let row"> {{row.office?.name}}</td>
         </ng-container>
 
         <ng-container matColumnDef="address">
@@ -58,14 +66,14 @@
           <td mat-cell *matCellDef="let row"> {{row.address}} </td>
         </ng-container>
 
-        <ng-container matColumnDef="deleteDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Delete Date </th>
+        <ng-container matColumnDef="updateDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Update Date </th>
           <td mat-cell *matCellDef="let row"> {{row.createDate}} </td>
         </ng-container>
 
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.role | getRoleEmployee}} </td>
         </ng-container>
 
         <ng-container matColumnDef="action">
@@ -88,7 +96,8 @@
         </tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+      <mat-paginator (page)="handlePageEvent($event)" [pageSizeOptions]="pageSizeOptions" [length]="countAllData"
+        [pageIndex]="pageIndex" [pageSize]="pageSize" aria-label="Select page of users"></mat-paginator>
     </div>
   </div>
 </div>

@@ -15,7 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectModule, MatSelectTrigger } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -31,6 +31,10 @@ import { AddEditLeaveTypePopupComponent } from './components/leave-type-manageme
 import { AppCommonModule } from '../common/app-common.module';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { LoadingService } from 'src/app/services/loading.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { GetRoleEmployee } from '../common/pipe/get-role-employee.pipe';
+import { LeaveTypePopupComponent } from './components/company-management/add-edit-employee/leave-type-popup/leave-type-popup.component';
+import { MatDialogModule } from '@angular/material/dialog';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -45,6 +49,7 @@ import { LoadingService } from 'src/app/services/loading.service';
     AddEditCommonPopupComponent,
     ArchiveComponent,
     AddEditLeaveTypePopupComponent,
+    LeaveTypePopupComponent,
   ],
   imports: [
     CommonModule,
@@ -63,10 +68,11 @@ import { LoadingService } from 'src/app/services/loading.service';
     RouterModule,
     MatButtonModule,
     MatMenuModule,
-    MatSelectModule,
     MatButtonToggleModule,
     ReactiveFormsModule,
-    AppCommonModule
+    AppCommonModule,
+    MatCheckboxModule,
+    MatDialogModule
   ],
   providers: [
     LoadingService,

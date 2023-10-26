@@ -16,4 +16,13 @@
     }
   }
 
+  .form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .mt-16 {
+    margin-top: 16px;
+  }
 }

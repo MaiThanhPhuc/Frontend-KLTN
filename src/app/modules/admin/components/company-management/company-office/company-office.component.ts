@@ -12,6 +12,8 @@ import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { AdminService } from '../../../services/admin.service';
 import { SearchModal } from 'src/app/models/employee.model';
 import { PageEvent } from '@angular/material/paginator';
+import { Constants } from 'src/app/constants';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 
 @Component({
   selector: 'app-company-office',
@@ -89,7 +91,15 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().subscribe(confirm => {
-      console.log("test");
+      this.isLoading = true
+      item.status = Constants.DeactiveStatus.id
+      this.adminService.updateOfficeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+        if (res) {
+          ToastService.success("Archive office success")
+          this.loadData();
+        }
+        this.isLoading = false
+      })
     });
   }
 

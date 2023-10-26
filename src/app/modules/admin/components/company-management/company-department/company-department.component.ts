@@ -13,6 +13,8 @@ import { AdminService } from '../../../services/admin.service';
 import { OfficeModel } from 'src/app/models/office.model';
 import { SearchModal } from 'src/app/models/employee.model';
 import { PageEvent } from '@angular/material/paginator';
+import { Constants } from 'src/app/constants';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 @Component({
   selector: 'app-company-department',
   templateUrl: './company-department.component.html',
@@ -65,8 +67,7 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     }
     this.paramSearch.limit = event.pageSize
     this.loadData();
-  }
-  archiveDepartment(item: DepartmentModel): void {
+  } archiveDepartment(item: DepartmentModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
     inputPopupData.cancelButton = "Cancel"
@@ -79,7 +80,15 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      console.log("test");
+      this.isLoading = true
+      item.status = Constants.DeactiveStatus.id
+      this.adminService.updateDepartmentById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+        if (res) {
+          ToastService.success("Restore department success")
+          this.loadData();
+        }
+        this.isLoading = false
+      })
     });
   }
 
@@ -112,10 +121,9 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
 
   onSaveDepartment(data: DepartmentModel) {
     this.isLoading = true;
-    console.log(data);
     if (data._id) {
       this.adminService.updateDepartmentById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res){
+        if (res) {
           this.loadData();
           this.dialogRef.close()
         }

@@ -70,15 +70,15 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().subscribe(confirm => {
-      if(confirm){
-        this.isLoading= true
+      if (confirm) {
+        this.isLoading = true
         item.status = Constants.DeactiveStatus.id
-        this.adminService.updateTeamById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res =>{
-          if(res){
-            ToastService.success("Archive employee success")
+        this.adminService.updateTeamById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
+            ToastService.success("Archive team success")
             this.loadData();
           }
-          this.isLoading= false
+          this.isLoading = false
         })
 
       }

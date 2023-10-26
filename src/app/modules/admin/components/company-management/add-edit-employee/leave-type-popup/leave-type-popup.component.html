@@ -1,0 +1,25 @@
+<div class="leave-type-popup-container">
+  <div class="leave-type-box">
+    <div class="header">
+      <span class="heading">Select Leave Type</span>
+      <mat-icon (click)="onCancel()">close</mat-icon>
+    </div>
+    <section>
+      <mat-checkbox class="no-background-color" color="default" (click)="$event.stopPropagation()"
+        [checked]="allLeaveTypeChecked" (change)="selectOrUnselectAll($event.checked)">
+        <span class="text-select-all">Select All</span>
+      </mat-checkbox>
+
+      <p class="no-spacing" *ngFor="let option of data.leaveTypeOption">
+        <mat-checkbox color="default" [(ngModel)]="option.checked" [disabled]="option?.disabled || false"
+          (change)="onChangeChecked(option)">
+          <span class="label">{{option.text}}</span>
+        </mat-checkbox>
+      </p>
+    </section>
+  </div>
+  <div class="btn-group" mat-dialog-actions>
+    <button (click)="onCancel()" mat-button class="btn-action" [mat-dialog-close]="false">Cancel</button>
+    <button mat-flat-button color="primary" class="btn-action" [mat-dialog-close]="true">Save</button>
+  </div>
+</div>

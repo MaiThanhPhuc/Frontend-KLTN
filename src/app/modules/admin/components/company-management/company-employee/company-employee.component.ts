@@ -96,15 +96,15 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit {
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      if(confirm){
-        this.isLoading= true
-        item.status = Constants.EmployeeStatus[1].id
-        this.employeeService.updateEmployeeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res =>{
-          if(res){
+      if (confirm) {
+        this.isLoading = true
+        item.status = Constants.DeactiveStatus.id
+        this.employeeService.updateEmployeeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
             ToastService.success("Archive employee success")
             this.getDataEmployee();
           }
-          this.isLoading= false
+          this.isLoading = false
         })
 
       }

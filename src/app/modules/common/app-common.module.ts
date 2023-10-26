@@ -16,6 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { LoadingComponent } from './loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { GetRoleEmployee } from './pipe/get-role-employee.pipe';
 @NgModule({
   declarations: [
     SidebarMenuComponent,
@@ -23,7 +24,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     FooterComponent,
     MenuItemComponent,
     SimpleConfirmPopupComponent,
-    LoadingComponent
+    LoadingComponent,
+    GetRoleEmployee
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     SidebarMenuComponent,
     HeaderComponent,
     SimpleConfirmPopupComponent,
-    LoadingComponent
+    LoadingComponent,
+    GetRoleEmployee
   ]
 })
 export class AppCommonModule { }

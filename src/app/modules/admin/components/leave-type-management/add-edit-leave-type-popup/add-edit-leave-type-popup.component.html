@@ -9,35 +9,32 @@
     </div>
   </div>
 
-  <div class="form-body">
-    <div>
-      <div>
-        <mat-form-field appearance="fill" class="d-block">
-          <mat-label>Name</mat-label>
-          <input required id="name" type="text" matInput>
-          <mat-error>Invalid input
-          </mat-error>
-        </mat-form-field>
+  <div class="form-body" [formGroup]="leaveTypeDataFormGroup">
+    <mat-form-field appearance="fill" class="d-block">
+      <mat-label>Name</mat-label>
+      <input [(ngModel)]="leaveTypeData.name" [formControlName]="'name'" required id="name" type="text" matInput>
+      <mat-error>Invalid input
+      </mat-error>
+    </mat-form-field>
 
-        <mat-form-field appearance="fill" class="d-block">
-          <mat-label>Allowance</mat-label>
-          <input required id="address" type="number" matInput>
-          <mat-error>Invalid input
-          </mat-error>
-        </mat-form-field>
+    <mat-form-field appearance="fill" class="d-block">
+      <mat-label>Allowance</mat-label>
+      <input [(ngModel)]="leaveTypeData.default" [formControlName]="'default'" required id="default" type="number"
+        matInput>
+      <mat-error>Invalid input
+      </mat-error>
+    </mat-form-field>
 
-        <mat-form-field appearance="fill" class="d-block">
-          <mat-label>Description</mat-label>
-          <textarea required id="Description" placeholder="Description" type="text" matInput></textarea>
-          <mat-error>Invalid input
-          </mat-error>
-        </mat-form-field>
-
-      </div>
-    </div>
+    <mat-form-field appearance="fill" class="d-block">
+      <mat-label>Description</mat-label>
+      <textarea [(ngModel)]="leaveTypeData.description" [formControlName]="'description'" required id="Description"
+        placeholder="Description" type="text" matInput></textarea>
+      <mat-error>Invalid input
+      </mat-error>
+    </mat-form-field>
 
   </div>
-  <div class="footer d-flex justify-content-end">
+  <div class="footer d-flex justify-content-end mt-16">
     <button id="btn-save" mat-flat-button color="primary" [style.width.px]='100' (click)="onSubmitForm()">
       {{isEdit ? "Edit" : "Save"}}
     </button>

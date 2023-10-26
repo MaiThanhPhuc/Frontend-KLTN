@@ -1,0 +1,73 @@
+.leave-type-popup-container {
+  padding: 16px 0;
+
+  .leave-type-box {
+    padding: 12px 8px 8px;
+    max-height: 700px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+
+      mat-icon {
+        width: 10%;
+        text-align: end;
+        cursor: pointer;
+        margin: 0 8px;
+      }
+    }
+  }
+
+  @mixin textFont600($size , $line-height) {
+    font-size: $size;
+    line-height: $line-height;
+    font-weight: 600;
+  }
+
+  .no-spacing {
+    padding: 0;
+    margin: 0;
+  }
+
+  .no-background-color {
+    background-color: transparent;
+  }
+
+  .no-background-color:hover {
+    background-color: transparent;
+  }
+
+  .heading {
+    margin-left: 12px;
+    @include textFont600(16px, 22px);
+  }
+
+  .label {
+    font-size: 16px;
+    line-height: 29px;
+  }
+
+  .text-select-all {
+    @include textFont600(12px, 28px)
+  }
+
+  .mat-dialog-content {
+    overflow: unset;
+    max-height: unset;
+
+    .mat-checkbox {
+      width: 100%;
+      height: 46px;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .btn-group {
+    display: flex;
+    justify-content: end;
+    margin-right: 16px;
+    margin-top: 8px;
+    gap: 16px;
+  }
+}
