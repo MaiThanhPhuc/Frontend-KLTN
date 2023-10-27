@@ -43,12 +43,12 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   departmentDataFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     office: new FormControl('', Validators.required),
-    manager: new FormControl('', Validators.required),
+    manager: new FormControl(''),
   });
   teamDataFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     department: new FormControl('', Validators.required),
-    leader: new FormControl('', Validators.required),
+    leader: new FormControl(''),
   });
   paramSearch: SearchModal = {};
 

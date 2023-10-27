@@ -46,7 +46,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Office</mat-label>
-          <mat-select [(ngModel)]="departmentData.office" [formControlName]="'office'" [required]="true">
+          <mat-select [(ngModel)]="departmentData.office._id" [formControlName]="'office'" [required]="true">
             <mat-option *ngFor="let option of allOfficeOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error *ngIf="getFormControlByKey('office').touched">Invalid input
@@ -55,7 +55,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Manager</mat-label>
-          <mat-select [(ngModel)]="departmentData.manager" [formControlName]="'manager'">
+          <mat-select [formControlName]="'manager'">
             <mat-option *ngFor="let option of allManagerOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -74,7 +74,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Department</mat-label>
-          <mat-select [(ngModel)]="teamData.department" [formControlName]="'department'" [required]="true">
+          <mat-select [(ngModel)]="teamData.department._id" [formControlName]="'department'" [required]="true">
             <mat-option *ngFor="let option of allDepartmentOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input
@@ -83,7 +83,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Leader</mat-label>
-          <mat-select [(ngModel)]="teamData.leader" [formControlName]="'leader'" [required]="true">
+          <mat-select [formControlName]="'leader'">
             <mat-option *ngFor="let option of allLeaderOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input

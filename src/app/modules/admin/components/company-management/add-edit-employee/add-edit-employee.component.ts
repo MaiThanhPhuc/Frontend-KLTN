@@ -17,33 +17,9 @@ import { TeamModel } from 'src/app/models/team.model';
 import { OptionModel } from 'src/app/models/optionsModel';
 import { Constants } from 'src/app/constants';
 import { LeaveTypeService } from '../../../services/leaveType.service';
-import { EmployeeLeaveTypeRequest, LeaveType, LeaveTypePopupModel } from 'src/app/models/leaveType.model';
+import { EmployeeLeaveType, EmployeeLeaveTypeReponse, EmployeeLeaveTypeRequest, LeaveType, LeaveTypePopupModel } from 'src/app/models/leaveType.model';
 import { MatDialog } from '@angular/material/dialog';
 import { LeaveTypePopupComponent } from './leave-type-popup/leave-type-popup.component';
-
-export interface LeaveTypeItem {
-  id: number,
-  name: string;
-  total: number;
-  default: number;
-  remaining: number;
-  taken: number;
-  bonus: number;
-  paid: number;
-  forward: number;
-  isEdit: boolean;
-}
-
-const ELEMENT_DATA: LeaveTypeItem[] = [
-  { id: 1, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: false },
-  { id: 2, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
-  { id: 3, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
-  { id: 4, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
-  { id: 4, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
-  { id: 4, name: 'Hydrogen', total: 12, default: 1, remaining: 20, taken: 1, bonus: 1, paid: 2, forward: 0, isEdit: true },
-];
-
-
 
 @Component({
   selector: 'app-add-edit-employee',
@@ -51,10 +27,9 @@ const ELEMENT_DATA: LeaveTypeItem[] = [
   styleUrls: ['./add-edit-employee.component.scss']
 })
 export class AddEditEmployeeComponent extends BaseComponent implements OnInit, HasUnsavedData {
-  displayedColumns = ['leaveTypeName', 'total', 'default', 'remaining', 'taken', 'bonus', 'paid', 'forward', 'action'];
+  displayedColumns = ['name', 'total', 'remaining', 'taken', 'bonus', 'paid', 'forward', 'action'];
   basicInfoField = BasicInfoEmployeeField
   leaveTypeDemo = LeaveTypeFieldDemo
-  dataSource = ELEMENT_DATA
 
   isEdit = false;
   hidePassword = true;
@@ -71,6 +46,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   allLeaveTypeOptions: OptionModel[];
   leaveTypeSelected: OptionModel[];
   leaveTypes = new FormControl('');
+  leaveTypeEmployeeData: EmployeeLeaveType[];
   constructor(
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -112,12 +88,42 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
 
   loadDataEmployee() {
     this.isLoading = true;
-    this.employeeService.getEmployeeById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+    this.employeeService.getEmployeeById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: EmployeeLeaveTypeReponse) => {
       if (res) {
         this.mapDataToForm(res.employeeInfo)
+        this.initDataLeaveTypeEmp(res.leaveType)
       }
 
       this.isLoading = false
+    })
+  }
+
+  updateEmployeeLeaveTypeItem(data: EmployeeLeaveType) {
+    this.leaveTypeService.updateEmployeeLeaveType(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) {
+        ToastService.success("Update employee success")
+        this.loadDataEmployee()
+      }
+      this.isLoading = false
+    })
+  }
+
+  initDataLeaveTypeEmp(data: EmployeeLeaveType[]) {
+    this.leaveTypeEmployeeData = data.map((item: EmployeeLeaveType) => {
+      item.total = item.leaveType.default + item.bonus + item.forward
+      item.remain = item.total - item.taken
+      return item
+    })
+  }
+
+  caculateDataLeaveTypeEmp(data: EmployeeLeaveType) {
+    this.leaveTypeEmployeeData = this.leaveTypeEmployeeData.map((item: EmployeeLeaveType) => {
+      if (item._id === data._id) {
+        if (data.taken > data.total) return item
+        item.total = item.leaveType.default + item.bonus + item.forward
+        item.remain = item.total - item.taken
+      }
+      return item
     })
   }
 
@@ -206,12 +212,12 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     return item;
   }
 
-  onChangeStatus(data: LeaveTypeItem) {
+  onChangeStatus(data: EmployeeLeaveType) {
     if (data.isEdit == true) {
-      console.log("save");
+      this.updateEmployeeLeaveTypeItem(data)
     }
-    this.dataSource = this.dataSource.map(item => {
-      if (item.id == data.id) item.isEdit = !data.isEdit
+    this.leaveTypeEmployeeData = this.leaveTypeEmployeeData.map(item => {
+      if (item._id == data._id) item.isEdit = !data.isEdit
       return item
     })
   }
@@ -245,9 +251,16 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
 
   onSaveLeaveType() {
     this.isLoading = true
-    const request = new EmployeeLeaveTypeRequest();
-    request.employee = this.employeeId;
-    request.leaveType = this.allLeaveTypeOptions.filter(item => item.checked === true).map(item => item.id)
+
+    let request: EmployeeLeaveTypeRequest[] = []
+
+    request = this.allLeaveTypeOptions.filter(item => item.checked === true).map(item => {
+      return {
+        employee: this.employeeId,
+        leaveType: item.id
+      }
+    }
+    )
     this.leaveTypeService.addEmployeeLeaveType(request).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) this.isLoading = false
       ToastService.success("Add leave type success")

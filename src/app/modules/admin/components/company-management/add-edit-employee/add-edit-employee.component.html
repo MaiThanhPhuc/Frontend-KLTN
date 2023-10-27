@@ -71,12 +71,12 @@
       <button [disabled]="!employeeId" mat-flat-button color="primary" (click)="onSelectLeaveType()">Add Leave
         Type</button>
       <div>
-        <mat-table class="leaveTypeTable" #table [dataSource]="dataSource">
+        <mat-table class="leaveTypeTable" #table [dataSource]="leaveTypeEmployeeData">
 
           <!-- Name Column -->
-          <ng-container matColumnDef="leaveTypeName">
+          <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef> Leave Type </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+            <mat-cell *matCellDef="let element"> {{element.leaveType.name}} </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="total">
@@ -86,25 +86,18 @@
             </mat-cell>
           </ng-container>
 
-          <ng-container matColumnDef="default">
-            <mat-header-cell *matHeaderCellDef> Default </mat-header-cell>
-            <mat-cell *matCellDef="let element">
-              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
-                value={{element.default}}>
-            </mat-cell>
-          </ng-container>
-
           <ng-container matColumnDef="remaining">
             <mat-header-cell *matHeaderCellDef> Remaining </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              {{element.remaining}}
+              {{element.remain}}
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="taken">
             <mat-header-cell *matHeaderCellDef> Taken </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+              <input type="number" (change)="caculateDataLeaveTypeEmp(element)" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.taken" [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
                 value={{element.taken}}>
             </mat-cell>
           </ng-container>
@@ -112,7 +105,8 @@
           <ng-container matColumnDef="bonus">
             <mat-header-cell *matHeaderCellDef> Bonus </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+              <input type="number" (change)="caculateDataLeaveTypeEmp(element)" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.bonus" [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
                 value={{element.bonus}}>
             </mat-cell>
           </ng-container>
@@ -120,15 +114,18 @@
           <ng-container matColumnDef="paid">
             <mat-header-cell *matHeaderCellDef> Paid </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput value={{element.paid}}>
+              <input type="number" (change)="caculateDataLeaveTypeEmp(element)" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.paid" [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
+                value={{element.paid}}>
             </mat-cell>
           </ng-container>
 
           <ng-container matColumnDef="forward">
             <mat-header-cell *matHeaderCellDef> Forward </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <input [readonly]="!element.isEdit" [class.active-input]="element.isEdit" matInput
-                value={{element.forward}}>
+              <input type="number" (change)="caculateDataLeaveTypeEmp(element)" [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.forward" [readonly]="!element.isEdit" [class.active-input]="element.isEdit"
+                matInput value={{element.forward}}>
             </mat-cell>
           </ng-container>
 
@@ -149,7 +146,6 @@
           <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
           <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
         </mat-table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
       </div>
     </div>
   </div>

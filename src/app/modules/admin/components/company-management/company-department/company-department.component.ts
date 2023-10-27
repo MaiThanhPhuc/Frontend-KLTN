@@ -67,11 +67,13 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     }
     this.paramSearch.limit = event.pageSize
     this.loadData();
-  } archiveDepartment(item: DepartmentModel): void {
+  }
+
+  archiveDepartment(item: DepartmentModel): void {
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"
     inputPopupData.cancelButton = "Cancel"
-    inputPopupData.content = "Do you want to archive this deaprtment ?"
+    inputPopupData.content = "Do you want to archive this department?"
     inputPopupData.primarySubmit = true;
     const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
       autoFocus: false,
@@ -80,24 +82,27 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
-      this.isLoading = true
-      item.status = Constants.DeactiveStatus.id
-      this.adminService.updateDepartmentById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        if (res) {
-          ToastService.success("Restore department success")
-          this.loadData();
-        }
-        this.isLoading = false
-      })
+      if (confirm) {
+        this.isLoading = true
+        item.status = Constants.DeactiveStatus.id
+        this.adminService.updateDepartmentById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
+            ToastService.success("Restore department success")
+            this.loadData();
+          }
+          this.isLoading = false
+        })
+      }
     });
   }
 
-  openAddEditPopup(): void {
+  openAddEditPopup(item?: DepartmentModel): void {
     this.dialogRef = this.dialog.open(AddEditCommonPopupComponent, {
       width: `500px`,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
+      if (item) this.dialogRef.componentInstance.departmentData = item;
       this.dialogRef.componentInstance.mode = EditMode.DEPARTMENT;
 
       this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: DepartmentModel) => {

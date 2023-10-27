@@ -10,7 +10,7 @@ import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confi
 import { EditMode } from '../add-edit-common-popup/add-edit-common.model';
 import { takeUntil } from 'rxjs/operators';
 import { AdminService } from '../../../services/admin.service';
-import { SearchModal } from 'src/app/models/employee.model';
+import { Employee, SearchModal } from 'src/app/models/employee.model';
 import { PageEvent } from '@angular/material/paginator';
 import { Constants } from 'src/app/constants';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
@@ -85,13 +85,13 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
     });
   }
 
-  openAddEditPopup(): void {
+  openAddEditPopup(data?: TeamModel): void {
     this.dialogRef = this.dialog.open(AddEditCommonPopupComponent, {
       width: `500px`,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
-      const data = Object.assign({}, this.dataSource);
+      if (data) this.dialogRef.componentInstance.teamData = data
       this.dialogRef.componentInstance.mode = EditMode.TEAM;
 
       this.dialogRef.componentInstance.onSubmitTeam.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: TeamModel) => {

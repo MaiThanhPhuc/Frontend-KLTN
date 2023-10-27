@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SearchModal } from 'src/app/models/employee.model';
-import { EmployeeLeaveTypeRequest, LeaveType } from 'src/app/models/leaveType.model';
+import { EmployeeLeaveType, EmployeeLeaveTypeRequest, LeaveType } from 'src/app/models/leaveType.model';
 import { BaseService } from 'src/app/services/base.service';
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,11 @@ export class LeaveTypeService extends BaseService {
     return this.get(`leaveType`, request);
   }
 
-  addEmployeeLeaveType(request: EmployeeLeaveTypeRequest): Observable<string> {
+  addEmployeeLeaveType(request: EmployeeLeaveTypeRequest[]): Observable<any> {
     return this.post("leaveType/addEmployeeLeaveType", request);
+  }
+
+  updateEmployeeLeaveType(request: EmployeeLeaveType): Observable<any> {
+    return this.post("leaveType/updateEmployeeLeaveType", request);
   }
 }

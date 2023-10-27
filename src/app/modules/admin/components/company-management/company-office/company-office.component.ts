@@ -91,15 +91,17 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
     });
     confirmDeletePopup.componentInstance.data = inputPopupData;
     confirmDeletePopup.afterClosed().subscribe(confirm => {
-      this.isLoading = true
-      item.status = Constants.DeactiveStatus.id
-      this.adminService.updateOfficeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-        if (res) {
-          ToastService.success("Archive office success")
-          this.loadData();
-        }
-        this.isLoading = false
-      })
+      if (confirm) {
+        this.isLoading = true
+        item.status = Constants.DeactiveStatus.id
+        this.adminService.updateOfficeById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
+            ToastService.success("Archive office success")
+            this.loadData();
+          }
+          this.isLoading = false
+        })
+      }
     });
   }
 
@@ -109,6 +111,7 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
+      if (item) this.dialogRef.componentInstance.officeData = item;
       this.dialogRef.componentInstance.mode = EditMode.OFFICE;
 
       this.dialogRef.componentInstance.onSubmitOffice.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: OfficeModel) => {

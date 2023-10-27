@@ -24,17 +24,27 @@ export class EmployeeLeaveType {
   default: number;
   description: string;
   updateDate: Date;
-  total: Number;
-  remain: Number;
-  taken: Number;
-  status: Number;
-  employee: Employee
+  total: number;
+  remain: number;
+  taken: number;
+  bonus: number;
+  status: number;
+  forward: number;
+  employee: Employee;
+  leaveType: LeaveType;
+  isEdit?: boolean
 }
 
 export class EmployeeLeaveTypeRequest {
   employee: string;
-  leaveType: string[];
+  leaveType: string;
 }
+
+export class EmployeeLeaveTypeReponse {
+  employeeInfo: Employee;
+  leaveType: EmployeeLeaveType[];
+}
+
 export class LeaveTypePopupModel {
   leaveTypeOption: OptionModel[];
 }
