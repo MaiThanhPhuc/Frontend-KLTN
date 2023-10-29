@@ -48,3 +48,12 @@ export class EmployeeLeaveTypeReponse {
 export class LeaveTypePopupModel {
   leaveTypeOption: OptionModel[];
 }
+
+export class LeaveRequest {
+  employee: any;
+  leaveType: any;
+  date: Date;
+  timeType: number;
+  timeValue: number;
+  reason: string;
+}

@@ -1,8 +1,23 @@
 .leave-request-form-container {
   display: flex;
+  padding: 25px;
 
   .form-item {
     display: flex;
     flex-direction: column;
+  }
+
+  .mat-mdc-form-field-error {
+    font-size: 12px;
+  }
+
+  .leave-request-form {
+    width: 50%;
+  }
+
+  .leave-button {
+    display: flex;
+    gap: 16px;
+    text-align: right;
   }
 }

@@ -23,7 +23,7 @@
           <mat-label>Address</mat-label>
           <input [(ngModel)]="officeData.address" [formControlName]="'address'" required id="address" type="text"
             matInput>
-          <mat-error *ngIf="getFormControlByKey('name').touched">Invalid input
+          <mat-error *ngIf="getFormControlByKey('address').touched">Invalid input
           </mat-error>
         </mat-form-field>
 
@@ -46,7 +46,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Office</mat-label>
-          <mat-select [(ngModel)]="departmentData.office._id" [formControlName]="'office'" [required]="true">
+          <mat-select [(ngModel)]="departmentData.office" [formControlName]="'office'" [required]="true">
             <mat-option *ngFor="let option of allOfficeOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error *ngIf="getFormControlByKey('office').touched">Invalid input
@@ -74,7 +74,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Department</mat-label>
-          <mat-select [(ngModel)]="teamData.department._id" [formControlName]="'department'" [required]="true">
+          <mat-select [(ngModel)]="teamData.department" [formControlName]="'department'" [required]="true">
             <mat-option *ngFor="let option of allDepartmentOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input

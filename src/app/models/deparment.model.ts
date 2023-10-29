@@ -4,9 +4,9 @@ import { OfficeModel } from "./office.model";
 export class DepartmentModel {
   code: string;
   name: string;
-  office: OfficeModel;
-  manager: Employee;
-  _id?: string;
+  office: any;
+  manager: any;
+  _id: string;
   status: number;
 }
 

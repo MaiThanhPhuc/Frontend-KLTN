@@ -37,7 +37,7 @@ export class AdminService extends BaseService {
     return this.get("admin/getAllDepartment");
   }
 
-  getDepartmentById(id: string): Observable<DepartmentModel[]> {
+  getDepartmentById(id: string): Observable<DepartmentModel> {
     return this.get(`admin/getDepartmentById/${id}`);
   }
 
@@ -53,7 +53,7 @@ export class AdminService extends BaseService {
     return this.get("admin/getAllTeam");
   }
 
-  getTeamById(id: string): Observable<TeamModel[]> {
+  getTeamById(id: string): Observable<TeamModel> {
     return this.get(`admin/getTeamById/${id}`);
   }
   searchTeam(request: SearchModal): Observable<SearchTeamResponse> {

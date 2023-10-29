@@ -29,6 +29,8 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
   @Output() onSubmitDepartment: EventEmitter<DepartmentModel> = new EventEmitter();
   @Output() onSubmitOffice: EventEmitter<OfficeModel> = new EventEmitter();
   @Output() onClose: EventEmitter<OfficeModel> = new EventEmitter();
+  @Input() teamId = '';
+  @Input() departmentId = '';
 
   allOfficeOptions: OptionModel[];
   allDepartmentOptions: OptionModel[];
@@ -70,11 +72,13 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
         this.title = 'Team Infomation';
         this.getAllLeader()
         this.loadDataDepartment()
+        if (this.teamId) this.getTeamById()
         break;
       case EditMode.DEPARTMENT:
         this.title = 'Department Infomation';
         this.loadDataOffice();
         this.getAllManager();
+        if (this.departmentId) this.getDepartmentById()
         break;
       case EditMode.OFFICE:
         this.title = 'Office Infomation';
@@ -152,7 +156,7 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     this.paramSearch.role = Constants.ManagerRole.id
     this.employeeService.searchEmployee(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchEmployeeResponse) => {
       if (res) {
-        this.allManagerOptions = res.result.map(item => new OptionModel(`${item.firstName} ${item.lastName}`, item._id))
+        this.allManagerOptions = res.result.map(item => new OptionModel(item.fullName, item._id))
       }
 
       this.isLoading = false
@@ -172,6 +176,27 @@ export class AddEditCommonPopupComponent extends BaseComponent implements OnInit
     });
     this.isLoading = false
   }
+
+  getDepartmentById() {
+    this.isLoading = true
+    this.paramSearch.role = Constants.LeaderRole.id
+    this.adminService.getDepartmentById(this.departmentId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: DepartmentModel) => {
+      this.departmentData = res
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
+  getTeamById() {
+    this.isLoading = true
+    this.paramSearch.role = Constants.LeaderRole.id
+    this.adminService.getTeamById(this.teamId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: TeamModel) => {
+      this.teamData = res
+      this.isLoading = false
+    });
+    this.isLoading = false
+  }
+
 
   getFormControlByKey(key: string) {
     switch (this.mode) {

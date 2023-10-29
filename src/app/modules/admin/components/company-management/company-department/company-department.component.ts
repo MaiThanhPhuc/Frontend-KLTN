@@ -102,11 +102,14 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
-      if (item) this.dialogRef.componentInstance.departmentData = item;
+      if (item) this.dialogRef.componentInstance.departmentId = item._id
       this.dialogRef.componentInstance.mode = EditMode.DEPARTMENT;
 
       this.dialogRef.componentInstance.onSubmitDepartment.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: DepartmentModel) => {
         if (dataSave) this.onSaveDepartment(dataSave)
+      });
+      this.dialogRef.componentInstance.onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe((res) => {
+        this.loadData();
       });
     }
   }

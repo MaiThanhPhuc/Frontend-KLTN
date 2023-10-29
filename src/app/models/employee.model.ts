@@ -27,7 +27,7 @@ export class Employee {
   code: string;
   firstName: string;
   lastName: string;
-  fullName?: string;
+  fullName: string;
   birthday: Date;
   email: string;
   gender: string;
@@ -160,9 +160,10 @@ export const BasicInfoEmployeeField = [
         key: "office",
         label: "Office",
         isRequired: false,
-        value: "UTE Corp",
+        value: "",
         isOption: true,
-        options: ["UTE Corp"]
+        options: [],
+        isCustomOption: true
       },
       {
         key: "department",
@@ -170,7 +171,8 @@ export const BasicInfoEmployeeField = [
         isRequired: false,
         value: "",
         isOption: true,
-        options: [""]
+        options: [],
+        isCustomOption: true
       },
       {
         key: "team",
@@ -178,7 +180,8 @@ export const BasicInfoEmployeeField = [
         isRequired: false,
         value: "",
         isOption: true,
-        options: [""]
+        options: [],
+        isCustomOption: true
       },
     ]
   },

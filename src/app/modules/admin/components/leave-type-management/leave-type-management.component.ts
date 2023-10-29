@@ -24,7 +24,7 @@ const ELEMENT_DATA: DepartmentModel[] = [
 })
 export class LeaveTypeManagementComponent extends BaseComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['code', 'name', 'allowance', 'description', 'action'];
-  dataSource: MatTableDataSource<DepartmentModel>;
+  dataSource: any;
   dialogRef: MatDialogRef<AddEditLeaveTypePopupComponent>;
 
   isLoading = false
@@ -41,7 +41,6 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
     private leaveTypeService: LeaveTypeService
   ) {
     super()
-    this.dataSource = new MatTableDataSource();
   }
 
   ngOnInit() {
@@ -97,14 +96,15 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
     });
   }
 
-  openAddEditPopup(): void {
+  openAddEditPopup(item?: LeaveType): void {
     this.dialogRef = this.dialog.open(AddEditLeaveTypePopupComponent, {
       width: `500px`,
+      height: `600px`,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
       const data = Object.assign({}, this.dataSource);
-
+      if (item) this.dialogRef.componentInstance.leaveTypeData = item
       this.dialogRef.componentInstance.onSubmit.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: LeaveType) => {
         if (dataSave) this.onSaveDepartment(dataSave)
       });

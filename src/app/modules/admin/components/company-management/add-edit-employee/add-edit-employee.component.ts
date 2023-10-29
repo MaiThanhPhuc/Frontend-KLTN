@@ -28,8 +28,6 @@ import { LeaveTypePopupComponent } from './leave-type-popup/leave-type-popup.com
 })
 export class AddEditEmployeeComponent extends BaseComponent implements OnInit, HasUnsavedData {
   displayedColumns = ['name', 'total', 'remaining', 'taken', 'bonus', 'paid', 'forward', 'action'];
-  basicInfoField = BasicInfoEmployeeField
-  leaveTypeDemo = LeaveTypeFieldDemo
 
   isEdit = false;
   hidePassword = true;
@@ -40,8 +38,8 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   dataSave = {} as any;
   employeeId: string;
   allOffice: OptionModel[];
-  allDepartment: OptionModel[];
-  allTeam: OptionModel[];
+  allDepartment: DepartmentModel[];
+  allTeam: TeamModel[];
   paramSearch: SearchModal;
   allLeaveTypeOptions: OptionModel[];
   leaveTypeSelected: OptionModel[];
@@ -70,8 +68,8 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     ).pipe(takeUntil(this.ngUnsubscribe)).subscribe(([officeData, departmentData, teamData, leaveTypeData]) => {
       if (!officeData) return;
       this.allOffice = officeData.map(item => new OptionModel(item.name, item._id))
-      this.allDepartment = departmentData.map(item => new OptionModel(item.name, item._id))
-      this.allTeam = teamData.map(item => new OptionModel(item.name, item._id))
+      this.allDepartment = departmentData
+      this.allTeam = teamData
       this.allLeaveTypeOptions = leaveTypeData.map(item => new OptionModel(item.name, item._id))
       this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
         this.employeeId = params['id'];
@@ -171,6 +169,15 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     }
   }
 
+  getItemByKey(key: string) {
+    for (const item1 of this.allDataEmployee) {
+      for (const item2 of item1.fields) {
+        if (item2.key == key) {
+          return item2
+        }
+      }
+    }
+  }
   mapDataToForm(data: Employee) {
     if (data) {
       this.allDataEmployee = AllDataEmployee.map(item => this.mapItem(item, data))
@@ -195,12 +202,6 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       switch (item.key) {
         case "office":
           item.options = this.allOffice
-          break;
-        case "department":
-          item.options = this.allDepartment
-          break;
-        case "team":
-          item.options = this.allTeam
           break;
         default:
           break;
@@ -265,5 +266,22 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       if (res) this.isLoading = false
       ToastService.success("Add leave type success")
     })
+  }
+
+  onChangeSelectItems(option: any, item: any) {
+    switch (item.key) {
+      case "office":
+        var department = this.getItemByKey("department");
+        department.value = ''
+        department.options = this.allDepartment.filter(data => data.office._id === option.value).map(k => new OptionModel(k.name, k._id))
+        break;
+      case "department":
+        var team = this.getItemByKey("team");
+        team.value = '';
+        team.options = this.allTeam.filter(data => data.department._id === option.value).map(k => new OptionModel(k.name, k._id))
+        break;
+      default:
+        break;
+    }
   }
 }

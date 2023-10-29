@@ -4,10 +4,10 @@ import { Employee } from "./employee.model";
 export class TeamModel {
   code: string;
   name: string;
-  department: DepartmentModel;
-  leader: Employee;
+  department: any;
+  leader: any;
   status: number;
-  _id?: string;
+  _id: string;
 }
 
 export class SearchTeamResponse {

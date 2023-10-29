@@ -19,4 +19,13 @@ export class Constants {
 
   public static ActiveStatus = new OptionModel("Active", 0)
   public static DeactiveStatus = new OptionModel("Deactive", 1)
+
+  public static LeaveTypeTimeOptions: OptionModel[] = [
+    new OptionModel("All day", 0),
+    new OptionModel("Morning shift (9:00 - 12:00)", 1),
+    new OptionModel("Afternoon shift (13:00 - 18:00)", 2),
+    new OptionModel("Half-Day Morning (9:00 - 14:00) (4 hours)", 3),
+    new OptionModel("Half-Day Afternoon (14:00 - 18:00) (4 hours)", 4)
+  ]
+
 }

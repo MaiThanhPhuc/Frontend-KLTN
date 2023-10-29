@@ -6,10 +6,6 @@ export class OfficeModel {
   createDate?: Date;
   _id?: string
   status?: number;
-  // constructor(name: string, address: string) {
-  //   this.name = name;
-  //   this.address = address
-  // }
 }
 
 export class SearchOfficeResponse {

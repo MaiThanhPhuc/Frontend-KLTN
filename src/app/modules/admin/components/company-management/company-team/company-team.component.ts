@@ -85,13 +85,14 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
     });
   }
 
-  openAddEditPopup(data?: TeamModel): void {
+  openAddEditPopup(item?: TeamModel): void {
     this.dialogRef = this.dialog.open(AddEditCommonPopupComponent, {
       width: `500px`,
       disableClose: true
     });
     if (this.dialogRef && this.dialogRef.componentInstance) {
-      if (data) this.dialogRef.componentInstance.teamData = data
+      if (item) this.dialogRef.componentInstance.teamId = item._id
+
       this.dialogRef.componentInstance.mode = EditMode.TEAM;
 
       this.dialogRef.componentInstance.onSubmitTeam.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: TeamModel) => {
