@@ -164,7 +164,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
           stopLoop = true;
           break;
         }
-        this.dataSave[item2.key as keyof Employee] = item2.value;
+        if (item2.value !== '') this.dataSave[item2.key as keyof Employee] = item2.value;
       }
     }
   }
@@ -198,13 +198,21 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     } else {
       this.employeeDataFormGroup.controls[`${item.key}`] = new FormControl(item.value, []);
     }
-    if (item.isOption) {
-      switch (item.key) {
-        case "office":
-          item.options = this.allOffice
-          break;
-        default:
-          break;
+    if (item.isCustomOption) {
+      if (item.key === 'office') item.options = this.allOffice
+      if (data) {
+        switch (item.key) {
+          case "department":
+            item.value = data.department
+            item.options = this.allDepartment.filter(n => n.office._id === data.office).map(k => new OptionModel(k.name, k._id))
+            break;
+          case "team":
+            item.value = data.team;
+            item.options = this.allTeam.filter(n => n.department._id === data.department).map(k => new OptionModel(k.name, k._id))
+            break;
+          default:
+            break;
+        }
       }
     }
 

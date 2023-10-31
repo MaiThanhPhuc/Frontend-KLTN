@@ -5,8 +5,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { SearchModal } from 'src/app/models/employee.model';
+import { LeaveRequest } from 'src/app/models/leaveType.model';
 import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { AdminService } from 'src/app/modules/admin/services/admin.service';
+import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
 import { BaseComponent } from 'src/app/utils/base.component';
 
 @Component({
@@ -16,7 +18,7 @@ import { BaseComponent } from 'src/app/utils/base.component';
 })
 
 export class LeaveRequestComponent extends BaseComponent implements OnInit {
-  displayedColumns: string[] = ['code', 'name', 'department', 'leader', 'action'];
+  displayedColumns: string[] = ['request_date', 'leave_type', 'leave_time', 'total_leave', 'status', 'action'];
   dataSource: MatTableDataSource<TeamModel>;
   isLoading = false
   paramSearch: SearchModal = {};
@@ -25,11 +27,13 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
   pageSizeOptions = [5, 10, 25];
   countAllData = 0
   keyword = ''
-
+  employeeId = '653b2a1f4b48382ed217f25b'
+  leaveRequestData: any
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private adminService: AdminService
+    private adminService: AdminService,
+    private leaveTypeService: LeaveTypeService
   ) {
     super();
   }
@@ -43,7 +47,7 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
     this.paramSearch = {
       limit: this.pageSize,
       pageIndex: this.pageIndex,
-      keyword: this.keyword
+      employeeId: this.employeeId
     }
   }
 
@@ -54,7 +58,8 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
 
   loadData() {
     this.isLoading = true
-    this.adminService.searchTeam(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: SearchTeamResponse) => {
+
+    this.leaveTypeService.searchLeaveRequest(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if (res) {
         this.countAllData = res.totalItems
         this.dataSource = new MatTableDataSource(res.result);

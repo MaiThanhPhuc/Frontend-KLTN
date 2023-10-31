@@ -39,4 +39,12 @@ export class LeaveTypeService extends BaseService {
   createLeaveRequest(request: LeaveRequest): Observable<any> {
     return this.post("leaveType/createLeaveRequest", request);
   }
+
+  searchLeaveRequest(request: SearchModal): Observable<any> {
+    return this.get(`leaveType/getLeaveRequest`, request);
+  }
+
+  getAllLeaveRequest(request: SearchModal): Observable<any> {
+    return this.get(`leaveType/getAllLeaveRequest`);
+  }
 }

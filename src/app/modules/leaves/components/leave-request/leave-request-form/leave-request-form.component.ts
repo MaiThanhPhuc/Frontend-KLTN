@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs';
 import { Constants } from 'src/app/constants';
 import { LeaveRequest } from 'src/app/models/leaveType.model';
 import { OptionModel } from 'src/app/models/optionsModel';
+import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
+import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
 import { BaseComponent } from 'src/app/utils/base.component';
 
@@ -43,7 +46,8 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
     reason: new FormControl('', Validators.required),
   });
   constructor(
-    private leaveTypeService: LeaveTypeService
+    private leaveTypeService: LeaveTypeService,
+    private dialog: MatDialog,
   ) {
     super();
   }
@@ -67,11 +71,30 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
     }
     this.isLoading = true
     this.leaveRequestData.employee = '653b2a1f4b48382ed217f25b'
-    this.leaveTypeService.createLeaveRequest(this.leaveRequestData).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      if (res) {
-        console.log(res);
+
+    const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
+    inputPopupData.submitButton = "Confirm"
+    inputPopupData.cancelButton = "Cancel"
+    inputPopupData.content = "Do you want to use this leave type?"
+    inputPopupData.primarySubmit = true;
+    const confirmRequestPopup = this.dialog.open(SimpleConfirmPopupComponent, {
+      autoFocus: false,
+      width: '400px',
+      disableClose: true
+    });
+    confirmRequestPopup.componentInstance.data = inputPopupData;
+
+    confirmRequestPopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      if (confirm) {
+        this.isLoading = true
+        this.leaveTypeService.createLeaveRequest(this.leaveRequestData).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) ToastService.success("Create leave request!")
+          this.isLoading = false
+        })
+
       }
-      this.isLoading = false
-    })
+    });
+
+
   }
 }

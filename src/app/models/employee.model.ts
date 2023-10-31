@@ -52,6 +52,7 @@ export class SearchModal {
   officeId?: string;
   departmentId?: string;
   teamId?: string;
+  employeeId?: string;
 }
 
 export class SearchEmployeeResponse {

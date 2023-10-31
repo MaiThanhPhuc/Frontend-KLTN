@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthPermissionService } from './guards/auth-permission.service';
+import { NotPermissionComponent } from './modules/not-permission/not-permission.component';
+import { LoginComponent } from './modules/login/login.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home/dashboard', pathMatch: 'full' },
@@ -47,6 +49,14 @@ const routes: Routes = [
         loadChildren: () => import('./modules/company/company.module').then(m => m.CompanyModule)
       }
     ]
+  },
+  {
+    path: 'not-permission',
+    component: NotPermissionComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
   },
 ]
 

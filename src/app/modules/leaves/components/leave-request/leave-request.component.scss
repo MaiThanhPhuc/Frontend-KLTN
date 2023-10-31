@@ -15,8 +15,6 @@
     border-bottom: 1px solid #00000B;
   }
 
-  .leave-request-form {}
-
   .leave-request-table {
     .header {
       display: flex;
@@ -32,6 +30,13 @@
         display: none;
       }
     }
+
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      text-align: center;
+    }
+
+
 
     &__body {
       padding: 24px;

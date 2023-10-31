@@ -9,6 +9,10 @@ import { AppInjector } from './services/app-injector.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { GlobalService } from './services/global.service';
 import { environment, mergeNewSettings } from 'src/environments/environment';
+import { NotPermissionComponent } from './modules/not-permission/not-permission.component';
+import { LoginComponent } from './modules/login/login.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 export function StartupServiceFactory(http: HttpClient) {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -21,7 +25,8 @@ export function StartupServiceFactory(http: HttpClient) {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    NotPermissionComponent,
   ],
   providers: [
     GlobalService,
@@ -38,7 +43,8 @@ export function StartupServiceFactory(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     AppCommonModule,
-    HttpClientModule
+    HttpClientModule,
+    LoginComponent
   ],
 })
 export class AppModule {

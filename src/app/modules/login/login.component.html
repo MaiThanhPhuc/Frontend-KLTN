@@ -1,0 +1,19 @@
+<section class="blog-modal-section">
+  <div class="blog-modal-container">
+    <div class="blog-modal-content" [formGroup]="loginFormGroup">
+      <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Name</mat-label>
+        <input [formControlName]="'email'" required id="name" type="text" matInput>
+        <!-- <mat-error *ngIf="getFormControlByKey('email').touched">Invalid input
+        </mat-error> -->
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="d-block">
+        <mat-label>Address</mat-label>
+        <input [formControlName]="'password'" required id="address" type="text" matInput>
+        <!-- <mat-error *ngIf="getFormControlByKey('password').touched">Invalid input
+        </mat-error> -->
+      </mat-form-field>
+    </div>
+  </div>
+</section>

@@ -17,6 +17,9 @@ import { LoadingComponent } from './loading/loading.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { GetRoleEmployee } from './pipe/get-role-employee.pipe';
+import { LeaveRequestStatusBoxComponent } from './leave-request-status-box/leave-request-status-box.component';
+import { FormatDateTime } from './pipe/format-date-time.pipe';
+import { FormatDate } from './pipe/format-date.pipe';
 @NgModule({
   declarations: [
     SidebarMenuComponent,
@@ -25,7 +28,10 @@ import { GetRoleEmployee } from './pipe/get-role-employee.pipe';
     MenuItemComponent,
     SimpleConfirmPopupComponent,
     LoadingComponent,
-    GetRoleEmployee
+    GetRoleEmployee,
+    LeaveRequestStatusBoxComponent,
+    FormatDateTime,
+    FormatDate
   ],
   imports: [
     CommonModule,
@@ -45,7 +51,10 @@ import { GetRoleEmployee } from './pipe/get-role-employee.pipe';
     HeaderComponent,
     SimpleConfirmPopupComponent,
     LoadingComponent,
-    GetRoleEmployee
+    GetRoleEmployee,
+    LeaveRequestStatusBoxComponent,
+    FormatDateTime,
+    FormatDate
   ]
 })
 export class AppCommonModule { }

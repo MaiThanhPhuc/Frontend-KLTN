@@ -7,7 +7,6 @@ export class Constants {
   ]
 
   public static EmployeeRole: OptionModel[] = [
-    new OptionModel("Admin", 0),
     new OptionModel("Manager", 1),
     new OptionModel("Leader", 2),
     new OptionModel("Member", 3)
@@ -28,4 +27,10 @@ export class Constants {
     new OptionModel("Half-Day Afternoon (14:00 - 18:00) (4 hours)", 4)
   ]
 
+  public static LeaveRequestStatus: OptionModel[] = [
+    new OptionModel("Cancelled", 0),
+    new OptionModel("Pending", 1),
+    new OptionModel("Approved", 2),
+    new OptionModel("Waiting", 3)
+  ]
 }

@@ -57,3 +57,10 @@ export class LeaveRequest {
   timeValue: number;
   reason: string;
 }
+
+export enum LeaveRequestStatusEnum {
+  CANCELLED = 0,
+  PENDING = 1,
+  APPROVED = 2,
+  WAITING = 3,
+}

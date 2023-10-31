@@ -1,0 +1,5 @@
+<div [class.red]="leaveRequestStatus.CANCELLED == status" [class.blue]="leaveRequestStatus.PENDING == status"
+  [class.green]="leaveRequestStatus.APPROVED == status" [class.orange]="leaveRequestStatus.WAITING == status"
+  class="box">
+  <span>{{statusContent}}</span>
+</div>
