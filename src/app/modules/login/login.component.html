@@ -4,17 +4,19 @@
       <div class="header">Login</div>
       <mat-form-field appearance="fill" class="d-block">
         <mat-label>Email</mat-label>
-        <input [formControlName]="'email'" required id="name" type="text" matInput>
+        <input [(ngModel)]="employeeData.email" [formControlName]="'email'" required id="email" type="email" matInput>
         <!-- <mat-error *ngIf="getFormControlByKey('email').touched">Invalid input
         </mat-error> -->
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="d-block">
         <mat-label>Password</mat-label>
-        <input [formControlName]="'password'" required id="address" type="text" matInput>
+        <input [(ngModel)]="employeeData.password" [formControlName]="'password'" required id="password" type="password"
+          matInput>
         <!-- <mat-error *ngIf="getFormControlByKey('password').touched">Invalid input
         </mat-error> -->
       </mat-form-field>
+      <p *ngIf="errorMsg" class="error">{{errorMsg}}</p>
       <button mat-flat-button color="primary" (click)="onSubmitForm()">Login</button>
     </div>
 

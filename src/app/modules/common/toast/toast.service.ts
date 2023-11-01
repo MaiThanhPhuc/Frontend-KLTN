@@ -42,7 +42,7 @@ export class ToastService {
       notifi.open(msg, this.action ? this.actionButtonLabel : undefined, config);
     }
   }
-  static error(msg: string, verticalPosition: MatSnackBarVerticalPosition, horizontalPosition: MatSnackBarHorizontalPosition) {
+  static error(msg: string, verticalPosition?: MatSnackBarVerticalPosition, horizontalPosition?: MatSnackBarHorizontalPosition) {
     if (msg && typeof msg === 'string') {
       const config = new MatSnackBarConfig();
       config.verticalPosition = verticalPosition || this.verticalPosition;

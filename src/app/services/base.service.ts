@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 
 @Injectable()
 export class BaseService {
-  constructor(private http: HttpClient,
+  constructor(public http: HttpClient,
     // private localStorage: WindowLocalStorage
   ) {
   }

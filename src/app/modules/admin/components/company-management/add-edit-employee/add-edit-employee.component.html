@@ -43,7 +43,8 @@
             <mat-label>{{item.label}}</mat-label>
             <mat-form-field *ngIf="!item.isPassword">
               <input [required]="item.isRequired" [type]="item.isCustomType ? item.type : 'text'" matInput
-                [value]="item.value" [formControlName]="item.key" [(ngModel)]='item.value'>
+                [email]="item.type == 'email'" [value]="item.value" [formControlName]="item.key"
+                [(ngModel)]='item.value'>
               <mat-error *ngIf="getFormControlByKey(item.key).touched">Invalid input
               </mat-error>
             </mat-form-field>
