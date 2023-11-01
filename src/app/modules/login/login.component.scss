@@ -1,4 +1,4 @@
-.blog-modal-section {
+.login-modal-section {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,11 +13,26 @@
 
 }
 
-.blog-modal-container {
-  height: 40%;
+.login-modal-container {
+  border-radius: 8px;
+  height: 60%;
   width: 40%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #fff;
+
+  .login-modal-content {
+    width: 50%;
+  }
+
+  .header {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  button {
+    width: 100%;
+  }
 }

@@ -1,19 +1,22 @@
-<section class="blog-modal-section">
-  <div class="blog-modal-container">
-    <div class="blog-modal-content" [formGroup]="loginFormGroup">
+<section class="login-modal-section">
+  <div class="login-modal-container">
+    <div class="login-modal-content" [formGroup]="loginFormGroup">
+      <div class="header">Login</div>
       <mat-form-field appearance="fill" class="d-block">
-        <mat-label>Name</mat-label>
+        <mat-label>Email</mat-label>
         <input [formControlName]="'email'" required id="name" type="text" matInput>
         <!-- <mat-error *ngIf="getFormControlByKey('email').touched">Invalid input
         </mat-error> -->
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="d-block">
-        <mat-label>Address</mat-label>
+        <mat-label>Password</mat-label>
         <input [formControlName]="'password'" required id="address" type="text" matInput>
         <!-- <mat-error *ngIf="getFormControlByKey('password').touched">Invalid input
         </mat-error> -->
       </mat-form-field>
+      <button mat-flat-button color="primary" (click)="onSubmitForm()">Login</button>
     </div>
+
   </div>
 </section>

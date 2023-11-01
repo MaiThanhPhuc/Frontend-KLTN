@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class BaseService {
   constructor(private http: HttpClient,
-    // private localStorage: LocalStorage
+    // private localStorage: WindowLocalStorage
   ) {
   }
 
@@ -20,7 +20,7 @@ export class BaseService {
 
   protected resolveHeader(): HttpHeaders {
     let headers = new HttpHeaders();
-    // headers = headers.set('Authorization', `Jwt token`);
+    headers = headers.set('Authorization', `Jwt token`);
     return headers;
   }
 
