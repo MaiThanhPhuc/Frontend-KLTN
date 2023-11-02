@@ -13,8 +13,6 @@ export class GlobalService extends BaseService {
   announceToggleIconClicked(forceExpand = false): void {
     this.toggleIconSubject.next(forceExpand);
   }
-  login(data: any): Observable<any> {
-    return this.http.post(environment.apiUrl + "auth/login", data);
-  }
+
 }
 

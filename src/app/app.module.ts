@@ -13,6 +13,8 @@ import { NotPermissionComponent } from './modules/not-permission/not-permission.
 import { LoginComponent } from './modules/login/login.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthPermissionService } from './guards/auth-permission.service';
+import { AuthService } from './services/auth.service';
 
 export function StartupServiceFactory(http: HttpClient) {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -30,6 +32,8 @@ export function StartupServiceFactory(http: HttpClient) {
   ],
   providers: [
     GlobalService,
+    AuthPermissionService,
+    AuthService,
     {
       provide: APP_INITIALIZER,
       useFactory: StartupServiceFactory,

@@ -11,7 +11,7 @@ import { GlobalService } from 'src/app/services/global.service';
 })
 export class HeaderComponent {
   @Input() rightIcons: IconModel[] = [];
-  @Input() title: string| undefined;
+  @Input() title: string | undefined;
   @Input() notifications = 0;
   @Output() rightIconClickedEvent: EventEmitter<string> = new EventEmitter();
   @ViewChild('menu', { static: true }) menuButton: MatButton | any;
@@ -34,7 +34,7 @@ export class HeaderComponent {
     this.menuButton._elementRef.nativeElement.classList.add('border-0');
   }
 
-  onIconClicked(icon: string): void {
+  onIconClicked(icon?: string): void {
     this.rightIconClickedEvent.emit(icon);
   }
 

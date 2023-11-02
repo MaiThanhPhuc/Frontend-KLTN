@@ -3,6 +3,7 @@ import { MenuItem } from 'src/app/models/menuItem.model';
 import { GlobalService } from 'src/app/services/global.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AuthPermissionService } from 'src/app/guards/auth-permission.service';
 
 @Component({
   selector: 'app-sidebar-menu',
@@ -25,7 +26,8 @@ export class SidebarMenuComponent {
     this.clickItemEvent.emit();
   }
   constructor(
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private authService: AuthPermissionService
   ) {
     this.initSidebarMenu();
   }
@@ -49,8 +51,7 @@ export class SidebarMenuComponent {
   }
 
   initSidebarAdminMenu(): MenuItem[] {
-    const isAdmin = true;
-
+    const isAdmin = !this.authService.checkPermission('admin')
     const admin: MenuItem = new MenuItem('', "Admin", "", '', true);
     const adminCompany: MenuItem = new MenuItem('adminCompany', "Company Management", "/admin/company", 'apartment', false);
     const adminEmployee: MenuItem = new MenuItem('adminEmployee', "Employee", "/admin/company/employee", '', false);
@@ -60,8 +61,7 @@ export class SidebarMenuComponent {
     const archive: MenuItem = new MenuItem('archive', "Archive", "/admin/company/archive", '', false);
     adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice, archive]
     const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
-    const adminHolidays: MenuItem = new MenuItem('adminHolidays', "Holidays Management", "/admin/holidays", 'event_available', false);
-    return isAdmin ? [admin, adminCompany, adminLeaveTypes, adminHolidays] : []
+    return isAdmin ? [admin, adminCompany, adminLeaveTypes] : []
   }
   ngOnInit(): void {
     this.listeningEvent();

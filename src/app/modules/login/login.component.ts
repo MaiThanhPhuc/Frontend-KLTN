@@ -9,6 +9,9 @@ import { takeUntil } from 'rxjs';
 import { GlobalService } from 'src/app/services/global.service';
 import { ToastService } from '../common/toast/toast.service';
 import { CommonModule } from '@angular/common';
+import { LocalStorage } from '../common/helper/localStorage';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -24,8 +27,11 @@ export class LoginComponent extends BaseComponent implements OnInit {
   });
   errorMsg: string;
   employeeData = new LoginRequest();
+  localStorage: LocalStorage
   constructor(
-    private globalService: GlobalService
+    private authService: AuthService,
+    private localStorageService: LocalStorage,
+    private router: Router
   ) {
     super()
   }
@@ -37,10 +43,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   onSubmitForm() {
-    this.globalService.login(this.employeeData).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res) => {
+    this.authService.login(this.employeeData).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res) => {
       if (res) {
-        localStorage.setItem('userData', JSON.stringify(res));
+        localStorage.setItem('accessToken', res.accessToken)
+        this.localStorageService.createStore('userData', res)
         this.errorMsg = '';
+        this.router.navigate([`/home/dashboard`])
       }
     },
       (error => {

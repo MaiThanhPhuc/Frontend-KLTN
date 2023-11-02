@@ -14,6 +14,7 @@
   position: fixed;
   width: 100%;
   z-index: 999;
+  justify-content: space-between;
 
   .collapse-icon {
     cursor: pointer;
@@ -33,57 +34,53 @@
     }
   }
 
-  img {
-    margin: 0 16px;
-  }
-
-  #twitter-logo {
-    height: 40px;
-    margin: 0 16px;
+  .left-content {
+    display: flex;
+    align-items: center;
   }
 
   .right-content {
-    margin-right: 20px;
+    margin-right: 50px;
     display: flex;
+    align-items: center;
+    cursor: pointer;
 
-    qms-badges {
-      margin-left: -10px;
-      margin-top: -8px;
-      font-family: none;
+    .button {
+      display: flex;
+      gap: 8px;
+
+      .icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        mat-icon {
+          width: 34px;
+          height: 34px;
+          font-size: 34px;
+        }
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+
+        .name {
+          font-weight: bold;
+          font-size: 14px;
+        }
+
+        .code {
+          font-size: 11px;
+          color: #8a92a6;
+        }
+      }
     }
   }
 
-  .menu-item-icon {
-    margin: 0 5px;
-    width: fit-content;
-
-    &:focus {
-      outline: none;
+  .mat-menu-account {
+    mat-mdc-menu-item-text {
+      font-size: 12px;
     }
-  }
-
-  .mg-l-3 {
-    margin-left: 3px;
-  }
-
-  .popup-header-hidden {
-    position: absolute;
-    left: -10000px;
-    top: auto;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-
-  .popup-header-hidden:focus {
-    width: auto;
-    height: auto;
-    overflow: visible;
-    z-index: 10000000;
-    text-decoration: underline;
-    left: 0;
-    padding: 10px;
-    color: #2b2b2b;
-    background-color: #fff062;
   }
 }

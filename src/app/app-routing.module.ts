@@ -5,47 +5,43 @@ import { NotPermissionComponent } from './modules/not-permission/not-permission.
 import { LoginComponent } from './modules/login/login.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home/dashboard', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'admin',
-    // canActivate: [AuthPermissionService],
+    canActivate: [AuthPermissionService],
     children: [
       {
         path: '',
-        // canActivateChild: [AuthPermissionService],
         loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
       }
     ]
   },
   {
     path: 'home',
-    // canActivate: [AuthPermissionService],
+    canActivate: [AuthPermissionService],
     children: [
       {
         path: '',
-        // canActivateChild: [AuthPermissionService],
         loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule)
       }
     ]
   },
   {
     path: 'leaves',
-    // canActivate: [AuthPermissionService],
+    canActivate: [AuthPermissionService],
     children: [
       {
         path: '',
-        // canActivateChild: [AuthPermissionService],
         loadChildren: () => import('./modules/leaves/leaves.module').then(m => m.LeavesModule)
       }
     ]
   },
   {
     path: 'company',
-    // canActivate: [AuthPermissionService],
+    canActivate: [AuthPermissionService],
     children: [
       {
         path: '',
-        // canActivateChild: [AuthPermissionService],
         loadChildren: () => import('./modules/company/company.module').then(m => m.CompanyModule)
       }
     ]

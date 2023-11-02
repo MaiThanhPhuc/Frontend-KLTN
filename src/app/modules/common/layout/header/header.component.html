@@ -1,29 +1,37 @@
 <div class="toolbar-container" role="banner">
-  <a id="popupJumpToChemical" tabindex="0" class="popup-header-hidden" (keydown)="onKeyDown($event)">Jump to
-    chemical</a>
-  <button #menu class="collapse-icon" (mouseout)="onMouseOut()" (mousedown)="onMouseDown()" (click)="onClicked()"
-    mat-icon-button>
-    <mat-icon class="mat-icon-rtl-mirror">
-      menu
-    </mat-icon>
-  </button>
-  <span>test title</span>
-  <div class="spacer"></div>
-  <div class="right-content">
-    <div *ngFor="let item of rightIcons">
-      <button id="toolbar-icon-{{ item.icon }}" tabindex="-1" (click)="onIconClicked(item.icon)"
-        *ngIf="item.icon != 'notifications'" class="menu-item-icon" mat-icon-button>
-        <span *ngIf="item.icon == 'notifications'" class="d-flex mt-2">
-          <mat-icon>notifications</mat-icon>
-          <!-- <qms-badges *ngIf="notifications" [color]="'orange'" [type]="'1'" [contents]="notifications" [size]="'medium'"
-            [icon]="'notifications'">
-          </qms-badges> -->
-        </span>
-        <mat-icon *ngIf="item.icon != 'notifications'" class="material-icons-outlined mat-icon-rtl-mirror">
-          {{item.icon}}
-        </mat-icon>
-        <span class="mg-l-3">{{item.tooltip}}</span>
-      </button>
-    </div>
+  <div class="left-content">
+    <button #menu class="collapse-icon" (mouseout)="onMouseOut()" (mousedown)="onMouseDown()" (click)="onClicked()"
+      mat-icon-button>
+      <mat-icon>
+        menu
+      </mat-icon>
+    </button>
+    <span>Employee Management Leave Request</span>
   </div>
+  <div class="right-content">
+    <div mat-button [matMenuTriggerFor]="account" class="button">
+      <div class="icon">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <div class="info">
+        <span class="name">Admin</span>
+        <span class="code">code 202</span>
+      </div>
+    </div>
+    <mat-menu #account="matMenu" class="mat-menu-account">
+      <button mat-menu-item>
+        <mat-icon>person</mat-icon>
+        My profile
+      </button>
+      <button mat-menu-item>
+        <mat-icon>cached</mat-icon>
+        Change password
+      </button>
+      <button mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        Logout
+      </button>
+    </mat-menu>
+  </div>
+
 </div>

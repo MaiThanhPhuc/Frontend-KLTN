@@ -20,6 +20,7 @@ import { GetRoleEmployee } from './pipe/get-role-employee.pipe';
 import { LeaveRequestStatusBoxComponent } from './leave-request-status-box/leave-request-status-box.component';
 import { FormatDateTime } from './pipe/format-date-time.pipe';
 import { FormatDate } from './pipe/format-date.pipe';
+import { MatMenuModule } from '@angular/material/menu';
 @NgModule({
   declarations: [
     SidebarMenuComponent,
@@ -44,7 +45,8 @@ import { FormatDate } from './pipe/format-date.pipe';
     RouterModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatMenuModule,
   ],
   exports: [
     SidebarMenuComponent,

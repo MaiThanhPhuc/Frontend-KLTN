@@ -5,12 +5,14 @@ import { Injectable } from '@angular/core';
 // import helper from 'qms-js';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-// import { LocalStorage } from '../modules/common/helper/localStorage';
+import { LocalStorage } from '../modules/common/helper/localStorage';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class BaseService {
   constructor(public http: HttpClient,
-    // private localStorage: WindowLocalStorage
+    public localStorage: LocalStorage,
+    public router: Router
   ) {
   }
 
@@ -20,7 +22,11 @@ export class BaseService {
 
   protected resolveHeader(): HttpHeaders {
     let headers = new HttpHeaders();
-    headers = headers.set('Authorization', `Jwt token`);
+    const token = this.localStorage.getStore('accessToken');
+    console.log(token);
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
     return headers;
   }
 
