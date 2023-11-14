@@ -18,6 +18,12 @@ export class AuthPermissionService implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
     if (this.authService.isLoggedIn()) {
+
+      if (this.authService.isExpiredToken()) {
+        this.router.navigate(['/login']);
+        return Promise.resolve(false);
+      }
+
       if (this.checkPermission(state.url)) {
         return Promise.resolve(true);
       }
@@ -26,8 +32,26 @@ export class AuthPermissionService implements CanActivate {
     this.router.navigate(['/login']);
     return Promise.resolve(false);
   }
+  isAdmin(): boolean {
+    const token = this.localStorage.getStore('accessToken');
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodeToken = helper.decodeToken(token);
+      if (decodeToken.role === Constants.AdminRole.id) return true
+    }
+    return false;
+  }
 
-  checkPermission(url: any): boolean {
+  isManage(): boolean {
+    const token = this.localStorage.getStore('accessToken');
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodeToken = helper.decodeToken(token);
+      if (decodeToken.role !== Constants.MemberRole.id) return true
+    }
+    return false;
+  }
+  checkPermission(url: any, isAdmin?: boolean): boolean {
     const token = this.localStorage.getStore('accessToken');
     if (token) {
       const helper = new JwtHelperService();

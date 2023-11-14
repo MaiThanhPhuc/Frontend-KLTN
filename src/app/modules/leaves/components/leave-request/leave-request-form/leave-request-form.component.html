@@ -41,7 +41,7 @@
       <div class="form-item col-10">
         <mat-label>Reason</mat-label>
         <mat-form-field>
-          <textarea [(ngModel)]="leaveRequestData.reason" [required]="true" [formControlName]="'reason'"
+          <textarea maxlength="600" [(ngModel)]="leaveRequestData.reason" [required]="true" [formControlName]="'reason'"
             matInput></textarea>
           <mat-error>Field is required
           </mat-error>

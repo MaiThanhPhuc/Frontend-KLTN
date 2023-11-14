@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-not-permission',
@@ -14,11 +15,10 @@ export class NotPermissionComponent {
   isAnonymous: boolean;
 
   constructor(
-    // private usersService: AuthService
+    private usersService: AuthService
   ) { }
 
-  async onLogout() {
-    // const returnUrl = await this.usersService.logOff().toPromise()
-    // window.location.href = returnUrl ? returnUrl : environment.loginUrl;
+  onLogout() {
+    this.usersService.logout()
   }
 }

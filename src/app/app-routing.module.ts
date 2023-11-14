@@ -48,6 +48,7 @@ const routes: Routes = [
   },
   {
     path: 'not-permission',
+    canActivate: [AuthPermissionService],
     component: NotPermissionComponent
   },
   {

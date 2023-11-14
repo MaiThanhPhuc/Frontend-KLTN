@@ -23,7 +23,6 @@ export class BaseService {
   protected resolveHeader(): HttpHeaders {
     let headers = new HttpHeaders();
     const token = this.localStorage.getStore('accessToken');
-    console.log(token);
     if (token) {
       headers = headers.set('Authorization', `Bearer ${token}`);
     }

@@ -1,0 +1,50 @@
+@import "src/styles/global/_color.scss";
+
+.manage-leave-request-container {
+  padding: 24px;
+  height: 100%;
+
+  .manage-leave-request-content {
+    border-radius: 8px;
+    background-color: $ems-primary-background;
+    padding: 12px;
+  }
+
+  .manage-leave-request-header {
+    padding: 8px 16px 16px;
+    border-bottom: 1px solid #00000B;
+  }
+
+  .manage-leave-request-table__body {
+    padding: 24px;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 24px;
+
+      span {
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        display: none;
+      }
+    }
+
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      text-align: center;
+    }
+
+
+
+
+  }
+
+  .title {
+    font-weight: 700;
+    font-size: 18px;
+  }
+}

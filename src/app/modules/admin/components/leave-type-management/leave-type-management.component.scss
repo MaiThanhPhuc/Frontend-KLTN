@@ -44,6 +44,27 @@
         justify-content: center;
       }
 
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        text-align: center;
+      }
+
+      .mat-column-code,
+
+      .mat-column-allowance {
+        flex: none;
+        width: 150px;
+        min-height: 50px;
+      }
+
+      .mat-column-name {
+        flex: none;
+        width: 200px;
+        min-height: 50px;
+      }
+
+
+
     }
   }
 }

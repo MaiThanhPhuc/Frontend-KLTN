@@ -44,6 +44,14 @@ export class LeaveTypeService extends BaseService {
     return this.get(`leaveType/getLeaveRequest`, request);
   }
 
+  getLeaveRequestByApprove(request: SearchModal): Observable<any> {
+    return this.get(`leaveType/getLeaveRequestByApprove`, request);
+  }
+
+  getLeaveRequestHistory(request: SearchModal): Observable<any> {
+    return this.get(`leaveType/getLeaveRequestHistory`, request);
+  }
+
   getAllLeaveRequest(request: SearchModal): Observable<any> {
     return this.get(`leaveType/getAllLeaveRequest`);
   }

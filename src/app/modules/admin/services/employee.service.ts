@@ -23,5 +23,7 @@ export class EmployeeService extends BaseService {
   searchEmployee(request: SearchModal): Observable<SearchEmployeeResponse> {
     return this.get(`employee`, request);
   }
-
+  getAbsentByDate(request: SearchModal): Observable<any> {
+    return this.get(`employee/getAbsentByDate`, request);
+  }
 }

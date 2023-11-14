@@ -1,7 +1,11 @@
-import { Component, Input, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Component, Input, EventEmitter, Output, ViewChild, OnInit } from '@angular/core';
 import { MatButton } from '@angular/material/button';
+import { takeUntil } from 'rxjs';
 import { IconModel } from 'src/app/models/Icon.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
+import { BaseComponent } from 'src/app/utils/base.component';
+import { LocalStorage } from '../../helper/localStorage';
 // import { environment } from 'src/environments/environment';
 
 @Component({
@@ -9,16 +13,22 @@ import { GlobalService } from 'src/app/services/global.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent extends BaseComponent implements OnInit {
   @Input() rightIcons: IconModel[] = [];
   @Input() title: string | undefined;
   @Input() notifications = 0;
   @Output() rightIconClickedEvent: EventEmitter<string> = new EventEmitter();
   @ViewChild('menu', { static: true }) menuButton: MatButton | any;
   isExpandSideBar = true
-  // isAnonymous: boolean = environment.server.isAnonymous;
-
-  constructor(private globalService: GlobalService) { }
+  dataUser: any
+  constructor(private globalService: GlobalService,
+    private authService: AuthService,
+    private localStorageService: LocalStorage) {
+    super();
+  }
+  ngOnInit(): void {
+    this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
+  }
 
   onClicked(): void {
     this.isExpandSideBar = !this.isExpandSideBar;
@@ -39,9 +49,8 @@ export class HeaderComponent {
   }
 
   onKeyDown(event: any): void {
-    // if (event.code == 'Enter') {
-    //   document.getElementById('popupJumpToChemical').classList.add('d-none');
-    //   document.getElementById('popupJumpToChemical').tabIndex = -1;
-    // }
+  }
+  logout() {
+    this.authService.logout();
   }
 }

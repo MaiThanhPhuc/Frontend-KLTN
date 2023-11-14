@@ -9,6 +9,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { UserLeaveTableComponent } from './components/dashboard/user-leave-table/user-leave-table.component';
+import { AppCommonModule } from '../common/app-common.module';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { UserLeaveTableComponent } from './components/dashboard/user-leave-table
     HomeRoutingModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule
+    MatSortModule,
+    AppCommonModule
   ]
   , exports: [UserLeaveTableComponent]
 })

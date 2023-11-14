@@ -14,8 +14,8 @@
         <mat-icon>account_circle</mat-icon>
       </div>
       <div class="info">
-        <span class="name">Admin</span>
-        <span class="code">code 202</span>
+        <span class="name">{{dataUser.fullName}}</span>
+        <span class="code"> Code {{dataUser.code}}</span>
       </div>
     </div>
     <mat-menu #account="matMenu" class="mat-menu-account">
@@ -27,7 +27,7 @@
         <mat-icon>cached</mat-icon>
         Change password
       </button>
-      <button mat-menu-item>
+      <button mat-menu-item (click)="logout()">
         <mat-icon>logout</mat-icon>
         Logout
       </button>

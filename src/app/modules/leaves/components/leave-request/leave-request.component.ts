@@ -27,7 +27,7 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
   pageSizeOptions = [5, 10, 25];
   countAllData = 0
   keyword = ''
-  employeeId = '653b2a1f4b48382ed217f25b'
+  currentUserId: string
   leaveRequestData: any
   constructor(
     private router: Router,
@@ -39,6 +39,7 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserId = localStorage.getItem('userId') || '';
     this.initParamSearch();
     this.loadData()
   }
@@ -47,7 +48,7 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
     this.paramSearch = {
       limit: this.pageSize,
       pageIndex: this.pageIndex,
-      employeeId: this.employeeId
+      employeeId: this.currentUserId
     }
   }
 

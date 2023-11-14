@@ -6,7 +6,7 @@
       <th mat-header-cell *matHeaderCellDef>
         Leave Type
       </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.leaveType.name}} </td>
     </ng-container>
 
     <!-- Weight Column -->
@@ -22,7 +22,7 @@
       <th mat-header-cell *matHeaderCellDef>
         Remaining
       </th>
-      <td mat-cell *matCellDef="let element"> {{element.remaining}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.remain}} </td>
     </ng-container>
 
     <ng-container matColumnDef="taken">

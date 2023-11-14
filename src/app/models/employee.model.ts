@@ -53,6 +53,8 @@ export class SearchModal {
   departmentId?: string;
   teamId?: string;
   employeeId?: string;
+  dateFrom?: Date;
+  dateTo?: Date;
 }
 
 export class SearchEmployeeResponse {

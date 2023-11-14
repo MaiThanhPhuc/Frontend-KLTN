@@ -31,7 +31,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorage,
-    private router: Router
+    private router: Router,
+    private globalService: GlobalService
   ) {
     super()
   }
@@ -47,6 +48,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
       if (res) {
         localStorage.setItem('accessToken', res.accessToken)
         this.localStorageService.createStore('userData', res)
+        localStorage.setItem('userId', res._id)
+        this.globalService.announceIsLogin(true);
         this.errorMsg = '';
         this.router.navigate([`/home/dashboard`])
       }

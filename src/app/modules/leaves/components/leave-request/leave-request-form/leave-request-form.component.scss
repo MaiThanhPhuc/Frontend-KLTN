@@ -1,18 +1,19 @@
 .leave-request-form-container {
-  display: flex;
   padding: 25px;
 
   .form-item {
     display: flex;
     flex-direction: column;
+
+    textarea {
+      resize: vertical;
+      max-height: 180px;
+      min-height: 80px;
+    }
   }
 
   .mat-mdc-form-field-error {
     font-size: 12px;
-  }
-
-  .leave-request-form {
-    width: 50%;
   }
 
   .leave-button {

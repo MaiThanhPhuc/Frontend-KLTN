@@ -29,29 +29,32 @@ export class SidebarMenuComponent {
     private globalService: GlobalService,
     private authService: AuthPermissionService
   ) {
-    this.initSidebarMenu();
   }
 
   initSidebarMenu() {
+    const isAdmin = this.authService.isAdmin()
+    const isManage = this.authService.isManage()
     const homeTitle: MenuItem = new MenuItem('', "Home", "", '', true);
     const dashBoard: MenuItem = new MenuItem('dashBoard', "Dashboard", "/home/dashboard", 'dashboard', false);
-    const workLog: MenuItem = new MenuItem('workLog', "Work Log Timesheet", "/home/work-log", 'event_available', false);
+    // const workLog: MenuItem = new MenuItem('workLog', "Work Log Timesheet", "/home/work-log", 'event_available', false);
     const leaves: MenuItem = new MenuItem('', "Leaves", "", '', true);
     const request: MenuItem = new MenuItem('request', "Request", "/leaves/request", 'note_add', false);
-    const calendar: MenuItem = new MenuItem('calendar', "Calendar", "/leaves/calendar", 'calendar_month', false);
+    const manageRequest: MenuItem = new MenuItem('request', "Manage Request", "/leaves/manage-request", 'assignment_ind', false);
+    // const calendar: MenuItem = new MenuItem('calendar', "Calendar", "/leaves/calendar", 'calendar_month', false);
     const myLeaves: MenuItem = new MenuItem('myLeaves', "My Leaves", "/leaves/my-leaves", 'list_alt', false);
     const leavesHistory: MenuItem = new MenuItem('leavesHistory', "Leaves History", "/leaves/leaves-history", 'manage_search', false);
     const leaveManagement: MenuItem = new MenuItem('leaveManagement', "Leave Management", "/leaves/leave-management", 'folder_managed', false);
     const company: MenuItem = new MenuItem('', "Company", "", '', true);
     const leaveTypes: MenuItem = new MenuItem('leaveTypes', "Leave Types", "/company/leave-types", 'lists', false);
-    const holidays: MenuItem = new MenuItem('holidays', "Holidays", "/company/holidays", 'event_note', false);
+    // const holidays: MenuItem = new MenuItem('holidays', "Holidays", "/company/holidays", 'event_note', false);
     const employee: MenuItem = new MenuItem('employee', "Employee", "/company/employee", 'assignment_ind', false);
 
-    this.menus = [homeTitle, dashBoard, workLog, ...this.initSidebarAdminMenu(), leaves, request, calendar, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, holidays, employee]
+    var adminMenu = isAdmin ? this.initSidebarAdminMenu() : []
+    var manageRole = isManage ? [manageRequest] : []
+    this.menus = [homeTitle, dashBoard, ...adminMenu, leaves, request, ...manageRole, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, employee]
   }
 
   initSidebarAdminMenu(): MenuItem[] {
-    const isAdmin = !this.authService.checkPermission('admin')
     const admin: MenuItem = new MenuItem('', "Admin", "", '', true);
     const adminCompany: MenuItem = new MenuItem('adminCompany', "Company Management", "/admin/company", 'apartment', false);
     const adminEmployee: MenuItem = new MenuItem('adminEmployee', "Employee", "/admin/company/employee", '', false);
@@ -61,10 +64,11 @@ export class SidebarMenuComponent {
     const archive: MenuItem = new MenuItem('archive', "Archive", "/admin/company/archive", '', false);
     adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice, archive]
     const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
-    return isAdmin ? [admin, adminCompany, adminLeaveTypes] : []
+    return [admin, adminCompany, adminLeaveTypes]
   }
   ngOnInit(): void {
     this.listeningEvent();
+    this.initSidebarMenu();
   }
 
   setSideBarWidth(): void {
@@ -75,6 +79,12 @@ export class SidebarMenuComponent {
       (res) => {
         this.isExpand = res;
         this.setSideBarWidth();
+      });
+
+    this.globalService.isLoginSubject$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      (res) => {
+        this.isExpand = res;
+        this.initSidebarMenu();
       });
   }
 }

@@ -1,1 +1,65 @@
-<p>leave-management works!</p>
+<div class="leave-management-container">
+  <div class="leave-management-content">
+    <div class="leave-management-content-header">
+      My Leaves Management
+    </div>
+    <div class="divider"></div>
+    <div class="leave-management-table">
+      <mat-table class="leaveTypeTable" #table [dataSource]="leaveTypeEmployeeData">
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef> Leave Type </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.leaveType.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.total}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="remaining">
+          <mat-header-cell *matHeaderCellDef> Remaining </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.remain}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="taken">
+          <mat-header-cell *matHeaderCellDef> Taken </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.taken}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="bonus">
+          <mat-header-cell *matHeaderCellDef> Bonus </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.bonus}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="paid">
+          <mat-header-cell *matHeaderCellDef> Paid </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.paid}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="forward">
+          <mat-header-cell *matHeaderCellDef> Forward </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            {{element.forward}}
+          </mat-cell>
+        </ng-container>
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter</td>
+        </tr>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+  </div>

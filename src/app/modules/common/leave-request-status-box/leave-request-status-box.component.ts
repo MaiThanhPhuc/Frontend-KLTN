@@ -18,7 +18,6 @@ export class LeaveRequestStatusBoxComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.status);
     this.initContentStatus();
   }
 

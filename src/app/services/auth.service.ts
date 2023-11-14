@@ -4,7 +4,7 @@ import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { BaseService } from './base.service';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable()
 export class AuthService extends BaseService {
 
@@ -16,9 +16,14 @@ export class AuthService extends BaseService {
     return this.localStorage.getStore('accessToken') !== undefined;
   }
 
+  isExpiredToken(): boolean {
+    const token = this.localStorage.getStore('accessToken');
+    const helper = new JwtHelperService();
+    return helper.isTokenExpired(token);
+  }
+
   public logout() {
-    this.localStorage.removeStore('userData');
-    this.localStorage.removeStore('accessToken');
-    this.router.navigate(['/login']);
+    localStorage.clear();
+    window.location.href = "http://localhost:4200/login";
   }
 }

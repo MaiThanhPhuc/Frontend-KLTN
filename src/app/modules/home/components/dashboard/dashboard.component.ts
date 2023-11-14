@@ -1,103 +1,71 @@
-import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
+import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { AbsentEmployeeInfo } from 'src/app/models/employee.model';
-
-const FRUITS: string[] = [
-  'blueberry',
-  'lychee',
-  'kiwi',
-  'mango',
-  'peach',
-  'lime',
-  'pomegranate',
-  'pineapple',
-];
-const NAMES: string[] = [
-  'Maia',
-  'Asher',
-  'Olivia',
-  'Atticus',
-  'Amelia',
-  'Jack',
-  'Charlotte',
-  'Theodore',
-  'Isla',
-  'Oliver',
-  'Isabella',
-  'Jasper',
-  'Cora',
-  'Levi',
-  'Violet',
-  'Arthur',
-  'Mia',
-  'Thomas',
-  'Elizabeth',
-];
+import { takeUntil } from 'rxjs';
+import { AbsentEmployeeInfo, Employee, SearchModal } from 'src/app/models/employee.model';
+import { EmployeeService } from 'src/app/modules/admin/services/employee.service';
+import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
+import { BaseComponent } from 'src/app/utils/base.component';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements AfterViewInit {
-  displayedColumns: string[] = ['code', 'name', 'date', 'office', 'department', 'team', 'role'];
+export class DashboardComponent extends BaseComponent implements OnInit {
+  displayedColumns: string[] = ['name', 'date', 'office', 'department', 'team', 'role'];
   dataSource: MatTableDataSource<AbsentEmployeeInfo>;
-
-  @ViewChild(MatPaginator) paginator: MatPaginator | any;
-  @ViewChild(MatSort) sort: MatSort | any;
-
-
-  constructor(private _liveAnnouncer: LiveAnnouncer) {
-    // Create 100 users
-    const users = Array.from({ length: 100 }, (_, k) => createNewUser(k + 1));
-
-    // Assign the data to the data source for the table to render
-    this.dataSource = new MatTableDataSource(users);
+  isLoading = false;
+  paramSearch: SearchModal = {};
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions = [5, 10, 25];
+  countAllData = 0
+  keyword = ''
+  currentUserId: string
+  userData: Employee
+  constructor(private leaveService: LeaveTypeService,
+    private emloyeeService: EmployeeService
+  ) {
+    super();
+  }
+  ngOnInit() {
+    this.currentUserId = localStorage.getItem('userId') || '';
+    this.initParamSearch();
+    this.loadDataAbsent();
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
+  initParamSearch() {
+    this.paramSearch = {
+      limit: this.pageSize,
+      pageIndex: this.pageIndex,
+      keyword: this.keyword,
+      dateFrom: new Date()
     }
   }
+  onSearchKeyword() {
+    this.paramSearch.keyword = this.keyword
+    this.loadDataAbsent();
+  }
+  loadDataAbsent() {
+    this.isLoading = true
+    this.emloyeeService.getAbsentByDate(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+      if (res) {
+        this.countAllData = res.totalItems
+        this.dataSource = new MatTableDataSource(res.result);
+        this.isLoading = false
+      }
+    });
+  }
 
-  announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+  handlePageEvent(event: PageEvent) {
+    if (event.pageSize !== this.paramSearch.limit) {
+      this.paramSearch.pageIndex = 1
+      this.pageIndex = 0
     } else {
-      this._liveAnnouncer.announce('Sorting cleared');
+      this.paramSearch.pageIndex = event.pageIndex + 1
     }
+    this.paramSearch.limit = event.pageSize
+    this.loadDataAbsent();
   }
-}
 
-/** Builds and returns a new User. */
-function createNewUser(id: number): AbsentEmployeeInfo {
-  const name =
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))] +
-    ' ' +
-    NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) +
-    '.';
-  return {
-    code: id.toString(),
-    name: name,
-    date: "2015-03-25",
-    department: "test",
-    office: "UTE",
-    role: "member",
-    team: "FE"
-  };
 }

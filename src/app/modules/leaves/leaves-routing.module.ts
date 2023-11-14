@@ -6,11 +6,13 @@ import { MyLeavesComponent } from './components/my-leaves/my-leaves.component';
 import { LeavesHistoryComponent } from './components/leaves-history/leaves-history.component';
 import { LeaveManagementComponent } from './components/leave-management/leave-management.component';
 import { LeaveRequestComponent } from './components/leave-request/leave-request.component';
+import { ManageLeaveRequestComponent } from './components/manage-leave-request/manage-leave-request.component';
 
 const routes: Routes = [{
   path: '', component: LeavesComponent,
   children: [
     { path: 'request', component: LeaveRequestComponent },
+    { path: 'manage-request', component: ManageLeaveRequestComponent },
     { path: 'calendar', component: CalendarComponent },
     { path: 'my-leaves', component: MyLeavesComponent },
     { path: 'leaves-history', component: LeavesHistoryComponent },

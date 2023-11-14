@@ -12,11 +12,6 @@ import { LeaveType } from 'src/app/models/leaveType.model';
 import { LeaveTypeService } from '../../services/leaveType.service';
 import { SearchModal } from 'src/app/models/employee.model';
 import { PageEvent } from '@angular/material/paginator';
-const ELEMENT_DATA: DepartmentModel[] = [
-  // { code: "1", name: 'Hydrogen', office: "test", manager: "bod" },
-  // { code: "2", name: 'test', office: "test", manager: "bod" },
-  // { code: "3", name: 'test1', office: "test", manager: "bod" },
-];
 @Component({
   selector: 'app-leave-type-management',
   templateUrl: './leave-type-management.component.html',

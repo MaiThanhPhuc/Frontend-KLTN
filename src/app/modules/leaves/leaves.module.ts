@@ -21,6 +21,8 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { AppCommonModule } from '../common/app-common.module';
+import { HomeModule } from '../home/home.module';
+import { ManageLeaveRequestComponent } from './components/manage-leave-request/manage-leave-request.component';
 @NgModule({
   declarations: [
     LeavesComponent,
@@ -30,6 +32,7 @@ import { AppCommonModule } from '../common/app-common.module';
     LeavesHistoryComponent,
     LeaveManagementComponent,
     LeaveRequestFormComponent,
+    ManageLeaveRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { AppCommonModule } from '../common/app-common.module';
     MatButtonModule,
     MatMenuModule,
     AppCommonModule,
-    FormsModule
+    FormsModule,
+    HomeModule
   ]
 })
 export class LeavesModule { }
