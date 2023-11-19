@@ -17,7 +17,7 @@ export function mergeNewSettings(newConfig: any): any {
 // }
 
 export let environment: IEnvironment = {
-  appSettings: '/environments/appSettings.json',
+  appSettings: '/environments/appSettings.prod.json',
   production: false,
   baseUrl: '/',
   assetsPath: '/assets'
