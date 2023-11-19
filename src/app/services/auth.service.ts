@@ -24,6 +24,6 @@ export class AuthService extends BaseService {
 
   public logout() {
     localStorage.clear();
-    window.location.href = "http://localhost:4200/login";
+    window.location.href = `${environment.baseUrl}login`;
   }
 }

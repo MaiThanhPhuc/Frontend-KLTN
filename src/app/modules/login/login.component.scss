@@ -18,9 +18,15 @@
   height: 60%;
   width: 40%;
   display: flex;
-  align-items: center;
+  // align-items: center;
   justify-content: center;
   background-color: #fff;
+
+  .img_logo {
+    width: 30%;
+    margin-top: 50px;
+    margin-bottom: 10px;
+  }
 
   .login-modal-content {
     width: 50%;

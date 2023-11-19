@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { LocalStorage } from '../common/helper/localStorage';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -27,7 +28,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
   });
   errorMsg: string;
   employeeData = new LoginRequest();
-  localStorage: LocalStorage
+  localStorage: LocalStorage;
+  iconPath = `${environment.assetsPath}/img/login_img.png`;
+
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorage,

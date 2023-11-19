@@ -1,12 +1,15 @@
 <section class="login-modal-section">
   <div class="login-modal-container">
     <div class="login-modal-content" [formGroup]="loginFormGroup">
+      <div class="d-flex justify-content-center">
+        <img class="img_logo" [src]="iconPath" />
+      </div>
       <div class="header">Login</div>
       <mat-form-field appearance="fill" class="d-block">
         <mat-label>Email</mat-label>
         <input [(ngModel)]="employeeData.email" [formControlName]="'email'" required id="email" type="email" matInput>
-        <!-- <mat-error *ngIf="getFormControlByKey('email').touched">Invalid input
-        </mat-error> -->
+        <mat-error class="error" *ngIf="getFormControlByKey('email').touched">Invalid input
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="fill" class="d-block">

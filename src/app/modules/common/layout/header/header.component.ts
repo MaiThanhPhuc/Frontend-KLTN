@@ -28,6 +28,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
   ngOnInit(): void {
     this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
+    this.listeningEvent();
   }
 
   onClicked(): void {
@@ -52,5 +53,14 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
   logout() {
     this.authService.logout();
+  }
+
+  listeningEvent(): void {
+    this.globalService.isLoginSubject$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+      (res) => {
+
+        this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
+        console.log(this.dataUser);
+      });
   }
 }
