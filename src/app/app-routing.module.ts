@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthPermissionService } from './guards/auth-permission.service';
 import { NotPermissionComponent } from './modules/not-permission/not-permission.component';
 import { LoginComponent } from './modules/login/login.component';
+import { EmployeeProfileComponent } from './modules/employee-profile/employee-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -50,6 +51,11 @@ const routes: Routes = [
     path: 'not-permission',
     canActivate: [AuthPermissionService],
     component: NotPermissionComponent
+  },
+  {
+    path: 'employee-info',
+    canActivate: [AuthPermissionService],
+    component: EmployeeProfileComponent
   },
   {
     path: 'login',

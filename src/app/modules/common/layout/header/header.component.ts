@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { GlobalService } from 'src/app/services/global.service';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { LocalStorage } from '../../helper/localStorage';
+import { Router } from '@angular/router';
 // import { environment } from 'src/environments/environment';
 
 @Component({
@@ -23,7 +24,8 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   dataUser: any
   constructor(private globalService: GlobalService,
     private authService: AuthService,
-    private localStorageService: LocalStorage) {
+    private localStorageService: LocalStorage,
+    private router: Router) {
     super();
   }
   ngOnInit(): void {
@@ -53,6 +55,10 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
   logout() {
     this.authService.logout();
+  }
+
+  gotoEmployeeProfile() {
+    this.router.navigate(['/personal-info']);
   }
 
   listeningEvent(): void {

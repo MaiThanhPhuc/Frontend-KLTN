@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { AppCommonModule } from '../common/app-common.module';
 import { HomeModule } from '../home/home.module';
 import { ManageLeaveRequestComponent } from './components/manage-leave-request/manage-leave-request.component';
+import { DetailLeaveRequestComponent } from './components/leave-request/detail-leave-request/detail-leave-request.component';
 @NgModule({
   declarations: [
     LeavesComponent,
@@ -33,6 +34,7 @@ import { ManageLeaveRequestComponent } from './components/manage-leave-request/m
     LeaveManagementComponent,
     LeaveRequestFormComponent,
     ManageLeaveRequestComponent,
+    DetailLeaveRequestComponent,
   ],
   imports: [
     CommonModule,

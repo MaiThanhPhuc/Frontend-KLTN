@@ -1,0 +1,40 @@
+@import "src/styles/global/_global.scss";
+
+.employee-info-container {
+  margin: 24px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+
+  .header {
+
+    span {
+      font-size: 18px;
+      font-weight: 700;
+    }
+  }
+
+  .content {
+    margin: 24px;
+
+    .left-content {}
+
+    .right-content {
+      .sub-text {
+        font-size: 14px;
+        margin: 6px 0;
+        color: #8e8e8e;
+      }
+
+      .container--name {
+        display: flex;
+
+        .name {
+          font-size: 28px;
+          font-weight: bold;
+        }
+
+      }
+    }
+  }
+}
