@@ -58,7 +58,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
 
   gotoEmployeeProfile() {
-    this.router.navigate(['/personal-info']);
+    this.router.navigate(['/employee-info']);
   }
 
   listeningEvent(): void {

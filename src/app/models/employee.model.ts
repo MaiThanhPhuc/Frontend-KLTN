@@ -40,6 +40,12 @@ export class Employee {
   team: TeamModel;
   office: OfficeModel;
   jobLeaveId: string;
+  age: number;
+  statedDate: Date;
+  address: string;
+  nation: string;
+  bankName: string;
+  bankNo: string;
 }
 
 export class SearchModal {

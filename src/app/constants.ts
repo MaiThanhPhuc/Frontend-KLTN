@@ -7,6 +7,7 @@ export class Constants {
   ]
 
   public static EmployeeRole: OptionModel[] = [
+    new OptionModel("Human Resource", 0),
     new OptionModel("Manager", 1),
     new OptionModel("Leader", 2),
     new OptionModel("Member", 3)

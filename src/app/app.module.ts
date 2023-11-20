@@ -15,6 +15,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthPermissionService } from './guards/auth-permission.service';
 import { AuthService } from './services/auth.service';
+import { EmployeeProfileModule } from './modules/employee-profile/employee-profile.module';
 
 export function StartupServiceFactory(http: HttpClient) {
   // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
@@ -48,7 +49,8 @@ export function StartupServiceFactory(http: HttpClient) {
     BrowserAnimationsModule,
     AppCommonModule,
     HttpClientModule,
-    LoginComponent
+    LoginComponent,
+    EmployeeProfileModule
   ],
 })
 export class AppModule {

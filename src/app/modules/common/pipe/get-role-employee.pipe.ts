@@ -10,7 +10,7 @@ export class GetRoleEmployee implements PipeTransform {
   }
 
   transform(value: number) {
-    if (!value) {
+    if (value == null) {
       return 'Undefine';
     }
     return commonFunction.getTextRole(value);
