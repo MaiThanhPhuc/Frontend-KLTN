@@ -26,4 +26,8 @@ export class EmployeeService extends BaseService {
   getAbsentByDate(request: SearchModal): Observable<any> {
     return this.get(`employee/getAbsentByDate`, request);
   }
+
+  importDataEmployee(request: Employee[]): Observable<Employee[]> {
+    return this.post("employee/importData", request);
+  }
 }

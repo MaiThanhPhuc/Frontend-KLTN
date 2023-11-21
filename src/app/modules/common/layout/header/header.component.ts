@@ -64,9 +64,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   listeningEvent(): void {
     this.globalService.isLoginSubject$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (res) => {
-
         this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
-        console.log(this.dataUser);
       });
   }
 }

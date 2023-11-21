@@ -13,7 +13,7 @@ const routes: Routes = [{
   path: '', component: LeavesComponent,
   children: [
     { path: 'request', component: LeaveRequestComponent },
-    { path: 'detail-leave-request/:id', component: DetailLeaveRequestComponent },
+    { path: 'leave-request-detail/:id', component: DetailLeaveRequestComponent },
     { path: 'manage-request', component: ManageLeaveRequestComponent },
     { path: 'calendar', component: CalendarComponent },
     { path: 'my-leaves', component: MyLeavesComponent },

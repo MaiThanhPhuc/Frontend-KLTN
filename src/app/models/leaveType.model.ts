@@ -50,6 +50,7 @@ export class LeaveTypePopupModel {
 }
 
 export class LeaveRequest {
+  _id: string;
   employee: any;
   leaveType: any;
   date: Date;

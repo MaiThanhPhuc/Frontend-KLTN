@@ -1,0 +1,96 @@
+<div class="company-employee-container">
+  <div class="header">
+    <span>
+      Import data employee
+    </span>
+    <div class="divider"></div>
+  </div>
+  <div class="c-btn-add-chemical">
+    <div class="select-pdf-from-device fit-content margin-bottom-24">
+      <button qms-btn-outlined (click)="fileInput.click()">
+        <mat-icon class="material-icons-outlined">upload</mat-icon>
+        Import employee data
+      </button>
+      <input hidden #fileInput type="file" (change)="onFileChange($any($event))"
+        accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    </div>
+
+    <div>
+      <button (click)="submit()">Save</button>
+    </div>
+  </div>
+  <div class="content">
+    <div class="employee-table">
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="firstName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="lastName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.lastName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="birthday">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </th>
+          <td mat-cell *matCellDef="let row"> {{row.birthday | date}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+          <td mat-cell *matCellDef="let row"> {{row.email}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+          <td mat-cell *matCellDef="let row"> {{row.gender}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="phone">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+          <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startedDate">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Started Date </th>
+          <td mat-cell *matCellDef="let row"> {{row.startedDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="address">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bankName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Name </th>
+          <td mat-cell *matCellDef="let row"> {{row.bankName}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="bankNo">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No </th>
+          <td mat-cell *matCellDef="let row"> {{row.bankNo}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="role">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
+          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        <!-- Row shown when there is no matching data. -->
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="4">No data matching the filter</td>
+        </tr>
+      </table>
+
+      <mat-paginator (page)="handlePageEvent($event)" [length]="countAllData" [pageIndex]="pageIndex"
+        [pageSize]="pageSize" aria-label="Select page of users"></mat-paginator>
+    </div>
+  </div>
+</div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>

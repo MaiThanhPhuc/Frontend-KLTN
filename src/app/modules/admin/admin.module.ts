@@ -35,6 +35,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { GetRoleEmployee } from '../common/pipe/get-role-employee.pipe';
 import { LeaveTypePopupComponent } from './components/company-management/add-edit-employee/leave-type-popup/leave-type-popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ImportDataComponent } from './components/import-data/import-data.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -50,6 +51,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     ArchiveComponent,
     AddEditLeaveTypePopupComponent,
     LeaveTypePopupComponent,
+    ImportDataComponent,
   ],
   imports: [
     CommonModule,

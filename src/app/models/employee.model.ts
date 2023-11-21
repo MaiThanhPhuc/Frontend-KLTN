@@ -30,8 +30,7 @@ export class Employee {
   birthday: Date;
   email: string;
   gender: string;
-  phone: number;
-  citizenId: number;
+  phone: string;
   status: number;
   role: number;
   department: DepartmentModel;
@@ -41,9 +40,9 @@ export class Employee {
   age: number;
   startedDate: Date;
   address: string;
-  nation: string;
   bankName: string;
   bankNo: string;
+  checked?: boolean;
 }
 
 export class SearchModal {
@@ -110,6 +109,21 @@ export const BasicInfoEmployeeField = [
         value: "",
       },
       {
+        key: "gender",
+        label: "Gender",
+        isRequired: true,
+        value: "",
+        isOption: true,
+        options: Constants.Gender
+      },
+      {
+        key: "birthday",
+        label: "Birthday",
+        isRequired: true,
+        value: "",
+        isDate: true
+      },
+      {
         key: "email",
         label: "Email",
         isRequired: true,
@@ -125,13 +139,7 @@ export const BasicInfoEmployeeField = [
         value: "",
         isPassword: true
       },
-      {
-        key: "birthday",
-        label: "Birthday",
-        isRequired: true,
-        value: "",
-        isDate: true
-      },
+
       {
         key: "phone",
         label: "Phone",
@@ -139,6 +147,19 @@ export const BasicInfoEmployeeField = [
         value: "",
         type: 'number',
         isCustomType: true
+      },
+      {
+        key: "address",
+        label: "Address",
+        isRequired: false,
+        value: "",
+      },
+      {
+        key: "startedDate",
+        label: "Started Date",
+        isRequired: true,
+        value: "",
+        isDate: true
       },
       {
         key: "role",
@@ -156,6 +177,19 @@ export const BasicInfoEmployeeField = [
         isOption: true,
         options: Constants.EmployeeStatus
       },
+      {
+        key: "bankName",
+        label: "Bank Name",
+        isRequired: false,
+        value: "",
+      },
+      {
+        key: "bankNo",
+        label: "Account No.",
+        isRequired: false,
+        value: "",
+      },
+
     ]
   },
 

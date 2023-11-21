@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { Employee, SearchModal } from 'src/app/models/employee.model';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
@@ -26,16 +27,23 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
   keyword = ''
   currentUserId: string
   userData: Employee
+  leaveRequestId: string
+  leaveRequestData: any;
   constructor(private leaveTypeService: LeaveTypeService,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private route: ActivatedRoute,
   ) {
     super();
   }
   ngOnInit() {
+    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+      this.leaveRequestId = params['id'];
+    });
     this.currentUserId = localStorage.getItem('userId') || '';
     this.initParamSearch();
     this.loadData();
     this.loadDataEmployee()
+    this.loadDataLeaveRequest()
   }
 
   initParamSearch() {
@@ -82,6 +90,15 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
         this.isLoading = false
       }
 
+    })
+  }
+
+  loadDataLeaveRequest() {
+    this.isLoading = true;
+    this.leaveTypeService.getLeaveRequestById(this.leaveRequestId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) this.leaveRequestData = res
+      console.log(this.leaveRequestData);
+      this.isLoading = false
     })
   }
 }

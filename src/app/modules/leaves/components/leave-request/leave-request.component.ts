@@ -19,7 +19,7 @@ import { BaseComponent } from 'src/app/utils/base.component';
 
 export class LeaveRequestComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = ['request_date', 'leave_type', 'leave_time', 'total_leave', 'status', 'action'];
-  dataSource: MatTableDataSource<TeamModel>;
+  dataSource: MatTableDataSource<LeaveRequest>;
   isLoading = false
   paramSearch: SearchModal = {};
   pageSize = 5;
@@ -80,7 +80,9 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
     this.paramSearch.limit = event.pageSize
     this.loadData();
   }
-
+  openDetailLeaveRequest(item: LeaveRequest) {
+    this.router.navigate([`/leaves/leave-request-detail/${item._id}`])
+  }
 
 }
 

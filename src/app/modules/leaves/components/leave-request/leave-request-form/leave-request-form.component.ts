@@ -39,6 +39,7 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
   leaveTypeOptions: OptionModel[];
   isLoading = false
   leaveRequestData = new LeaveRequest()
+  currentUserId: string
   leaveRequestFormGroup: FormGroup = new FormGroup({
     leaveType: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
@@ -53,6 +54,7 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserId = localStorage.getItem('userId') || '';
     this.getAllLeaveType();
   }
 
@@ -70,7 +72,7 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
       return;
     }
     this.isLoading = true
-    this.leaveRequestData.employee = '653b2a1f4b48382ed217f25b'
+    this.leaveRequestData.employee = this.currentUserId
 
     const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
     inputPopupData.submitButton = "Confirm"

@@ -10,6 +10,7 @@ import { AddEditEmployeeComponent } from './components/company-management/add-ed
 import { ArchiveComponent } from './components/company-management/archive/archive.component';
 import { LeaveTypeManagementComponent } from './components/leave-type-management/leave-type-management.component';
 import { HolidaysManagementComponent } from './components/holidays-management/holidays-management.component';
+import { ImportDataComponent } from './components/import-data/import-data.component';
 
 const routes: Routes = [{
   path: '', component: AdminComponent,
@@ -46,6 +47,7 @@ const routes: Routes = [{
     },
     { path: 'leave-type', component: LeaveTypeManagementComponent },
     { path: 'holidays', component: HolidaysManagementComponent },
+    { path: 'import-data', component: ImportDataComponent },
   ]
 }];
 

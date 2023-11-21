@@ -6,6 +6,11 @@ export class Constants {
     new OptionModel("Deactive", 1)
   ]
 
+  public static Gender: OptionModel[] = [
+    new OptionModel("Male", 0),
+    new OptionModel("Female", 1)
+  ]
+
   public static EmployeeRole: OptionModel[] = [
     new OptionModel("Human Resource", 0),
     new OptionModel("Manager", 1),

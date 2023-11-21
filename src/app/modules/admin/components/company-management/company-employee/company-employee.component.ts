@@ -30,7 +30,7 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit {
   countAllData = 0
   keyword = ''
   isLoading = false
-  constructor(private _liveAnnouncer: LiveAnnouncer,
+  constructor(
     private router: Router,
     private dialog: MatDialog,
     private employeeService: EmployeeService
