@@ -15,7 +15,6 @@ export interface IEmployee {
   citizenId: number;
   status: number;
   role: number;
-  contract: string;
   departmentId: string;
   teamId: string;
   officeId: string;
@@ -35,13 +34,12 @@ export class Employee {
   citizenId: number;
   status: number;
   role: number;
-  contract: string;
   department: DepartmentModel;
   team: TeamModel;
   office: OfficeModel;
   jobLeaveId: string;
   age: number;
-  statedDate: Date;
+  startedDate: Date;
   address: string;
   nation: string;
   bankName: string;
