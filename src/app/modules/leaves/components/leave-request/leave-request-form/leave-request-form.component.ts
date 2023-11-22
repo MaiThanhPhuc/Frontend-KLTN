@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs';
@@ -32,7 +32,7 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
 
-
+  @Output() reload: EventEmitter<any> = new EventEmitter();
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
   allLeaveTypeOptions = Constants.LeaveTypeTimeOptions
@@ -91,6 +91,8 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
         this.isLoading = true
         this.leaveTypeService.createLeaveRequest(this.leaveRequestData).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
           if (res) ToastService.success("Create leave request!")
+          this.leaveRequestFormGroup.reset()
+          this.reload.emit()
           this.isLoading = false
         })
 

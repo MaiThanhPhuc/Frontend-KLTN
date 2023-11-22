@@ -58,6 +58,7 @@ export class SearchModal {
   employeeId?: string;
   dateFrom?: Date;
   dateTo?: Date;
+  currentDate?: boolean;
 }
 
 export class SearchEmployeeResponse {
@@ -145,8 +146,6 @@ export const BasicInfoEmployeeField = [
         label: "Phone",
         isRequired: true,
         value: "",
-        type: 'number',
-        isCustomType: true
       },
       {
         key: "address",

@@ -28,6 +28,17 @@
     }
   }
 
+  .group-action {
+    .button-import {
+      margin: 24px 0;
+    }
+
+    a {
+      text-decoration: underline;
+      color: rgb(19, 19, 226);
+    }
+  }
+
   .content {
     margin: 24px;
 

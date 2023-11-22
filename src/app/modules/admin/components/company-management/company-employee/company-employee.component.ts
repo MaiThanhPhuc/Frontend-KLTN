@@ -24,7 +24,7 @@ export class CompanyEmployeeComponent extends BaseComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
   paramSearch: SearchModal = {};
-  pageSize = 5;
+  pageSize = 10;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
   countAllData = 0

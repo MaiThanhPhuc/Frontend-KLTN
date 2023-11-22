@@ -26,29 +26,23 @@
 
   .keyword {
     color: #000;
-    font-size: 14.5px;
+    font-size: 16px;
     font-weight: 500;
   }
 
   .detail-info {
-    .header {
-      font-size: 17px;
-      font-weight: 700;
-      margin: 16px 0;
-    }
-
     .detail-info-item {
       margin-bottom: 24px;
     }
   }
 
-  .detail-leave-table {
-    .header {
-      font-size: 17px;
-      font-weight: 700;
-      margin: 16px 0;
-    }
+  .header {
+    font-size: 17px;
+    font-weight: 700;
+    margin: 16px 0;
+  }
 
+  .detail-leave-table {
     .mat-mdc-table {
       box-shadow: none;
     }
@@ -63,6 +57,11 @@
       text-align: center;
     }
 
+  }
+
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    text-align: center;
   }
 
   .mr-8 {

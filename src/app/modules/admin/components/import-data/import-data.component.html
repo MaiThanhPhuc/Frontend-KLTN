@@ -5,22 +5,28 @@
     </span>
     <div class="divider"></div>
   </div>
-  <div class="c-btn-add-chemical">
-    <div class="select-pdf-from-device fit-content margin-bottom-24">
-      <button qms-btn-outlined (click)="fileInput.click()">
-        <mat-icon class="material-icons-outlined">upload</mat-icon>
+  <div class="group-action">
+    <div class="button-import">
+      <button color="primary" mat-flat-button (click)="fileInput.click()">
+        <mat-icon>upload</mat-icon>
         Import employee data
       </button>
       <input hidden #fileInput type="file" (change)="onFileChange($any($event))"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
     </div>
+    <p *ngIf="!countAllData">
+      Please upload file excel with the format below.
+      <a target="_blank"
+        href="https://docs.google.com/spreadsheets/d/1ufzbHPwMinZUujnxqGkoWaxamacWkahMjPiw1LRR1_Q/edit?usp=sharing">
+        Here</a>
+    </p>
 
-    <div>
-      <button (click)="submit()">Save</button>
+    <div *ngIf="countAllData">
+      <button color="primary" mat-flat-button (click)="submit()">Save</button>
     </div>
   </div>
   <div class="content">
-    <div class="employee-table">
+    <div class="employee-table " *ngIf="countAllData">
       <table mat-table [dataSource]="dataSource" matSort>
 
         <ng-container matColumnDef="firstName">
@@ -71,11 +77,6 @@
         <ng-container matColumnDef="bankNo">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No </th>
           <td mat-cell *matCellDef="let row"> {{row.bankNo}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="role">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

@@ -9,7 +9,7 @@
         <app-leave-request-form></app-leave-request-form>
       </div>
       <div class="col-6">
-        <app-user-leave-table></app-user-leave-table>
+        <app-user-leave-table (reload)="loadData()"></app-user-leave-table>
       </div>
     </div>
 

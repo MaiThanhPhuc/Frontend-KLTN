@@ -17,7 +17,8 @@ import { BaseComponent } from 'src/app/utils/base.component';
 export class DetailLeaveRequestComponent extends BaseComponent implements OnInit {
   displayedColumns: string[] = ['request_date', 'leave_type', 'leave_time', 'total_leave', 'status'];
   displayedApprovalColumns: string[] = ['approver', 'approved_time', 'status', 'description'];
-  dataSource: MatTableDataSource<any>;
+  dataSourceLeaveTime: MatTableDataSource<any>;
+  dataSourceApproval: MatTableDataSource<any>;
   isLoading = false;
   paramSearch: SearchModal = {};
   pageSize = 5;
@@ -29,6 +30,9 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
   userData: Employee
   leaveRequestId: string
   leaveRequestData: any;
+  dataInfomation: any;
+  dataLeaveType: any;
+  dataApproval: any;
   constructor(private leaveTypeService: LeaveTypeService,
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
@@ -40,46 +44,8 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
       this.leaveRequestId = params['id'];
     });
     this.currentUserId = localStorage.getItem('userId') || '';
-    this.initParamSearch();
-    this.loadData();
     this.loadDataEmployee()
     this.loadDataLeaveRequest()
-  }
-
-  initParamSearch() {
-    this.paramSearch = {
-      limit: this.pageSize,
-      pageIndex: this.pageIndex,
-      keyword: this.keyword,
-      employeeId: this.currentUserId
-    }
-  }
-  onSearchKeyword() {
-    this.paramSearch.keyword = this.keyword
-    this.loadData();
-  }
-  loadData() {
-    this.isLoading = true
-
-    this.leaveTypeService.searchLeaveRequest(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
-      if (res) {
-        this.countAllData = res.totalItems
-        this.dataSource = new MatTableDataSource(res.result);
-      }
-      this.isLoading = false
-    });
-    this.isLoading = false
-  }
-
-  handlePageEvent(event: PageEvent) {
-    if (event.pageSize !== this.paramSearch.limit) {
-      this.paramSearch.pageIndex = 1
-      this.pageIndex = 0
-    } else {
-      this.paramSearch.pageIndex = event.pageIndex + 1
-    }
-    this.paramSearch.limit = event.pageSize
-    this.loadData();
   }
 
   loadDataEmployee() {
@@ -96,8 +62,13 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
   loadDataLeaveRequest() {
     this.isLoading = true;
     this.leaveTypeService.getLeaveRequestById(this.leaveRequestId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-      if (res) this.leaveRequestData = res
-      console.log(this.leaveRequestData);
+      if (res) {
+        this.leaveRequestData = res
+        this.dataLeaveType = res.leaveType
+        this.dataApproval = res.approvalStatus
+        this.dataSourceLeaveTime = new MatTableDataSource([res]);
+        this.dataSourceApproval = new MatTableDataSource(this.dataApproval);
+      }
       this.isLoading = false
     })
   }

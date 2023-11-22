@@ -22,7 +22,7 @@ type AOA = Array<Array<[]>>;
 export class ImportDataComponent extends BaseComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
-  displayedColumns: string[] = ['firstName', 'lastName', 'birthday', 'email', 'gender', 'phone', 'startedDate', 'address', 'bankName', 'bankNo', 'role'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'birthday', 'email', 'gender', 'phone', 'startedDate', 'address', 'bankName', 'bankNo'];
   dataSource: MatTableDataSource<Employee>;
   private _fields: EmployeeImportField[] = [
     {
@@ -64,10 +64,6 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
     {
       fieldName: 'bankNo',
       mapTo: 'bankNo'
-    },
-    {
-      fieldName: 'role',
-      mapTo: 'role'
     }
   ];
 

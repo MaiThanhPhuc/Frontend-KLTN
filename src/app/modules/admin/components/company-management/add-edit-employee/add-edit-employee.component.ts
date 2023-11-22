@@ -128,7 +128,6 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   save() {
     this.isLoading = true
     this.parseDataToObject()
-    console.log(this.dataSave);
     if (this.employeeId) {
       this.dataSave._id = this.employeeId
       this.employeeService.updateEmployeeById(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: boolean) => {
@@ -138,15 +137,16 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
         }
         this.isLoading = false
       })
+    } else {
+      this.employeeService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Employee) => {
+        if (res) {
+          this.employeeId = res._id
+          this.mapDataToForm(res)
+        }
+        ToastService.success("Create employee success")
+        this.isLoading = false
+      })
     }
-    this.employeeService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Employee) => {
-      if (res) {
-        this.employeeId = res._id
-        this.mapDataToForm(res)
-      }
-      ToastService.success("Create employee success")
-      this.isLoading = false
-    })
   }
 
   parseDataToObject() {
@@ -244,7 +244,8 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   }
   onSelectLeaveType() {
     const inputPopupData: LeaveTypePopupModel = new LeaveTypePopupModel();
-    inputPopupData.leaveTypeOption = this.allLeaveTypeOptions;
+    inputPopupData.leaveTypeOption = this.allLeaveTypeOptions
+      .filter(item => !this.leaveTypeEmployeeData.some(item2 => item2.leaveType._id === item.id));
     const selectLeaveTypePopup = this.dialog.open(LeaveTypePopupComponent, {
       autoFocus: false,
       width: '500px',
@@ -272,6 +273,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
     )
     this.leaveTypeService.addEmployeeLeaveType(request).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) this.isLoading = false
+      this.loadDataEmployee();
       ToastService.success("Add leave type success")
     })
   }

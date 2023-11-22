@@ -6,6 +6,7 @@ import { AbsentEmployeeInfo, Employee, SearchModal } from 'src/app/models/employ
 import { EmployeeService } from 'src/app/modules/admin/services/employee.service';
 import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
 import { BaseComponent } from 'src/app/utils/base.component';
+import commonFunction from 'src/app/utils/common';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -39,7 +40,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       limit: this.pageSize,
       pageIndex: this.pageIndex,
       keyword: this.keyword,
-      dateFrom: new Date()
+      currentDate: true,
     }
   }
   onSearchKeyword() {
