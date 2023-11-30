@@ -20,6 +20,8 @@ import { LeaveTypeService } from '../../../services/leaveType.service';
 import { EmployeeLeaveType, EmployeeLeaveTypeReponse, EmployeeLeaveTypeRequest, LeaveType, LeaveTypePopupModel } from 'src/app/models/leaveType.model';
 import { MatDialog } from '@angular/material/dialog';
 import { LeaveTypePopupComponent } from './leave-type-popup/leave-type-popup.component';
+import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
+import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 
 @Component({
   selector: 'app-add-edit-employee',
@@ -90,9 +92,9 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       if (res) {
         this.mapDataToForm(res.employeeInfo)
         this.initDataLeaveTypeEmp(res.leaveType)
+        this.isLoading = false
       }
 
-      this.isLoading = false
     })
   }
 
@@ -141,6 +143,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       this.employeeService.createEmployee(this.dataSave).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: Employee) => {
         if (res) {
           this.employeeId = res._id
+          this.loadDataEmployee()
           this.mapDataToForm(res)
         }
         ToastService.success("Create employee success")
@@ -237,7 +240,26 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   }
 
   onChangePassword() {
-
+    const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
+    inputPopupData.submitButton = "Confirm"
+    inputPopupData.cancelButton = "Cancel"
+    inputPopupData.primarySubmit = true;
+    const confirmDeletePopup = this.dialog.open(SimpleConfirmPopupComponent, {
+      autoFocus: false,
+      width: '400px',
+      disableClose: true
+    });
+    confirmDeletePopup.componentInstance.data = inputPopupData;
+    confirmDeletePopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      if (confirm) {
+        this.isLoading = true
+        this.employeeService.resetPassword(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          ToastService.success("Reset password success")
+          this.isLoading = false
+          this.loadDataEmployee()
+        })
+      }
+    })
   }
 
   getFormControlByKey(key: string) {
@@ -249,8 +271,12 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   }
   onSelectLeaveType() {
     const inputPopupData: LeaveTypePopupModel = new LeaveTypePopupModel();
-    inputPopupData.leaveTypeOption = this.allLeaveTypeOptions
-      .filter(item => !this.leaveTypeEmployeeData.some(item2 => item2.leaveType._id === item.id));
+    if (this.isEdit) {
+      inputPopupData.leaveTypeOption = this.allLeaveTypeOptions
+        .filter(item => !this.leaveTypeEmployeeData.some(item2 => item2.leaveType._id === item.id));
+    } else {
+      inputPopupData.leaveTypeOption = this.allLeaveTypeOptions
+    }
     const selectLeaveTypePopup = this.dialog.open(LeaveTypePopupComponent, {
       autoFocus: false,
       width: '500px',

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LeaveType } from 'src/app/models/leaveType.model';
 import { BaseComponent } from 'src/app/utils/base.component';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 @Component({
   selector: 'app-add-edit-leave-type-popup',
@@ -11,6 +12,8 @@ import { BaseComponent } from 'src/app/utils/base.component';
 })
 export class AddEditLeaveTypePopupComponent extends BaseComponent implements OnInit {
   @Input() isEdit = false;
+  editor = ClassicEditor;
+
   leaveTypeDataFormGroup: FormGroup = new FormGroup({
     name: new FormControl('', Validators.required),
     default: new FormControl('', Validators.required),

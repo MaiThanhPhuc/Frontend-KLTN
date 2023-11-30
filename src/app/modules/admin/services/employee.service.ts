@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employee, IEmployee, SearchModal, SearchEmployeeResponse } from 'src/app/models/employee.model';
+import { Employee, SearchModal, SearchEmployeeResponse } from 'src/app/models/employee.model';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
-import { OfficeModel } from 'src/app/models/office.model';
 import { BaseService } from 'src/app/services/base.service';
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,10 @@ export class EmployeeService extends BaseService {
   }
   getAbsentByDate(request: SearchModal): Observable<any> {
     return this.get(`employee/getAbsentByDate`, request);
+  }
+
+  resetPassword(employeeId: string): Observable<any> {
+    return this.put(`employee/resetPassword/${employeeId}`, {});
   }
 
   importDataEmployee(request: Employee[]): Observable<Employee[]> {

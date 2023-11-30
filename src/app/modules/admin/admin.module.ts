@@ -36,6 +36,7 @@ import { GetRoleEmployee } from '../common/pipe/get-role-employee.pipe';
 import { LeaveTypePopupComponent } from './components/company-management/add-edit-employee/leave-type-popup/leave-type-popup.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImportDataComponent } from './components/import-data/import-data.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -74,7 +75,8 @@ import { ImportDataComponent } from './components/import-data/import-data.compon
     ReactiveFormsModule,
     AppCommonModule,
     MatCheckboxModule,
-    MatDialogModule
+    MatDialogModule,
+    CKEditorModule
   ],
   providers: [
     LoadingService,

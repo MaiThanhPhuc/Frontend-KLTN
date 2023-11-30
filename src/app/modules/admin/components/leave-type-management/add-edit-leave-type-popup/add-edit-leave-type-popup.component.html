@@ -25,13 +25,12 @@
       </mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="d-block">
-      <mat-label>Description</mat-label>
-      <textarea style="height: 250px;" [(ngModel)]="leaveTypeData.description" [formControlName]="'description'"
-        required id="Description" type="text" matInput></textarea>
-      <mat-error>Invalid input
-      </mat-error>
-    </mat-form-field>
+    <mat-label>Description</mat-label>
+    <ckeditor [editor]="editor" [(ngModel)]="leaveTypeData.description" [data]="leaveTypeData.description"></ckeditor>
+    <!-- <textarea style="height: 250px;" [(ngModel)]="leaveTypeData.description" [formControlName]="'description'"
+        required id="Description" type="text" matInput></textarea> -->
+    <!-- <mat-error>Invalid input
+    </mat-error> -->
 
   </div>
   <div class="footer d-flex justify-content-end mt-16">

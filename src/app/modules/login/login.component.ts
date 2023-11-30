@@ -13,12 +13,13 @@ import { LocalStorage } from '../common/helper/localStorage';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { AppCommonModule } from '../common/app-common.module';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, CommonModule],
+  imports: [MatFormFieldModule, MatInputModule, ReactiveFormsModule, MatButtonModule, CommonModule, AppCommonModule],
 })
 export class LoginComponent extends BaseComponent implements OnInit {
 
@@ -30,7 +31,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   employeeData = new LoginRequest();
   localStorage: LocalStorage;
   iconPath = `${environment.assetsPath}/img/login_img.png`;
-
+  isLoading = false;
   constructor(
     private authService: AuthService,
     private localStorageService: LocalStorage,
@@ -47,6 +48,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
   }
 
   onSubmitForm() {
+    this.isLoading = true
     this.authService.login(this.employeeData).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res) => {
       if (res) {
         localStorage.setItem('accessToken', res.accessToken)
@@ -54,10 +56,12 @@ export class LoginComponent extends BaseComponent implements OnInit {
         localStorage.setItem('userId', res._id)
         this.globalService.announceIsLogin(true);
         this.errorMsg = '';
+        this.isLoading = false
         this.router.navigate([`/home/dashboard`])
       }
     },
       (error => {
+        this.isLoading = false
         this.errorMsg = error.error
       }))
   }
