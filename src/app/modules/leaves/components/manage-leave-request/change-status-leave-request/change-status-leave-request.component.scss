@@ -1,0 +1,22 @@
+@mixin textFont600($size , $line-height) {
+  font-size: $size;
+  line-height: $line-height;
+  font-weight: 600;
+}
+
+.change-status-container {
+  padding: 25px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    .title {
+      display: flex;
+      align-items: center;
+      @include textFont600(18px, 22px);
+    }
+
+  }
+}

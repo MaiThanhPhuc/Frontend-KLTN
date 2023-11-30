@@ -64,4 +64,5 @@ export enum LeaveRequestStatusEnum {
   PENDING = 1,
   APPROVED = 2,
   WAITING = 3,
+  REJECT = 4,
 }

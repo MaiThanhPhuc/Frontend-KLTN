@@ -53,7 +53,6 @@ export class LeavesHistoryComponent extends BaseComponent implements OnInit {
       if (res) {
         this.countAllData = res.totalItems
         this.dataSource = new MatTableDataSource(res.result);
-        console.log(res.result);
       }
       this.isLoading = false
     });

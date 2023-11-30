@@ -38,6 +38,15 @@ export class Constants {
     new OptionModel("Cancelled", 0),
     new OptionModel("Pending", 1),
     new OptionModel("Approved", 2),
-    new OptionModel("Waiting", 3)
+    new OptionModel("Waiting", 3),
+    new OptionModel("Reject", 4)
   ]
+
+  public static LeaveRequestStatusOptions: OptionModel[] = [
+    new OptionModel("Approved", 2),
+    new OptionModel("Reject", 4)
+  ]
+
+  public static LeaveRequestCancelOption = new OptionModel("Cancel", 0)
+
 }

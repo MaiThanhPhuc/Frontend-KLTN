@@ -58,4 +58,10 @@ export class LeaveTypeService extends BaseService {
   getLeaveRequestById(leaveRequestId: string): Observable<any> {
     return this.get(`leaveType/getLeaveRequestById/${leaveRequestId}`);
   }
+  updateLeaveRequestById(leaveRequestId: string, data: any): Observable<any> {
+    return this.put(`leaveType/updateLeaveRequestById/${leaveRequestId}`, data);
+  }
+  updateLeaveRequestByApprovalId(leaveRequestId: string, data: any): Observable<any> {
+    return this.put(`leaveType/updateLeaveRequestByApprovalId/${leaveRequestId}`, data);
+  }
 }

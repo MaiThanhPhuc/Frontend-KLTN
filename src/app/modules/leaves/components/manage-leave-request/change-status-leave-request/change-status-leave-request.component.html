@@ -1,0 +1,34 @@
+<div class="change-status-container">
+
+  <div class="header">
+    <div class="title">Update status leave request</div>
+    <div class="">
+      <button tabindex="-1" mat-icon-button (click)="closePopup()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-body" [formGroup]="leaveTypeDataFormGroup">
+    <mat-form-field appearance="fill" class="d-block">
+      <mat-label>Status</mat-label>
+      <mat-select [(ngModel)]="selectedStatus" [formControlName]="'status'">
+        <mat-option *ngFor="let option of statusOptions" [value]="option.id">{{option.text}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="d-block">
+      <mat-label>Description</mat-label>
+      <textarea style="height: 250px;" [(ngModel)]="description" [formControlName]="'description'" id="Description"
+        type="text" matInput></textarea>
+      <mat-error>Invalid input
+      </mat-error>
+    </mat-form-field>
+
+  </div>
+  <div class="footer d-flex justify-content-end mt-16">
+    <button id="btn-save" mat-flat-button color="primary" [style.width.px]='100' (click)="onSubmitForm()">
+      Save
+    </button>
+  </div>
+</div>

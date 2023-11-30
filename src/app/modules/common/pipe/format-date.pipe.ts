@@ -11,7 +11,7 @@ export class FormatDate implements PipeTransform {
 
   transform(date: Date) {
     if (!date) {
-      return 'Undefine';
+      return '-';
     }
     return commonFunction.formatMMDDYYY(new Date(date));
   }

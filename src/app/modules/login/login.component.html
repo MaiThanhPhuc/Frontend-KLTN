@@ -15,7 +15,7 @@
       <mat-form-field appearance="fill" class="d-block">
         <mat-label>Password</mat-label>
         <input [(ngModel)]="employeeData.password" [formControlName]="'password'" required id="password" type="password"
-          matInput>
+          (keyup.enter)="onSubmitForm()" matInput>
         <!-- <mat-error *ngIf="getFormControlByKey('password').touched">Invalid input
         </mat-error> -->
       </mat-form-field>

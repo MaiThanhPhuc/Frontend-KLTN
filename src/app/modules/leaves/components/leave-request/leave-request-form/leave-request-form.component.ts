@@ -90,10 +90,12 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
       if (confirm) {
         this.isLoading = true
         this.leaveTypeService.createLeaveRequest(this.leaveRequestData).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
-          if (res) ToastService.success("Create leave request!")
-          this.leaveRequestFormGroup.reset()
-          this.reload.emit()
-          this.isLoading = false
+          if (res) {
+            ToastService.success("Create leave request!")
+            this.leaveRequestFormGroup.reset()
+            this.reload.emit()
+            this.isLoading = false
+          }
         })
 
       }

@@ -199,20 +199,25 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
       this.employeeDataFormGroup.controls[`${item.key}`] = new FormControl(item.value, []);
     }
     if (item.isCustomOption) {
-      if (item.key === 'office') item.options = this.allOffice
+      if (item.key === 'office') {
+        item.options = this.allOffice
+        item.value = data ? data.office?._id : '';
+        return item;
+      }
       if (data) {
         switch (item.key) {
           case "department":
-            item.value = data.department
-            item.options = this.allDepartment.filter(n => n.office._id === data.office).map(k => new OptionModel(k.name, k._id))
+            item.value = data?.department?._id
+            item.options = this.allDepartment.filter(n => n.office._id === data.office?._id).map(k => new OptionModel(k.name, k._id))
             break;
           case "team":
-            item.value = data.team;
-            item.options = this.allTeam.filter(n => n.department._id === data.department).map(k => new OptionModel(k.name, k._id))
+            item.value = data?.team?._id;
+            item.options = this.allTeam.filter(n => n.department._id === data.department?._id).map(k => new OptionModel(k.name, k._id))
             break;
           default:
             break;
         }
+        return item;
       }
     }
 

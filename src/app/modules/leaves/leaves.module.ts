@@ -24,6 +24,9 @@ import { AppCommonModule } from '../common/app-common.module';
 import { HomeModule } from '../home/home.module';
 import { ManageLeaveRequestComponent } from './components/manage-leave-request/manage-leave-request.component';
 import { DetailLeaveRequestComponent } from './components/leave-request/detail-leave-request/detail-leave-request.component';
+import { ChangeStatusLeaveRequestComponent } from './components/manage-leave-request/change-status-leave-request/change-status-leave-request.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { SimpleConfirmPopupComponent } from '../common/simple-confirm-popup/simple-confirm-popup.component';
 @NgModule({
   declarations: [
     LeavesComponent,
@@ -35,6 +38,7 @@ import { DetailLeaveRequestComponent } from './components/leave-request/detail-l
     LeaveRequestFormComponent,
     ManageLeaveRequestComponent,
     DetailLeaveRequestComponent,
+    ChangeStatusLeaveRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -54,7 +58,8 @@ import { DetailLeaveRequestComponent } from './components/leave-request/detail-l
     MatMenuModule,
     AppCommonModule,
     FormsModule,
-    HomeModule
+    HomeModule,
+    MatDialogModule
   ]
 })
 export class LeavesModule { }

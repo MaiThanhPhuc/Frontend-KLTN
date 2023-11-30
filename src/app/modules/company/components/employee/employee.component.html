@@ -42,32 +42,7 @@
 
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Role </th>
-          <td mat-cell *matCellDef="let row"> {{row.role}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="action">
-          <th mat-header-cell *matHeaderCellDef></th>
-          <td mat-cell *matCellDef="let row">
-            <span [matMenuTriggerFor]="menu" class="button-icon">
-              <mat-icon>
-                more_vert
-              </mat-icon>
-            </span>
-            <mat-menu #menu="matMenu">
-              <button mat-menu-item (click)="onNavigateEdit(row)">
-                <mat-icon>
-                  edit
-                </mat-icon>
-                Edit
-              </button>
-              <button mat-menu-item (click)="archiveEmployee(row)">
-                <mat-icon>
-                  archive
-                </mat-icon>
-                Archive
-              </button>
-            </mat-menu>
-          </td>
+          <td mat-cell *matCellDef="let row"> {{row.role | getRoleEmployee}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

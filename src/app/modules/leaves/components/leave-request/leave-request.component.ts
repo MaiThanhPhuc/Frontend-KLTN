@@ -4,11 +4,15 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
+import { Constants } from 'src/app/constants';
 import { SearchModal } from 'src/app/models/employee.model';
 import { LeaveRequest } from 'src/app/models/leaveType.model';
+import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { AdminService } from 'src/app/modules/admin/services/admin.service';
 import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
+import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 import { BaseComponent } from 'src/app/utils/base.component';
 
 @Component({
@@ -59,15 +63,41 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
 
   loadData() {
     this.isLoading = true
-
     this.leaveTypeService.searchLeaveRequest(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if (res) {
         this.countAllData = res.totalItems
         this.dataSource = new MatTableDataSource(res.result);
+        this.isLoading = false
       }
-      this.isLoading = false
     });
-    this.isLoading = false
+  }
+
+  updateStatus(item: any) {
+    const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
+    inputPopupData.submitButton = "Confirm"
+    inputPopupData.cancelButton = "Cancel"
+    inputPopupData.content = "Do you want to cancel this leave request?"
+    inputPopupData.primarySubmit = true;
+    const confirmRequestPopup = this.dialog.open(SimpleConfirmPopupComponent, {
+      autoFocus: false,
+      width: '400px',
+      disableClose: true
+    });
+    confirmRequestPopup.componentInstance.data = inputPopupData;
+    confirmRequestPopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      if (confirm) {
+        this.isLoading = true
+        item.status = Constants.LeaveRequestCancelOption.id
+        this.leaveTypeService.updateLeaveRequestById(item._id, item).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
+            ToastService.success("Cancel leave request success!")
+            this.loadData();
+            this.isLoading = false
+          }
+        })
+
+      }
+    })
   }
 
   handlePageEvent(event: PageEvent) {

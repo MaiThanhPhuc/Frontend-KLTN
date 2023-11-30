@@ -34,17 +34,17 @@
 
         <ng-container matColumnDef="office">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Office </th>
-          <td mat-cell *matCellDef="let row"> {{row.employee.office.name}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.employee?.office?.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="department">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Department </th>
-          <td mat-cell *matCellDef="let row"> {{row.employee.department.name}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.employee?.department?.name}} </td>
         </ng-container>
 
         <ng-container matColumnDef="team">
           <th mat-header-cell *matHeaderCellDef mat-sort-header> Team </th>
-          <td mat-cell *matCellDef="let row"> {{row.employee.team.name}} </td>
+          <td mat-cell *matCellDef="let row"> {{row.employee?.team?.name}} </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

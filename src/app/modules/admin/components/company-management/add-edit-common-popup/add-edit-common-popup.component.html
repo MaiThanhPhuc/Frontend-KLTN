@@ -83,7 +83,7 @@
 
         <mat-form-field appearance="fill" class="d-block">
           <mat-label>Leader</mat-label>
-          <mat-select [formControlName]="'leader'">
+          <mat-select [(ngModel)]="teamData.leader" [formControlName]="'leader'">
             <mat-option *ngFor="let option of allLeaderOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Invalid input

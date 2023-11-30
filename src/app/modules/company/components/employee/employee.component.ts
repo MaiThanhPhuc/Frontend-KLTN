@@ -19,7 +19,7 @@ import { EmployeeService } from 'src/app/modules/admin/services/employee.service
   styleUrls: ['./employee.component.scss']
 })
 export class EmployeeComponent extends BaseComponent implements OnInit {
-  displayedColumns: string[] = ['code', 'name', 'email', 'team', 'department', 'office', 'role', 'action'];
+  displayedColumns: string[] = ['code', 'name', 'email', 'team', 'department', 'office', 'role'];
   dataSource: MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   @ViewChild(MatSort) sort: MatSort | any;
