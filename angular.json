@@ -32,6 +32,7 @@
               "src/environments/appSettings.prod.json"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.css"
             ],
@@ -111,6 +112,7 @@
               "src/environments/appSettings.prod.json"
             ],
             "styles": [
+              "node_modules/angular-calendar/css/angular-calendar.css",
               "src/styles.scss"
             ],
             "scripts": []

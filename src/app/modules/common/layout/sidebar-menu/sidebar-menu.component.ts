@@ -36,7 +36,7 @@ export class SidebarMenuComponent {
     const isManage = this.authService.isManage()
     const homeTitle: MenuItem = new MenuItem('', "Home", "", '', true);
     const dashBoard: MenuItem = new MenuItem('dashBoard', "Dashboard", "/home/dashboard", 'dashboard', false);
-    // const workLog: MenuItem = new MenuItem('workLog', "Work Log Timesheet", "/home/work-log", 'event_available', false);
+    const workLog: MenuItem = new MenuItem('workLog', "Work Log Timesheet", "/home/work-log", 'event_available', false);
     const leaves: MenuItem = new MenuItem('', "Leaves", "", '', true);
     const request: MenuItem = new MenuItem('request', "Request", "/leaves/request", 'note_add', false);
     const manageRequest: MenuItem = new MenuItem('request', "Manage Request", "/leaves/manage-request", 'assignment_ind', false);
@@ -51,7 +51,7 @@ export class SidebarMenuComponent {
 
     var adminMenu = isAdmin ? this.initSidebarAdminMenu() : []
     var manageRole = isManage ? [manageRequest] : []
-    this.menus = [homeTitle, dashBoard, ...adminMenu, leaves, request, ...manageRole, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, employee]
+    this.menus = [homeTitle, dashBoard, workLog, ...adminMenu, leaves, request, ...manageRole, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, employee]
   }
 
   initSidebarAdminMenu(): MenuItem[] {

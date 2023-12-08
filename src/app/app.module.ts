@@ -11,8 +11,6 @@ import { GlobalService } from './services/global.service';
 import { environment, mergeNewSettings } from 'src/environments/environment';
 import { NotPermissionComponent } from './modules/not-permission/not-permission.component';
 import { LoginComponent } from './modules/login/login.component';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthPermissionService } from './guards/auth-permission.service';
 import { AuthService } from './services/auth.service';
 import { EmployeeProfileModule } from './modules/employee-profile/employee-profile.module';

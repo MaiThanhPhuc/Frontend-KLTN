@@ -1,0 +1,27 @@
+<div class="work-log-popup-container">
+
+  <div class="header">
+    <div class="title">Work log</div>
+    <div class="">
+      <button tabindex="-1" mat-icon-button color="light" (click)="closePopup()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-body" [formGroup]="workLogFormGroup">
+    <mat-label>Time</mat-label>
+    <mat-form-field appearance="fill" class="d-block">
+      <input [(ngModel)]="workLog.time" [formControlName]="'time'" required id="time" type="number" matInput>
+      <span matSuffix>hour(s)</span>
+    </mat-form-field>
+
+    <mat-label>Description</mat-label>
+    <ckeditor [editor]="editor" [(ngModel)]="workLog.description" [formControlName]="'description'"></ckeditor>
+  </div>
+  <div class="footer d-flex justify-content-end mt-16">
+    <button id="btn-save" mat-flat-button color="primary" [style.width.px]='100' (click)="onSubmitForm()">
+      {{isEdit ? "Edit" : "Save"}}
+    </button>
+  </div>
+</div>
