@@ -4,15 +4,15 @@
       <div class="col-md-4">
         <div class="btn-group">
           <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
-            onchange="onChangeMonth($event)">
+            (viewDateChange)="onChangeMonth($event)">
             Previous
           </div>
           <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate"
-            onchange="onChangeMonth($event)">
+            (viewDateChange)="onChangeMonth($event)">
             Today
           </div>
           <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
-            onchange="onChangeMonth($event)">
+            (viewDateChange)="onChangeMonth($event)">
             Next
           </div>
         </div>
@@ -26,3 +26,5 @@
     </mwl-calendar-month-view>
   </div>
 </div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>

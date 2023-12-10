@@ -21,6 +21,7 @@ import { LeaveRequestStatusBoxComponent } from './leave-request-status-box/leave
 import { FormatDateTime } from './pipe/format-date-time.pipe';
 import { FormatDate } from './pipe/format-date.pipe';
 import { MatMenuModule } from '@angular/material/menu';
+import { SafeHtmlPipe } from './pipe/safe-html.pipe';
 @NgModule({
   declarations: [
     SidebarMenuComponent,
@@ -32,7 +33,8 @@ import { MatMenuModule } from '@angular/material/menu';
     GetRoleEmployee,
     LeaveRequestStatusBoxComponent,
     FormatDateTime,
-    FormatDate
+    FormatDate,
+    SafeHtmlPipe
   ],
   imports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { MatMenuModule } from '@angular/material/menu';
     GetRoleEmployee,
     LeaveRequestStatusBoxComponent,
     FormatDateTime,
-    FormatDate
+    FormatDate,
+    SafeHtmlPipe
   ]
 })
 export class AppCommonModule { }

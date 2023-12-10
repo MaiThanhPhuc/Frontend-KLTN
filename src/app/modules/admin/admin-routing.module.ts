@@ -11,6 +11,7 @@ import { ArchiveComponent } from './components/company-management/archive/archiv
 import { LeaveTypeManagementComponent } from './components/leave-type-management/leave-type-management.component';
 import { HolidaysManagementComponent } from './components/holidays-management/holidays-management.component';
 import { ImportDataComponent } from './components/import-data/import-data.component';
+import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
 
 const routes: Routes = [{
   path: '', component: AdminComponent,
@@ -46,6 +47,7 @@ const routes: Routes = [{
       ]
     },
     { path: 'leave-type', component: LeaveTypeManagementComponent },
+    { path: 'work-log', component: WorklogManagementComponent },
     { path: 'holidays', component: HolidaysManagementComponent },
     { path: 'import-data', component: ImportDataComponent },
   ]

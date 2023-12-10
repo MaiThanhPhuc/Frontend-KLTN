@@ -24,7 +24,7 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
 
   isLoading = false
   paramSearch: SearchModal = {};
-  pageSize = 5;
+  pageSize = 100;
   pageIndex = 0;
   pageSizeOptions = [5, 10, 25];
   countAllData = 0
@@ -93,7 +93,7 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
 
   openAddEditPopup(item?: LeaveType): void {
     this.dialogRef = this.dialog.open(AddEditLeaveTypePopupComponent, {
-      width: `500px`,
+      width: `700px`,
       height: `600px`,
       disableClose: true
     });

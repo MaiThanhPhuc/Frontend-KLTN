@@ -37,6 +37,9 @@ import { LeaveTypePopupComponent } from './components/company-management/add-edi
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImportDataComponent } from './components/import-data/import-data.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatChipsModule } from '@angular/material/chips';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -53,6 +56,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     AddEditLeaveTypePopupComponent,
     LeaveTypePopupComponent,
     ImportDataComponent,
+    WorklogManagementComponent,
   ],
   imports: [
     CommonModule,
@@ -76,7 +80,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
     AppCommonModule,
     MatCheckboxModule,
     MatDialogModule,
-    CKEditorModule
+    CKEditorModule,
+    MatSidenavModule,
+    MatChipsModule
   ],
   providers: [
     LoadingService,

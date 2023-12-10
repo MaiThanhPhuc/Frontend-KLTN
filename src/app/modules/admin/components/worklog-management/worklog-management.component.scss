@@ -1,10 +1,27 @@
-@import "src/styles/global/_global.scss";
+@import "src/styles/global/_color.scss";
 
-.leave-type-container {
+.drawer-content {
+  background: #e9ecef;
+}
+
+.work-log-timesheet-container {
   margin: 24px;
   background-color: white;
   border-radius: 8px;
   padding: 16px;
+
+  .filter-box-btn-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    border-top: 1px solid $ems-blur-border-color;
+    justify-content: end;
+  }
+
+  .filter-group {
+    padding: 0 15px;
+  }
 
   .header {
 
@@ -36,21 +53,12 @@
         flex: none;
       }
 
-      .button-icon {
-        cursor: pointer;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
       .mat-mdc-header-cell,
       .mat-mdc-cell {
         text-align: center;
       }
 
-      .mat-column-code,
-      .mat-column-allowance {
+      .mat-column-code {
         flex: none;
         width: 150px;
         min-height: 50px;
@@ -61,15 +69,7 @@
         width: 200px;
         min-height: 50px;
       }
-
-      .mat-column-description {
-        text-align: left;
-      }
-
     }
-  }
 
-  .p-8 {
-    padding: 8px;
   }
 }

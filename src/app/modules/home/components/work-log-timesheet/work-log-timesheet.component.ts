@@ -44,19 +44,14 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
 
   refresh = new Subject<void>();
 
-  events: CalendarEvent[] = [
-    {
-      start: startOfDay(new Date()),
-      title: 'A 3 day event',
-      color: { ...colors.red },
-    },
-  ];
+  events: CalendarEvent[] = [];
   workLog: WorkLogModel
   activeDayIsOpen: boolean = false;
   currentUserId: string;
-  dataSopurce: WorkLogModel;
+  dataSource: WorkLogModel[];
   dataSave: WorkLogModel;
   selectedMonth: number;
+  isLoading = false
   constructor(
     private dialog: MatDialog,
     private workLogService: WorkLogService
@@ -70,17 +65,31 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
+
     this.dialogRef = this.dialog.open(WorkLogPopupComponent, {
       width: `700px`,
       height: `600px`,
       disableClose: true
     });
-    // if(events) this.dialogRef.componentInstance.workLog = events[0]
+    let data;
+    this.dataSource.forEach((item) => {
+      if (new Date(item.date).getTime() === new Date(date).getTime()) {
+        data = item
+        return item
+      }
+      return null
+    })
+    this.dialogRef.componentInstance.workLog = data || new WorkLogModel();
 
     this.dialogRef.componentInstance.onSubmit.pipe(takeUntil(this.ngUnsubscribe)).subscribe((dataSave: WorkLogModel) => {
       this.dataSave = dataSave;
-      this.dataSave.date = date;
-      this.onSave()
+      if (this.dataSave?._id) {
+        this.onUpdate()
+      }
+      else {
+        this.dataSave.date = date;
+        this.onSave()
+      }
     });
 
     this.dialogRef.componentInstance.onClose.pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
@@ -88,26 +97,46 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
     });
   }
 
-  onChangeMonth(month: any) {
-    console.log(month);
+  onChangeMonth(date: Date) {
+    this.selectedMonth = date.getMonth() + 1;
+    this.loadData()
   }
   loadData() {
+    this.isLoading = true
     this.workLogService.getWorkLogByMonth(this.selectedMonth).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) {
-        this.events = res.map(item => {
-          return {
-            start: new Date(item.date),
-            title: item.description,
-            color: { ...colors.red },
-          }
-        })
+        this.isLoading = false
+        this.dataSource = res;
+        this.initValueCalendar(res);
+      }
+    })
+  }
+  initValueCalendar(data: WorkLogModel[]) {
+    this.events = data.map((item) => {
+      return {
+        start: new Date(item.date),
+        title: item.description,
+        color: { ...colors.blue },
       }
     })
   }
   onSave() {
-    console.log(this.dataSave);
     this.workLogService.createWorkLog(this.dataSave).subscribe(res => {
-      if (res) ToastService.success("Created successfully")
+      if (res) {
+        this.dialogRef.close(true);
+        this.loadData();
+        ToastService.success("Created successfully")
+      }
+    })
+  }
+
+  onUpdate() {
+    this.workLogService.updateWorkLogById(this.dataSave).subscribe(res => {
+      if (res) {
+        this.dialogRef.close(true);
+        this.loadData();
+        ToastService.success("Updated successfully")
+      }
     })
   }
 }

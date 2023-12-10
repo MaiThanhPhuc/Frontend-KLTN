@@ -64,8 +64,9 @@ export class SidebarMenuComponent {
     const archive: MenuItem = new MenuItem('archive', "Archive", "/admin/company/archive", '', false);
     adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice, archive]
     const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
+    const adminWorkLog: MenuItem = new MenuItem('adminWorklog', "Work Log Management", "/admin/work-log", 'view_timeline', false);
     const importData: MenuItem = new MenuItem('importData', "Import Data", "/admin/import-data", 'publish', false);
-    return [admin, adminCompany, adminLeaveTypes, importData]
+    return [admin, adminCompany, adminLeaveTypes, adminWorkLog, importData]
   }
   ngOnInit(): void {
     this.listeningEvent();

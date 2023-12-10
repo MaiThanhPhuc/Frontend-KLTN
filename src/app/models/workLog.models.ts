@@ -6,4 +6,5 @@ export class WorkLogModel {
   name: string;
   description: string;
   employee: any;
+  status: number
 }
