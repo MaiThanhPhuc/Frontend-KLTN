@@ -36,9 +36,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
     private authService: AuthService,
     private localStorageService: LocalStorage,
     private router: Router,
-    private globalService: GlobalService
+    private globalService: GlobalService,
   ) {
-    super()
+    super();
   }
   ngOnInit(): void {
   }

@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GlobalService } from './services/global.service';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -18,9 +20,16 @@ export class AppComponent {
   tabName: string = "test";
   isExpand = false
   ngUnsubscribe = new Subject<void>();
+  showMenu: boolean = false;
   constructor(
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private authService: AuthService,
+    private router: Router,
   ) {
+    if (this.authService.isLoggedIn() && !this.authService.isExpiredToken()) {
+      this.showMenu = true
+      // this.router.navigate(['/home/dashboard'])
+    }
   }
 
   ngOnInit(): void {
@@ -36,6 +45,18 @@ export class AppComponent {
         this.isExpand = res;
         this.setSideBarWidth();
       });
+
+    if (!this.showMenu) {
+      this.globalService.isLoginSubject$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
+        (res) => {
+          if (res) {
+            this.router.navigate(['/home/dashboard'])
+          }
+          this.showMenu = res
+        });
+    }
+
+
   }
 
   onRightIconClicked(icon: string): void {

@@ -65,7 +65,7 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-
+    console.log(date);
     this.dialogRef = this.dialog.open(WorkLogPopupComponent, {
       width: `700px`,
       height: `600px`,
@@ -103,7 +103,7 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   }
   loadData() {
     this.isLoading = true
-    this.workLogService.getWorkLogByMonth(this.selectedMonth).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+    this.workLogService.getWorkLogByMonth(this.selectedMonth, this.currentUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) {
         this.isLoading = false
         this.dataSource = res;

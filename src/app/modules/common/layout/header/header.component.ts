@@ -54,6 +54,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   onKeyDown(event: any): void {
   }
   logout() {
+    this.globalService.announceIsLogin(false);
     this.authService.logout();
   }
 
@@ -64,7 +65,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   listeningEvent(): void {
     this.globalService.isLoginSubject$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (res) => {
-        this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
+        if (res) this.dataUser = JSON.parse(this.localStorageService.getStore('userData') || '{}');
       });
   }
 }

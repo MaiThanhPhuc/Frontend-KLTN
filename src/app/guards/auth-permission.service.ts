@@ -17,12 +17,7 @@ export class AuthPermissionService implements CanActivate {
   // }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    if (this.authService.isLoggedIn()) {
-
-      if (this.authService.isExpiredToken()) {
-        this.router.navigate(['/login']);
-        return Promise.resolve(false);
-      }
+    if (this.authService.isLoggedIn() && !this.authService.isExpiredToken()) {
 
       if (this.checkPermission(state.url)) {
         return Promise.resolve(true);

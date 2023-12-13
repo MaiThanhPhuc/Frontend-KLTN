@@ -6,7 +6,7 @@ import { LoginComponent } from './modules/login/login.component';
 import { EmployeeProfileComponent } from './modules/employee-profile/employee-profile.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/home/dashboard', pathMatch: 'full' },
   {
     path: 'admin',
     canActivate: [AuthPermissionService],

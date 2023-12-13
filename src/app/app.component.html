@@ -1,7 +1,7 @@
 <div>
-  <app-header [title]="tabName" (rightIconClickedEvent)="onRightIconClicked($event)"></app-header>
+  <app-header *ngIf="showMenu" [title]="tabName" (rightIconClickedEvent)="onRightIconClicked($event)"></app-header>
   <div class="main-container">
-    <app-sidebar-menu></app-sidebar-menu>
+    <app-sidebar-menu *ngIf="showMenu"></app-sidebar-menu>
     <div #mainContent class="right-content" [style]="">
       <!-- [class.main-sm]="!isMobile && !isTablet" -->
       <router-outlet></router-outlet>
