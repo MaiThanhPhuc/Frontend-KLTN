@@ -1,0 +1,46 @@
+@import "src/styles/global/_global.scss";
+
+.calculate-salary-container {
+  margin: 24px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 16px;
+
+
+  .work-log-table {
+
+    .mat-column-team,
+    .mat-column-name {
+      flex: none;
+      width: 170px;
+    }
+
+    .mat-column-date,
+    .mat-column-time {
+      flex: none;
+      width: 120px;
+    }
+
+    .mat-column-status {
+      flex: none;
+      width: 150px;
+    }
+
+  }
+
+  .status {
+    .box {
+      padding: 10px;
+    }
+
+    .valid {
+      background-color: rgb(122, 241, 122);
+    }
+
+    .invalid {
+      background-color: rgb(241, 130, 122);
+    }
+  }
+
+  .container--general {}
+}

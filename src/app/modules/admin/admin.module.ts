@@ -40,6 +40,9 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatChipsModule } from '@angular/material/chips';
+import { CalculateSalaryComponent } from './components/worklog-management/calculate-salary/calculate-salary.component';
+import { WorklogCheckComponent } from './components/worklog-management/worklog-check/worklog-check.component';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -57,6 +60,8 @@ import { MatChipsModule } from '@angular/material/chips';
     LeaveTypePopupComponent,
     ImportDataComponent,
     WorklogManagementComponent,
+    CalculateSalaryComponent,
+    WorklogCheckComponent,
   ],
   imports: [
     CommonModule,
@@ -82,7 +87,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatDialogModule,
     CKEditorModule,
     MatSidenavModule,
-    MatChipsModule
+    MatChipsModule,
+    MatCardModule
   ],
   providers: [
     LoadingService,
