@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Employee, SearchModal, SearchEmployeeResponse } from 'src/app/models/employee.model';
+import { Employee, SearchModal, SearchEmployeeResponse, EmployeeSalary } from 'src/app/models/employee.model';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
 import { BaseService } from 'src/app/services/base.service';
 @Injectable({
@@ -13,6 +13,10 @@ export class EmployeeService extends BaseService {
 
   getEmployeeById(employeeId: string): Observable<EmployeeLeaveTypeReponse> {
     return this.get(`employee/${employeeId}`);
+  }
+
+  getEmployeeSalaryById(employeeId: string): Observable<EmployeeLeaveTypeReponse> {
+    return this.get(`employee/getEmployeeSalaryById/${employeeId}`);
   }
 
   updateEmployeeById(request: Employee): Observable<boolean> {
@@ -32,5 +36,9 @@ export class EmployeeService extends BaseService {
 
   importDataEmployee(request: Employee[]): Observable<Employee[]> {
     return this.post("employee/importData", request);
+  }
+
+  calcSalaryEmployeeByMonth(request: EmployeeSalary): Observable<any> {
+    return this.post("employee/calcSalaryEmployeeByMonth", request);
   }
 }

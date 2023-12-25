@@ -6,8 +6,42 @@
   border-radius: 8px;
   padding: 16px;
 
+  .title {
+    font-size: 18px;
+    font-weight: 600;
+  }
+
+  .keyword {
+    color: #414141;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .container--general {
+    .group-action {
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+
+      .group-button {
+        display: flex;
+        gap: 16px;
+      }
+    }
+
+  }
 
   .work-log-table {
+
+    .mat-mdc-header-cell,
+    .mat-mdc-cell {
+      text-align: center;
+    }
+
+    .mat-column-code {
+      flex: none;
+      width: 100px;
+    }
 
     .mat-column-team,
     .mat-column-name {
@@ -23,7 +57,7 @@
 
     .mat-column-status {
       flex: none;
-      width: 150px;
+      width: 200px;
     }
 
   }
@@ -31,6 +65,7 @@
   .status {
     .box {
       padding: 10px;
+      border-radius: 4px;
     }
 
     .valid {
@@ -42,5 +77,14 @@
     }
   }
 
-  .container--general {}
+  .mb-16 {
+    margin-bottom: 16px;
+  }
+
+  .button-cancel {
+    margin-right: 8px;
+    font-weight: 600;
+    font-size: 16px;
+  }
+
 }

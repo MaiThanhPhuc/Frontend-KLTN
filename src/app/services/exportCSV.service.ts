@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as XLSX from 'xlsx';
+import { BaseService } from './base.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
-export class ExportCSVSerice {
+export class ExportCSVSerice extends BaseService {
   generateExcel(data: Array<any>, filename = 'data.xlsx') {
     const fn = filename.endsWith('.xlsx') ? filename : filename + '.xlsx';
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(data);
@@ -31,6 +33,10 @@ export class ExportCSVSerice {
     document.body.appendChild(dwldLink);
     dwldLink.click();
     document.body.removeChild(dwldLink);
+  }
+
+  downloadExcelFile(url: string): Observable<Blob> {
+    return this.http.get(url, { responseType: 'blob' });
   }
 
   convertToCSV(objArray: any, headerList: any) {

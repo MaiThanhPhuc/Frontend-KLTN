@@ -41,6 +41,7 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  print-color-adjust: exact;
 }
 
 input::-webkit-outer-spin-button,
@@ -51,10 +52,10 @@ input::-webkit-inner-spin-button {
   /* <-- Apparently some margin are still there even though it's hidden */
 }
 
-input[type=number] {
-  -moz-appearance: textfield;
-  /* Firefox */
-}
+// input[type=number] {
+//   // -moz-appearance: textfield;
+//   /* Firefox */
+// }
 
 .toast-success {
   --mdc-snackbar-container-color: #28a745;

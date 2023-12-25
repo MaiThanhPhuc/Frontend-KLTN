@@ -9,73 +9,79 @@
     <div class="button-import">
       <button color="primary" mat-flat-button (click)="fileInput.click()">
         <mat-icon>upload</mat-icon>
-        Import employee data
+        Upload file
       </button>
       <input hidden #fileInput type="file" (change)="onFileChange($any($event))"
         accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+      <p *ngIf="!countAllData">
+        *Please upload file type .xlsx with the format below.
+        <a class="cusor-pointer" (click)="downloadExample()">
+          Here</a>
+      </p>
     </div>
-    <p *ngIf="!countAllData">
-      Please upload file excel with the format below.
-      <a target="_blank"
-        href="https://docs.google.com/spreadsheets/d/1ufzbHPwMinZUujnxqGkoWaxamacWkahMjPiw1LRR1_Q/edit?usp=sharing">
-        Here</a>
-    </p>
-
-    <div *ngIf="countAllData">
-      <button color="primary" mat-flat-button (click)="submit()">Save</button>
+    <div *ngIf="countAllData ">
+      <button color="primary" mat-flat-button (click)="submit()">Import data</button>
     </div>
   </div>
   <div class="content">
-    <div class="employee-table " *ngIf="countAllData">
-      <table mat-table [dataSource]="dataSource" matSort>
+    <div class="employee-table " *ngIf="countAllData || isExample">
+      <table class="table-content" mat-table mat-vs-table [dataSource]="dataSource">
 
         <ng-container matColumnDef="firstName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+          <th mat-header-cell *matHeaderCellDef> First Name </th>
           <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="lastName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+          <th mat-header-cell *matHeaderCellDef> Last Name </th>
           <td mat-cell *matCellDef="let row"> {{row.lastName}}</td>
         </ng-container>
 
         <ng-container matColumnDef="birthday">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Birthday </th>
+          <th mat-header-cell *matHeaderCellDef> Birthday </th>
           <td mat-cell *matCellDef="let row"> {{row.birthday | date}}</td>
         </ng-container>
 
         <ng-container matColumnDef="email">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+          <th mat-header-cell *matHeaderCellDef> Email </th>
           <td mat-cell *matCellDef="let row"> {{row.email}} </td>
         </ng-container>
 
         <ng-container matColumnDef="gender">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+          <th mat-header-cell *matHeaderCellDef> Gender </th>
           <td mat-cell *matCellDef="let row"> {{row.gender}} </td>
         </ng-container>
 
         <ng-container matColumnDef="phone">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Phone </th>
+          <th mat-header-cell *matHeaderCellDef> Phone </th>
           <td mat-cell *matCellDef="let row"> {{row.phone}} </td>
         </ng-container>
 
         <ng-container matColumnDef="startedDate">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Started Date </th>
-          <td mat-cell *matCellDef="let row"> {{row.startedDate}} </td>
+          <th mat-header-cell *matHeaderCellDef> Started Date </th>
+          <td mat-cell *matCellDef="let row"> {{row.startedDate | date}} </td>
         </ng-container>
 
         <ng-container matColumnDef="address">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+          <th mat-header-cell *matHeaderCellDef> Address </th>
           <td mat-cell *matCellDef="let row"> {{row.address}} </td>
+        </ng-container>
+        <ng-container matColumnDef="salary">
+          <th mat-header-cell *matHeaderCellDef> Salary </th>
+          <td mat-cell *matCellDef="let row"> {{row.salary}} </td>
+        </ng-container>
+        <ng-container matColumnDef="office">
+          <th mat-header-cell *matHeaderCellDef> OfficeId </th>
+          <td mat-cell *matCellDef="let row"> {{row.office}} </td>
         </ng-container>
 
         <ng-container matColumnDef="bankName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Bank Name </th>
+          <th mat-header-cell *matHeaderCellDef> Bank Name </th>
           <td mat-cell *matCellDef="let row"> {{row.bankName}} </td>
         </ng-container>
 
         <ng-container matColumnDef="bankNo">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Account No </th>
+          <th mat-header-cell *matHeaderCellDef> Account No </th>
           <td mat-cell *matCellDef="let row"> {{row.bankNo}} </td>
         </ng-container>
 

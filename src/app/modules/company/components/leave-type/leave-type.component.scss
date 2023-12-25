@@ -47,12 +47,16 @@
         justify-content: center;
       }
 
-      .mat-mdc-header-cell,
-      .mat-mdc-cell {
-        text-align: center;
-      }
+      // .mat-mdc-header-cell,
+      // .mat-mdc-cell {
+      //   text-align: center;
+      // }
 
-      .mat-column-code,
+      .mat-column-code {
+        flex: none;
+        width: 50px;
+        min-height: 50px;
+      }
 
       .mat-column-allowance {
         flex: none;
@@ -66,5 +70,9 @@
         min-height: 50px;
       }
     }
+  }
+
+  .p-8 {
+    padding: 8px;
   }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Employee, SearchModal } from 'src/app/models/employee.model';
+import { Employee, EmployeeSalary, SearchModal } from 'src/app/models/employee.model';
 import { BaseComponent } from 'src/app/utils/base.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,6 +12,7 @@ import { WorkLogService } from '../../../services/workLog.service';
 import { OptionModel } from 'src/app/models/optionsModel';
 import { EmployeeService } from '../../../services/employee.service';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
+import { WorkLogModel } from 'src/app/models/workLog.models';
 
 
 @Component({
@@ -26,7 +27,7 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
   });
   // @ViewChild('filterDrawer') public drawer: MatDrawer;
   displayedColumns: string[] = ['code', 'name', 'team', 'date', 'time', 'description', 'status'];
-  dataSource: any;
+  dataSourceWorkLog: any;
   statusWorkLog: OptionModel[] = [
     new OptionModel("Valid", 1),
     new OptionModel("Invalid", 0)
@@ -34,8 +35,9 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
 
   employeeId: string;
   dataSourceLeaveType: any;
+  dataEmployeeSalary: EmployeeSalary;
   userData: Employee;
-
+  dataCalcSalary: any;
   isLoading = false
   paramSearch: SearchModal = {};
   pageSize = 10;
@@ -43,7 +45,7 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
   pageSizeOptions = [5, 10, 25];
   countAllData = 0
   keyword = ''
-
+  workingTime = 0;
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -66,7 +68,8 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
       limit: this.pageSize,
       pageIndex: this.pageIndex,
       keyword: this.keyword,
-      employeeId: this.employeeId
+      employeeId: this.employeeId,
+      month: 12,
     }
   }
 
@@ -89,10 +92,11 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
 
   loadData() {
     this.isLoading = true
-    this.workLogService.searchWorkLog(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+    this.workLogService.getWorkLogByEmployeeId(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if (res) {
+        this.workingTime = res.totalWorkingTime / 8
         this.countAllData = res.totalItems
-        this.dataSource = new MatTableDataSource(res.result);
+        this.dataSourceWorkLog = new MatTableDataSource(res.result);
         this.isLoading = false
       }
 
@@ -102,25 +106,44 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
 
   loadDataEmployee() {
     this.isLoading = true;
-    this.employeeService.getEmployeeById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: EmployeeLeaveTypeReponse) => {
+    this.employeeService.getEmployeeSalaryById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: EmployeeLeaveTypeReponse) => {
       if (res) {
         this.userData = res.employeeInfo
         this.dataSourceLeaveType = res.leaveType
+        this.dataEmployeeSalary = res.employeeSalary
         this.isLoading = false
       }
 
     })
   }
-  onClose() {
-    // if (!this.drawer.opened) {
-    // }
+
+  calculateSalary() {
+    this.isLoading = true
+    this.dataEmployeeSalary.paidDay = this.workingTime;
+    this.employeeService.calcSalaryEmployeeByMonth(this.dataEmployeeSalary).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+      if (res) {
+        this.dataCalcSalary = res.result
+
+        this.loadDataEmployee()
+      }
+      this.isLoading = false
+    })
+  }
+  exportPayslip() {
 
   }
-  clearFilter() {
+  changeStatus(item: WorkLogModel) {
+    this.isLoading = true
+    this.workLogService.updateWorkLogById(item).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+      if (res) {
+        this.dataCalcSalary = res.result
 
+        this.loadDataEmployee()
+      }
+      this.isLoading = false
+    })
   }
-
-  filter() {
-
+  cancel() {
+    this.router.navigate([`admin/work-log`])
   }
 }

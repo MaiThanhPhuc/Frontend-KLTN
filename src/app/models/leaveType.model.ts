@@ -1,4 +1,4 @@
-import { Employee } from "./employee.model";
+import { Employee, EmployeeSalary } from "./employee.model";
 import { OptionModel } from "./optionsModel";
 
 export interface UserLeaveTypeItem {
@@ -43,6 +43,7 @@ export class EmployeeLeaveTypeRequest {
 export class EmployeeLeaveTypeReponse {
   employeeInfo: Employee;
   leaveType: EmployeeLeaveType[];
+  employeeSalary: EmployeeSalary;
 }
 
 export class LeaveTypePopupModel {

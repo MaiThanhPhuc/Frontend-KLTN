@@ -14,18 +14,7 @@
   border-radius: 8px;
   padding: 16px;
 
-  .filter-box-btn-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px;
-    border-top: 1px solid $ems-blur-border-color;
-    justify-content: end;
-  }
 
-  .filter-group {
-    padding: 0 15px;
-  }
 
   .header {
 
@@ -34,23 +23,63 @@
       font-weight: 700;
     }
 
-    .button-action {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      ::ng-deep .mat-mdc-form-field-subscript-wrapper {
-        display: none;
-      }
-    }
-
     .button-add-emp {
       margin: 16px 0;
     }
   }
 
   .content {
-    margin: 24px;
+    .action-group {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+
+      // justify-content: space-between;
+      // align-items: center;
+      .mat-calendar-period-button {
+        pointer-events: none;
+      }
+
+      .mat-calendar-arrow {
+        display: none;
+      }
+
+
+      .filter {
+        display: flex;
+        justify-content: space-between;
+
+        ::ng-deep .mat-mdc-form-field-infix {
+          padding: 12px 4px !important;
+          min-height: 46px;
+        }
+
+      }
+
+      .button-group {
+        margin: 24px;
+        display: flex;
+        gap: 16px;
+        justify-content: end;
+
+        .btn-item {
+          display: flex;
+          gap: 8px;
+          padding: 8px;
+          border: 1px solid $border-color;
+          border-radius: 4px;
+          background-color: $primary;
+          color: $ems-primary-button-text-color;
+          cursor: pointer;
+        }
+
+        button:disabled {
+          cursor: default;
+          background-color: $bg-gray-01;
+          color: $text-disabled;
+        }
+      }
+    }
 
     .department-table {
       .mat-column-action {
@@ -72,6 +101,17 @@
         flex: none;
         width: 200px;
         min-height: 50px;
+      }
+
+      .box-status {
+        padding: 8px;
+        background-color: #f3f04a;
+        border-radius: 4px;
+        font-weight: 600;
+      }
+
+      .checked {
+        background-color: #4af353;
       }
     }
 

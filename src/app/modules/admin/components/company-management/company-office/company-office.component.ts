@@ -126,20 +126,21 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
 
   onSaveOffice(data: OfficeModel) {
     this.isLoading = true;
-    console.log(data);
     if (data._id) {
       this.adminService.updateOfficeById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     } else {
       this.adminService.createOffice(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     }
 

@@ -12,6 +12,7 @@ import { OptionModel } from 'src/app/models/optionsModel';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
 import * as XLSX from 'xlsx';
 import { FormGroup } from '@angular/forms';
+import { ExportCSVSerice } from 'src/app/services/exportCSV.service';
 type AOA = Array<Array<[]>>;
 
 @Component({
@@ -22,7 +23,7 @@ type AOA = Array<Array<[]>>;
 export class ImportDataComponent extends BaseComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
-  displayedColumns: string[] = ['firstName', 'lastName', 'birthday', 'email', 'gender', 'phone', 'startedDate', 'address', 'bankName', 'bankNo'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'birthday', 'email', 'gender', 'phone', 'startedDate', 'address', 'salary', 'office', 'bankName', 'bankNo'];
   dataSource: MatTableDataSource<Employee>;
   private _fields: EmployeeImportField[] = [
     {
@@ -64,6 +65,14 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
     {
       fieldName: 'bankNo',
       mapTo: 'bankNo'
+    },
+    {
+      fieldName: 'salary',
+      mapTo: 'salary'
+    },
+    {
+      fieldName: 'office',
+      mapTo: 'office'
     }
   ];
 
@@ -76,7 +85,19 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
   fileUpload: FileUploadByKey
   excelRowInfo: string;
   employeeData: Employee[] = [];
-
+  exampleData: any[] = [{
+    firstName: 'Nguyen',
+    lastName: 'Thanh',
+    birthday: new Date('12/11/1998'),
+    email: 'employee@example.com',
+    gender: 'Nam',
+    phone: '0123456789',
+    startedDate: new Date('01/21/2022'),
+    address: 'Tp Hcm',
+    bankName: 'Vietcombank',
+    bankNo: '123456789',
+  }];
+  isExample = true
   paramSearch: SearchModal = {};
   pageSize = 10;
   pageIndex = 0;
@@ -86,11 +107,13 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
   isLoading = false
   constructor(private router: Router,
     private dialog: MatDialog,
-    private employeeService: EmployeeService) {
+    private employeeService: EmployeeService,
+    private exportCSVService: ExportCSVSerice) {
     super()
   }
 
   ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(this.exampleData);
   }
   clearInput() {
     this.fileInput.nativeElement.value = '';
@@ -103,34 +126,42 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
     this.onUploadExcelFile(target.files[0]);
     this.fileInput.nativeElement.value = '';
   }
+  onReset() {
 
+  }
   onUploadExcelFile(file: File): void {
     const reader = new FileReader();
     reader.readAsDataURL(file);
-    reader.onload = (event: any): void => {
-      const fileContent = event.target.result as string;
-      const contents = fileContent.split(',');
+    try {
+      reader.onload = (event: any): void => {
+        const fileContent = event.target.result as string;
+        const contents = fileContent.split(',');
 
-      const fileUpload: FileUploadByKey = {
-        key: '',
-        fileName: file.name,
-        fileBase64Prefix: contents[0],
-        fileBase64: contents[1],
-        fileType: file.type
-      };
+        const fileUpload: FileUploadByKey = {
+          key: '',
+          fileName: file.name,
+          fileBase64Prefix: contents[0],
+          fileBase64: contents[1],
+          fileType: file.type
+        };
 
-      this.selectedLocalUploadDocuments = []
-      this.selectedLocalUploadDocuments.push(new OptionModel(fileUpload.fileName, fileUpload.key));
-
-      this.fileUpload = fileUpload
-      this.rawDataExcels = this._getDataFromOriginalFile(fileUpload);
-      let employeeCraws = this._mapWithDynamicFields(this.rawDataExcels);
-      this.employeeData = employeeCraws
-      this.getDataEmployee();
-      if (!this._headersIsValid(this.rawDataExcels)) {
         this.selectedLocalUploadDocuments = []
-      }
-    };
+        this.selectedLocalUploadDocuments.push(new OptionModel(fileUpload.fileName, fileUpload.key));
+
+        this.fileUpload = fileUpload
+        this.rawDataExcels = this._getDataFromOriginalFile(fileUpload);
+        let employeeCraws = this._mapWithDynamicFields(this.rawDataExcels);
+        this.employeeData = employeeCraws;
+        this.pageIndex = 0
+        this.getDataEmployee();
+        if (!this._headersIsValid(this.rawDataExcels)) {
+          this.selectedLocalUploadDocuments = []
+        }
+      };
+    } catch (error) {
+      ToastService.error("Invalid file type. Please re-upload file");
+    }
+
   }
 
   private _getDataFromOriginalFile(fileUploadByKey: FileUploadByKey, sheetRows = -1): AOA {
@@ -157,7 +188,7 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
 
     this._fields.forEach((requiredField) => {
       if (!headers.some(fieldNameInExcel => fieldNameInExcel.toLocaleLowerCase() === requiredField.fieldName.toLocaleLowerCase())) {
-        ToastService.error(requiredField.fieldName);
+        ToastService.error(`${requiredField.fieldName} collum not found in file`);
         valid = false;
       }
     });
@@ -217,9 +248,11 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
   }
 
   getDataEmployee() {
-    this.countAllData = this.employeeData.length
-    var tempTable = [];
+    this.isExample = false;
+    this.countAllData = this.employeeData.length;
+    var tempTable: Employee[] = [];
     let index = 0;
+
     if (this.pageIndex == 0) {
       index = 0
     } else if (this.pageIndex == 1) {
@@ -228,8 +261,23 @@ export class ImportDataComponent extends BaseComponent implements OnInit {
       index = this.pageSize * this.pageIndex
     }
     for (let i = index; i < (this.pageIndex == 0 ? this.pageSize : this.pageSize * (this.pageIndex + 1)); i++) {
-      tempTable.push(this.employeeData[i]);
+      if (this.employeeData[i])
+        tempTable.push(this.employeeData[i]);
     }
+
     this.dataSource = new MatTableDataSource(tempTable);
+  }
+  downloadExample() {
+    const excelUrl = '../../../../../assets/example_format.xlsx'; // Replace with your actual URL
+    this.exportCSVService.downloadExcelFile(excelUrl).subscribe((data) => {
+      this.saveFile(data, 'example-format.xlsx');
+    });
+  }
+  private saveFile(data: Blob, filename: string): void {
+    const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const link = document.createElement('a');
+    link.href = window.URL.createObjectURL(blob);
+    link.download = filename;
+    link.click();
   }
 }

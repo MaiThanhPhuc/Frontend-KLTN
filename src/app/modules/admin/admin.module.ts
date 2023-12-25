@@ -18,7 +18,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule, MatSelectTrigger } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_FORMATS, MatNativeDateModule } from '@angular/material/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterModule } from '@angular/router';
@@ -37,12 +37,12 @@ import { LeaveTypePopupComponent } from './components/company-management/add-edi
 import { MatDialogModule } from '@angular/material/dialog';
 import { ImportDataComponent } from './components/import-data/import-data.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
+import { MY_FORMATS, WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatChipsModule } from '@angular/material/chips';
 import { CalculateSalaryComponent } from './components/worklog-management/calculate-salary/calculate-salary.component';
-import { WorklogCheckComponent } from './components/worklog-management/worklog-check/worklog-check.component';
 import { MatCardModule } from '@angular/material/card';
+import { PayslipPdfComponent } from './components/worklog-management/payslip-pdf/payslip-pdf.component';
 @NgModule({
   declarations: [
     AdminComponent,
@@ -61,7 +61,7 @@ import { MatCardModule } from '@angular/material/card';
     ImportDataComponent,
     WorklogManagementComponent,
     CalculateSalaryComponent,
-    WorklogCheckComponent,
+    PayslipPdfComponent,
   ],
   imports: [
     CommonModule,

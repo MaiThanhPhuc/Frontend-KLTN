@@ -1,0 +1,29 @@
+<div class="payslip-container">
+  <div>
+    <button class="btn-exit" *ngIf="!isExport" mat-icon-button (click)="back()"><mat-icon>close</mat-icon></button>
+  </div>
+  <div *ngIf="!isExport" class="btn-group">
+    <button mat-flat-button color="primary" class="btn-item" (click)="exportPdf()">Export PDF
+      <mat-icon>picture_as_pdf</mat-icon></button>
+    <button mat-flat-button color="primary" class="btn-item" (click)="print()">Print <mat-icon>print</mat-icon></button>
+  </div>
+  <div [id]="componentId" class="payslip">
+    <div class="header">
+      <h2>PAYSLIP - {{time}}</h2>
+    </div>
+    <div class="payslip-table">
+      <table>
+        <ng-container *ngFor="let item of dataTable">
+          <tr>
+            <th colspan="3">{{item.label}}</th>
+          </tr>
+          <tr *ngFor="let item2 of item.fields; let i = index">
+            <td class="index-number">{{i + 1}}</td>
+            <td class="title"> {{item2.label}}</td>
+            <td class="content">{{item2.value}}</td>
+          </tr>
+        </ng-container>
+      </table>
+    </div>
+  </div>
+</div>

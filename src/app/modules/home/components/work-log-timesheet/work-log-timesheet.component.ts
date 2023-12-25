@@ -65,7 +65,6 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
-    console.log(date);
     this.dialogRef = this.dialog.open(WorkLogPopupComponent, {
       width: `700px`,
       height: `600px`,

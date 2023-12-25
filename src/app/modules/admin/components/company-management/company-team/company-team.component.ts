@@ -126,19 +126,20 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
 
   onSaveTeam(data: TeamModel) {
     this.isLoading = true;
-    console.log(data);
     if (data._id) {
       this.adminService.updateTeamById(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     } else {
       this.adminService.createTeam(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
-        this.isLoading = false
-        this.loadData();
+        if (res) {
+          this.isLoading = false
+          this.loadData();
+        }
         this.dialogRef.close()
       });
     }

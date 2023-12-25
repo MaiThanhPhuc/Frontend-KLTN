@@ -42,6 +42,7 @@ export class Employee {
   address: string;
   bankName: string;
   bankNo: string;
+  salary: number;
   checked?: boolean;
 }
 
@@ -59,6 +60,8 @@ export class SearchModal {
   dateFrom?: Date;
   dateTo?: Date;
   currentDate?: boolean;
+  month?: number;
+  isGetAll?: boolean;
 }
 
 export class SearchEmployeeResponse {
@@ -88,6 +91,24 @@ export class EmployeeInfo {
   department: string;
   team: string;
   role: string;
+}
+
+export class EmployeeSalary {
+  employee: string;
+  contractSalary: number;
+  paidSalary: number;
+  paidDay: number;
+  taxIncomeRate: number;
+  taxValue: number;
+  transportAllowance: number;
+  mealAllowance: number;
+  workingDay: number;
+  otDay: number;
+  workingDayOfMonth: number;
+  month: number;
+  year: number;
+  updateDate: Date;
+  status: number;
 }
 
 
@@ -167,6 +188,14 @@ export const BasicInfoEmployeeField = [
         value: "",
         isOption: true,
         options: Constants.EmployeeRole
+      },
+      {
+        key: "salary",
+        label: "Base Salary",
+        isRequired: true,
+        value: "",
+        type: 'number',
+        isCustomType: true
       },
       {
         key: "status",

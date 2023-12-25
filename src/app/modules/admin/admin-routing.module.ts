@@ -13,7 +13,6 @@ import { HolidaysManagementComponent } from './components/holidays-management/ho
 import { ImportDataComponent } from './components/import-data/import-data.component';
 import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
 import { CalculateSalaryComponent } from './components/worklog-management/calculate-salary/calculate-salary.component';
-import { WorklogCheckComponent } from './components/worklog-management/worklog-check/worklog-check.component';
 
 const routes: Routes = [{
   path: '', component: AdminComponent,
@@ -50,8 +49,7 @@ const routes: Routes = [{
     },
     { path: 'leave-type', component: LeaveTypeManagementComponent },
     { path: 'work-log', component: WorklogManagementComponent },
-    { path: 'salary/:id', component: CalculateSalaryComponent },
-    { path: 'worklog-check', component: WorklogCheckComponent },
+    { path: 'detail-worklog/:id', component: CalculateSalaryComponent },
     { path: 'holidays', component: HolidaysManagementComponent },
     { path: 'import-data', component: ImportDataComponent },
   ]

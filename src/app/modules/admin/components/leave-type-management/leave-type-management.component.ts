@@ -122,10 +122,11 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
       });
     } else {
       this.leaveTypeService.createLeaveType(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     }
 

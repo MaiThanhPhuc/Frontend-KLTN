@@ -15,6 +15,7 @@
   width: 100%;
   margin-top: 60px;
   height: calc(100% - 60px);
+  width: calc(100% - 250px);
   transition: 0.4s;
   margin-left: $side-bar-max-width;
 }

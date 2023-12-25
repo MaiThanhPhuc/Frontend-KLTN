@@ -2,14 +2,8 @@
   <mat-drawer #filterDrawer [mode]="'over'" position="end" class="filter-content">
     <ng-template [ngIf]="filterDrawer.opened">
       <div class="row m-0 d-flex justify-content-end mb-2">
-        <button qms-btn-icon (click)="filterDrawer.toggle(); onClose()" color="light" mode="dark">
-          <mat-icon>close</mat-icon>
-        </button>
       </div>
       <div class="d-flex flex-column h-100 overflow-auto filter-group">
-        <!-- <app-input-with-icon id="filter-box-input-search" [icon]="'search'" [height]="50"
-            [placeholder]="'COMMON.SEARCH' | translate" [(value)]="inputSearch.keyWord">
-          </app-input-with-icon> -->
         <div class="location-filter mt-3">
           <mat-form-field appearance="fill" class="w-100 select-hazard">
             <mat-label>Location</mat-label>
@@ -18,90 +12,124 @@
               <mat-icon>add_circle_outline</mat-icon>
             </button>
           </mat-form-field>
-
-          <!-- <mat-chip-list *ngIf="inputSearch.resultSelectLocation && inputSearch.resultSelectLocation.length">
-              <ng-container *ngFor="let item of inputSearch.resultSelectLocation">
-                <mat-chip *qmsContentChanges="item.children?.length" [removable]="true">
-                  <span>
-                    <span>
-                      <span>{{item.name}}</span>
-                      <span *ngIf="!!item?.isGroup">
-                        {{item.children.length}}/{{item.childCount}}
-                      </span>
-                    </span>
-                  </span>
-                  <mat-icon (click)="onRemoveNode(item)">cancel</mat-icon>
-                </mat-chip>
-              </ng-container>
-            </mat-chip-list> -->
         </div>
 
       </div>
 
-      <div class="filter-box-btn-group">
-        <button mat-button (click)="clearFilter()" class="custom-btn-height">
-          Reset Filter
-        </button>
-        <button mat-flat-button (click)="filter(); filterDrawer.toggle();" class="custom-btn-height">
-          Filter
-        </button>
-      </div>
     </ng-template>
   </mat-drawer>
   <mat-drawer-content class="drawer-content">
     <div class="work-log-timesheet-container">
       <div class="header">
         <span>
-          Leave Type
+          Worklog management
         </span>
-        <button mat-button (click)="filterDrawer.toggle(); onClose()" class="ml-2 btn-filter">Filter</button>
       </div>
-
       <div class="content">
+        <div class="action-group">
+          <div class="filter">
+            <mat-form-field appearance="outline">
+              <mat-label>Office</mat-label>
+              <mat-select (selectionChange)="onChangeSelectItems($event , 1)" [(ngModel)]="selectedOffice">
+                <mat-option *ngFor="let option of allOffice" [value]="option.id">{{option.text}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Department</mat-label>
+              <mat-select (selectionChange)="onChangeSelectItems($event, 2)" [(ngModel)]="selectedDepartment">
+                <mat-option *ngFor="let option of departmentOptions" [value]="option.id">{{option.text}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Team</mat-label>
+              <mat-select (selectionChange)="onChangeSelectItems($event)" [(ngModel)]="selectedTeam">
+                <mat-option *ngFor="let option of teamOptions" [value]="option.id">{{option.text}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input #dpInput matInput [matDatepicker]="dp" placeholder="Month" [formControl]="date">
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp (monthSelected)="setMonthAndYear($event, dp, dpInput)"
+                startView="multi-year"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <input [(ngModel)]="keyword" (change)="onSearchKeyword()" matInput placeholder="Search">
+              <mat-icon class="cusor-pointer" matIconPrefix>search</mat-icon>
+            </mat-form-field>
+          </div>
+          <div class="button-group">
+            <button class="btn-item" (click)="applyFilter()">Apply Filter
+              <mat-icon>filter_list</mat-icon>
+            </button>
+            <button [disabled]="!isCheckAll" class="btn-item">Update allowance</button>
+            <button [disabled]="!isCheckAll" class="btn-item">Export payslip</button>
+          </div>
+        </div>
         <div class="department-table">
           <table mat-table [dataSource]="dataSource">
-
+            <!-- Checkbox Column -->
+            <ng-container matColumnDef="checkbox">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="eventCheckAll()" [checked]="isCheckAll" [indeterminate]="isIndeterminate">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="changeCheckbox(row)"
+                  [checked]="row.selected">
+                </mat-checkbox>
+              </td>
+            </ng-container>
             <ng-container matColumnDef="code">
               <th mat-header-cell *matHeaderCellDef> Code </th>
-              <td mat-cell *matCellDef="let row"> {{row.employee?.code}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.employeeInfo?.code}} </td>
             </ng-container>
 
             <ng-container matColumnDef="name">
               <th mat-header-cell *matHeaderCellDef> Name </th>
-              <td mat-cell *matCellDef="let row"> {{row.employee?.fullName}}</td>
+              <td mat-cell *matCellDef="let row"> {{row.employeeInfo?.fullName}}</td>
             </ng-container>
 
             <ng-container matColumnDef="team">
               <th mat-header-cell *matHeaderCellDef> Team </th>
-              <td mat-cell *matCellDef="let row"> {{row.employee?.team}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef> Date </th>
-              <td mat-cell *matCellDef="let row"> {{row.date | date}} </td>
+              <td mat-cell *matCellDef="let row"> {{row.employeeInfo?.team}} </td>
             </ng-container>
 
             <ng-container matColumnDef="time">
-              <th mat-header-cell *matHeaderCellDef> Time </th>
-              <td mat-cell *matCellDef="let row"> {{row.time}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="type">
-              <th mat-header-cell *matHeaderCellDef> Type </th>
-              <td mat-cell *matCellDef="let row"> {{row.type}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="description">
-              <th mat-header-cell *matHeaderCellDef> Description </th>
-              <td mat-cell *matCellDef="let row">
-                <div [innerHTML]="row.description | safeHtml"></div>
-              </td>
+              <th mat-header-cell *matHeaderCellDef> Total Working Day </th>
+              <td mat-cell *matCellDef="let row"> {{row?.totalWorkingTime / 8}} </td>
             </ng-container>
 
             <ng-container matColumnDef="status">
               <th mat-header-cell *matHeaderCellDef> Status </th>
               <td mat-cell *matCellDef="let row">
-                {{row.status}}
+                <div [class.checked]="row.empSalary.status" class="box-status">
+                  {{row.empSalary.status ? 'Checked' : 'Uncheck'}}
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let row">
+                <span [matMenuTriggerFor]="menu" class="button-icon">
+                  <mat-icon>
+                    more_vert
+                  </mat-icon>
+                </span>
+                <mat-menu #menu="matMenu">
+                  <button mat-menu-item (click)="calcSalary(row)">
+                    <mat-icon>
+                      calculate
+                    </mat-icon>
+                    Detail salary
+                  </button>
+                  <button mat-menu-item (click)="exportPayslip(row)">
+                    <mat-icon>
+                      picture_as_pdf
+                    </mat-icon>
+                    Export Payslip
+                  </button>
+                </mat-menu>
               </td>
             </ng-container>
 
@@ -122,6 +150,4 @@
     </div>
   </mat-drawer-content>
 </mat-drawer-container>
-
-
 <app-loading [manualLoadingInput]="isLoading"></app-loading>

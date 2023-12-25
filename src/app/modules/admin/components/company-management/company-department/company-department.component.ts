@@ -139,10 +139,11 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
       });
     } else {
       this.adminService.createDepartment(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: string) => {
-        if (res) console.log(res);
+        if (res) {
+          this.loadData();
+          this.dialogRef.close()
+        }
         this.isLoading = false
-        this.loadData();
-        this.dialogRef.close()
       });
     }
 
