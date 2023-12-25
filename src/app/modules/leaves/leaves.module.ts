@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LeavesComponent } from './leaves.component';
 import { LeaveRequestComponent } from './components/leave-request/leave-request.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
 import { MyLeavesComponent } from './components/my-leaves/my-leaves.component';
 import { LeavesHistoryComponent } from './components/leaves-history/leaves-history.component';
 import { LeaveManagementComponent } from './components/leave-management/leave-management.component';
@@ -34,7 +33,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   declarations: [
     LeavesComponent,
     LeaveRequestComponent,
-    CalendarComponent,
     MyLeavesComponent,
     LeavesHistoryComponent,
     LeaveManagementComponent,
