@@ -10,6 +10,7 @@ const routes: Routes = [
   {
     path: 'admin',
     canActivate: [AuthPermissionService],
+    data: { expectedPermission: 'humanResource' },
     children: [
       {
         path: '',
@@ -20,6 +21,7 @@ const routes: Routes = [
   {
     path: 'home',
     canActivate: [AuthPermissionService],
+    data: { expectedPermission: 'member' },
     children: [
       {
         path: '',
@@ -30,6 +32,7 @@ const routes: Routes = [
   {
     path: 'leaves',
     canActivate: [AuthPermissionService],
+    data: { expectedPermission: 'member' },
     children: [
       {
         path: '',
@@ -40,6 +43,7 @@ const routes: Routes = [
   {
     path: 'company',
     canActivate: [AuthPermissionService],
+    data: { expectedPermission: 'member' },
     children: [
       {
         path: '',
@@ -49,12 +53,12 @@ const routes: Routes = [
   },
   {
     path: 'not-permission',
-    canActivate: [AuthPermissionService],
     component: NotPermissionComponent
   },
   {
     path: 'employee-info',
     canActivate: [AuthPermissionService],
+    data: { expectedPermission: 'member' },
     component: EmployeeProfileComponent
   },
   {

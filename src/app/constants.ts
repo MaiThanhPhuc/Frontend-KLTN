@@ -17,6 +17,14 @@ export class Constants {
     new OptionModel("Leader", 3),
     new OptionModel("Member", 4)
   ]
+
+  public static EmployeePermission: OptionModel[] = [
+    new OptionModel("admin", 0),
+    new OptionModel("humanResource", 1),
+    new OptionModel("manager", 2),
+    new OptionModel("leader", 3),
+    new OptionModel("member", 4)
+  ]
   public static AdminRole = new OptionModel("Admin", 0)
   public static HrRole = new OptionModel("Human Resource", 1)
   public static ManagerRole = new OptionModel("Manager", 2)

@@ -33,7 +33,8 @@ export class SidebarMenuComponent {
 
   initSidebarMenu() {
     const isAdmin = this.authService.isAdmin()
-    const isManage = this.authService.isManage()
+    const isManage = this.authService.isManager()
+
     const homeTitle: MenuItem = new MenuItem('', "Home", "", '', true);
     const dashBoard: MenuItem = new MenuItem('dashBoard', "Dashboard", "/home/dashboard", 'dashboard', false);
     const workLog: MenuItem = new MenuItem('workLog', "Work Log Timesheet", "/home/work-log", 'event_available', false);
@@ -49,7 +50,7 @@ export class SidebarMenuComponent {
     // const holidays: MenuItem = new MenuItem('holidays', "Holidays", "/company/holidays", 'event_note', false);
     const employee: MenuItem = new MenuItem('employee', "Employee", "/company/employee", 'assignment_ind', false);
 
-    var adminMenu = isAdmin ? this.initSidebarAdminMenu() : []
+    var adminMenu = isAdmin || this.authService.isHumanResource() ? this.initSidebarAdminMenu() : []
     var manageRole = isManage ? [manageRequest] : []
     this.menus = [homeTitle, dashBoard, workLog, ...adminMenu, leaves, request, ...manageRole, myLeaves, leavesHistory, leaveManagement, company, leaveTypes, employee]
   }
@@ -63,9 +64,14 @@ export class SidebarMenuComponent {
     const adminOffice: MenuItem = new MenuItem('adminOffice', "Office", "/admin/company/office", '', false);
     const archive: MenuItem = new MenuItem('archive', "Archive", "/admin/company/archive", '', false);
     adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice, archive]
+
     const adminLeaveTypes: MenuItem = new MenuItem('adminLeaveTypes', "Leave Types Management", "/admin/leave-type", 'subject', false);
     const adminWorkLog: MenuItem = new MenuItem('adminWorklog', "Work Log Management", "/admin/work-log", 'view_timeline', false);
     const importData: MenuItem = new MenuItem('importData', "Import Data", "/admin/import-data", 'publish', false);
+    if (this.authService.isHumanResource()) {
+      adminCompany.children = [adminEmployee, adminTeam, adminDeparment, adminOffice]
+      return [admin, adminCompany, adminLeaveTypes, adminWorkLog]
+    }
     return [admin, adminCompany, adminLeaveTypes, adminWorkLog, importData]
   }
   ngOnInit(): void {

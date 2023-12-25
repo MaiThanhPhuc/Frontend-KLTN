@@ -215,6 +215,8 @@ export const BasicInfoEmployeeField = [
         key: "bankNo",
         label: "Account No.",
         isRequired: false,
+        type: 'number',
+        isCustomType: true,
         value: "",
       },
 

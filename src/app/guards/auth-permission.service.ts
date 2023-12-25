@@ -11,15 +11,10 @@ import { Constants } from '../constants';
 export class AuthPermissionService implements CanActivate {
   constructor(private router: Router, private authService: AuthService, private localStorage: LocalStorage) { }
 
-  // canLoad(route: Route): Promise<boolean> {
-  //   const url = `/${route.path}`;
-  //   return this.checkPermission(url);
-  // }
-
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    console.log(route.data.expectedPermission);
     if (this.authService.isLoggedIn() && !this.authService.isExpiredToken()) {
-
-      if (this.checkPermission(state.url)) {
+      if (this.checkPermission(route.data.expectedPermission)) {
         return Promise.resolve(true);
       }
       return Promise.resolve(false);
@@ -37,31 +32,55 @@ export class AuthPermissionService implements CanActivate {
     return false;
   }
 
-  isManage(): boolean {
+  isManager(): boolean {
     const token = this.localStorage.getStore('accessToken');
     if (token) {
       const helper = new JwtHelperService();
       const decodeToken = helper.decodeToken(token);
-      if (decodeToken.role !== Constants.MemberRole.id) return true
+      if (decodeToken.role === Constants.ManagerRole.id) return true
     }
     return false;
   }
-  checkPermission(url: any, isAdmin?: boolean): boolean {
+
+  isHumanResource(): boolean {
     const token = this.localStorage.getStore('accessToken');
     if (token) {
       const helper = new JwtHelperService();
       const decodeToken = helper.decodeToken(token);
-      const page = url.toString().substr(1)
-      if (page.includes(Constants.AdminRole.text.toLowerCase()) && decodeToken.role !== Constants.AdminRole.id) {
-        this.router.navigate(['/not-permission']);
-        ToastService.error('Are you sure have permission to access page?', "bottom", "center");
-        return false;
+      if (decodeToken.role === Constants.HrRole.id) return true
+    }
+    return false;
+  }
+  checkPermission(expectedPermissions: string): boolean {
+
+    const token = this.localStorage.getStore('accessToken');
+    if (token) {
+      const role = this.getRoleValue()
+      const expectedPermission = Constants.EmployeePermission.find(role => role.text === expectedPermissions)?.id || -1
+
+      if (role === Constants.AdminRole.id) return true;
+      console.log(expectedPermission);
+      console.log(role);
+      if (role && (expectedPermission >= role)) {
+        return true
       }
-      return true
+      this.router.navigate(['/not-permission']);
+      ToastService.error('Are you sure have permission to access page?', "bottom", "center");
+      return false;
     }
     // Navigate to the login page with extras
     this.router.navigate(['/not-permission']);
     ToastService.error('Are you sure have permission to access page?', "bottom", "center");
     return false;
+  }
+
+  getRoleValue(value?: number): number {
+    const token = this.localStorage.getStore('accessToken');
+    if (token) {
+      const helper = new JwtHelperService();
+      const decodeToken = helper.decodeToken(token);
+      return Constants.EmployeePermission.find(role => role.id === decodeToken.role)?.id
+    }
+    return -1;
   }
 }

@@ -13,6 +13,7 @@ import { HolidaysManagementComponent } from './components/holidays-management/ho
 import { ImportDataComponent } from './components/import-data/import-data.component';
 import { WorklogManagementComponent } from './components/worklog-management/worklog-management.component';
 import { CalculateSalaryComponent } from './components/worklog-management/calculate-salary/calculate-salary.component';
+import { AuthPermissionService } from 'src/app/guards/auth-permission.service';
 
 const routes: Routes = [{
   path: '', component: AdminComponent,
@@ -40,10 +41,10 @@ const routes: Routes = [{
           path: 'department', component: CompanyDepartmentComponent
         },
         {
-          path: 'office', component: CompanyOfficeComponent
+          path: 'office', component: CompanyOfficeComponent,
         },
         {
-          path: 'archive', component: ArchiveComponent
+          path: 'archive', component: ArchiveComponent,
         },
       ]
     },

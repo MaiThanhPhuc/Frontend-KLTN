@@ -7,7 +7,6 @@ import { environment } from 'src/environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
 @Injectable()
 export class AuthService extends BaseService {
-
   login(data: any): Observable<any> {
     return this.http.post(environment.apiUrl + "auth/login", data);
   }
