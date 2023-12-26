@@ -26,7 +26,7 @@ import { DetailLeaveRequestComponent } from './components/leave-request/detail-l
 import { ChangeStatusLeaveRequestComponent } from './components/manage-leave-request/change-status-leave-request/change-status-leave-request.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SimpleConfirmPopupComponent } from '../common/simple-confirm-popup/simple-confirm-popup.component';
-import { FlatpickrModule } from 'angularx-flatpickr';
+// import { FlatpickrModule } from 'angularx-flatpickr';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 @NgModule({
@@ -62,7 +62,6 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     HomeModule,
     MatDialogModule,
     FormsModule,
-    FlatpickrModule.forRoot(),
     CalendarModule.forRoot({ provide: DateAdapter, useFactory: adapterFactory })
   ]
 })

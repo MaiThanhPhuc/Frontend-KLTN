@@ -1,6 +1,5 @@
-import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { CalendarEvent, CalendarEventAction, CalendarEventTimesChangedEvent, CalendarView } from 'angular-calendar';
-import { addDays, addHours, endOfDay, endOfMonth, isSameDay, isSameMonth, startOfDay, subDays } from 'date-fns';
+import { Component, OnInit } from '@angular/core';
+import { CalendarEvent, CalendarEventAction, CalendarView } from 'angular-calendar';
 import { Subject, takeUntil } from 'rxjs';
 import { EventColor } from 'calendar-utils';
 import { WorkLogPopupComponent } from './work-log-popup/work-log-popup.component';
