@@ -20,6 +20,10 @@ export class LeaveTypeService extends BaseService {
     return this.get(`leaveType/getAllLeaveType`);
   }
 
+  getLeaveTypeByEmployeeId(employeeId: string): Observable<any[]> {
+    return this.get(`leaveType/getLeaveTypeByEmployeeId/${employeeId}`);
+  }
+
   updateLeaveTypeById(request: LeaveType): Observable<string> {
     return this.put(`leaveType/${request._id}`, request);
   }

@@ -223,4 +223,6 @@ export class WorklogManagementComponent extends BaseComponent implements OnInit 
   calcSalary(item: any) {
     this.router.navigate([`admin/detail-worklog/${item._id}`])
   }
+
+  export
 }

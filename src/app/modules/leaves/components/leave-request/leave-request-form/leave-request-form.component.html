@@ -29,7 +29,7 @@
         <mat-label>Time</mat-label>
         <mat-form-field>
           <mat-select [(ngModel)]="leaveRequestData.timeType" [required]="true" [formControlName]="'time'">
-            <mat-option *ngFor="let option of allLeaveTypeOptions" [value]="option.id">{{option.text}}</mat-option>
+            <mat-option *ngFor="let option of allLeaveTimeOptions" [value]="option.id">{{option.text}}</mat-option>
           </mat-select>
           <mat-error>Field is required
           </mat-error>
@@ -53,9 +53,11 @@
       <button mat-button>
         Reset
       </button>
-      <button (click)="createLeaveRequset()" mat-flat-button color="primary">
+      <button (click)="submitRequest()" mat-flat-button color="primary">
         Submit
       </button>
     </div>
   </div>
 </div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>

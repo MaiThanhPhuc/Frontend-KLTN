@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot } from '@angular/router';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { BaseService } from './base.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class GlobalService extends BaseService {
 
   private toggleIconSubject = new Subject<boolean>();
   toggleIconSubject$ = this.toggleIconSubject.asObservable();
+
+  private reloadUserLeave = new Subject<boolean>();
+  reloadUserLeave$ = this.reloadUserLeave.asObservable();
 
   private isLoginSubject = new Subject<boolean>();
   isLoginSubject$ = this.isLoginSubject.asObservable();
@@ -18,6 +18,10 @@ export class GlobalService extends BaseService {
   }
   announceIsLogin(isLogin = false): void {
     this.isLoginSubject.next(isLogin);
+  }
+
+  announceReloadUserLeaveTable(isReload = false): void {
+    this.reloadUserLeave.next(isReload);
   }
 
 }

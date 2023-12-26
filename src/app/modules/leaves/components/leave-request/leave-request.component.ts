@@ -7,12 +7,14 @@ import { takeUntil } from 'rxjs';
 import { Constants } from 'src/app/constants';
 import { SearchModal } from 'src/app/models/employee.model';
 import { LeaveRequest } from 'src/app/models/leaveType.model';
+import { OptionModel } from 'src/app/models/optionsModel';
 import { SimpleConfirmPopupModel } from 'src/app/models/simple-confirm-popup.model';
 import { SearchTeamResponse, TeamModel } from 'src/app/models/team.model';
 import { AdminService } from 'src/app/modules/admin/services/admin.service';
 import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
 import { SimpleConfirmPopupComponent } from 'src/app/modules/common/simple-confirm-popup/simple-confirm-popup.component';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
+import { GlobalService } from 'src/app/services/global.service';
 import { BaseComponent } from 'src/app/utils/base.component';
 
 @Component({
@@ -33,10 +35,11 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
   keyword = ''
   currentUserId: string
   leaveRequestData: any
+  leaveTypeOptions: OptionModel[];
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private adminService: AdminService,
+    private globalService: GlobalService,
     private leaveTypeService: LeaveTypeService
   ) {
     super();
@@ -45,7 +48,8 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserId = localStorage.getItem('userId') || '';
     this.initParamSearch();
-    this.loadData()
+    this.loadData();
+    this.getAllLeaveType();
   }
 
   initParamSearch() {
@@ -67,7 +71,45 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
       if (res) {
         this.countAllData = res.totalItems
         this.dataSource = new MatTableDataSource(res.result);
-        this.isLoading = false
+      }
+      this.isLoading = false
+    });
+  }
+
+  getAllLeaveType() {
+    this.isLoading = true
+    this.leaveTypeService.getLeaveTypeByEmployeeId(this.currentUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+      if (res) this.leaveTypeOptions = res.map(item => new OptionModel(item.leaveType.name, item.leaveType._id))
+      this.isLoading = false
+    })
+  }
+
+  createLeaveRequest(leaveRequestData: any) {
+    leaveRequestData.employee = this.currentUserId
+    const inputPopupData: SimpleConfirmPopupModel = new SimpleConfirmPopupModel();
+    inputPopupData.submitButton = "Confirm"
+    inputPopupData.cancelButton = "Cancel"
+    inputPopupData.content = "Do you want to use this leave type?"
+    inputPopupData.primarySubmit = true;
+    const confirmRequestPopup = this.dialog.open(SimpleConfirmPopupComponent, {
+      autoFocus: false,
+      width: '400px',
+      disableClose: true
+    });
+    confirmRequestPopup.componentInstance.data = inputPopupData;
+    console.log(leaveRequestData);
+    confirmRequestPopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
+      if (confirm) {
+        this.isLoading = true
+        this.leaveTypeService.createLeaveRequest(leaveRequestData).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+          if (res) {
+            ToastService.success("Create leave request success!")
+            this.loadData();
+            this.globalService.announceReloadUserLeaveTable(true);
+          }
+          this.isLoading = false
+        })
+
       }
     });
   }
@@ -92,6 +134,7 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
           if (res) {
             ToastService.success("Cancel leave request success!")
             this.loadData();
+            this.globalService.announceReloadUserLeaveTable(true);
             this.isLoading = false
           }
         })
