@@ -18,7 +18,8 @@ export class WorkLogReponse {
   msg: number;
   result: WorkLogResult[];
   totalItems: number;
-  totalPage: number
+  totalPage: number;
+  teamName: string;
 }
 
 export class WorkLogResult {

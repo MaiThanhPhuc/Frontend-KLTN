@@ -13,6 +13,7 @@ import { OptionModel } from 'src/app/models/optionsModel';
 import { EmployeeService } from '../../../services/employee.service';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
 import { WorkLogModel } from 'src/app/models/workLog.models';
+import { ToastService } from 'src/app/modules/common/toast/toast.service';
 
 
 @Component({
@@ -123,7 +124,7 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
     this.employeeService.calcSalaryEmployeeByMonth(this.dataEmployeeSalary).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if (res) {
         this.dataCalcSalary = res.result
-
+        ToastService.success("Saved")
         this.loadDataEmployee()
       }
       this.isLoading = false
