@@ -47,7 +47,7 @@
               </mat-select>
             </mat-form-field>
             <mat-form-field appearance="outline">
-              <input #dpInput matInput [matDatepicker]="dp" placeholder="Month" [formControl]="date">
+              <input #dpInput matInput [matDatepicker]="dp" placeholder="Month" [(ngModel)]="date">
               <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
               <mat-datepicker #dp (monthSelected)="setMonthAndYear($event, dp, dpInput)"
                 startView="multi-year"></mat-datepicker>

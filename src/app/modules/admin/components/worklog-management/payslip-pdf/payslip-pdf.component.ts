@@ -7,6 +7,7 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { PayslipDataModal } from './payslip-model';
 import { HttpClient } from '@angular/common/http';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-payslip-pdf',
@@ -21,10 +22,12 @@ export class PayslipPdfComponent extends BaseComponent implements OnInit {
   payslipData = PayslipDataModal;
   styleString: string;
   isExport = false
+  nameEmployee = '';
+  isLoading = false;
   constructor(private dialogRef: MatDialogRef<PayslipPdfComponent>,
-    private http: HttpClient,
-    private adminService: AdminService,
-    private employeeService: EmployeeService) {
+    private employeeService: EmployeeService,
+    private http: HttpClient
+  ) {
     super()
   }
   ngOnInit(): void {
@@ -36,8 +39,8 @@ export class PayslipPdfComponent extends BaseComponent implements OnInit {
 
   initDataTable() {
     this.time = this.dataSource.empSalary.month + '/' + this.dataSource.empSalary.year
+    this.nameEmployee = this.dataSource.employeeInfo.fullName
     this.dataTable = PayslipDataModal.map(item => this.mapItem(item, this.dataSource))
-    console.log(this.dataTable);
   }
 
   mapItem(item: any, data: any) {
@@ -66,6 +69,7 @@ export class PayslipPdfComponent extends BaseComponent implements OnInit {
     printWindow?.print();
   }
   exportPdf() {
+    this.isLoading = true
     const content: HTMLElement = document.getElementById(this.componentId) as HTMLElement;
     html2canvas(content).then((canvas) => {
       const pdf = new jsPDF('p', 'mm', 'a4');
@@ -73,10 +77,47 @@ export class PayslipPdfComponent extends BaseComponent implements OnInit {
       const imgProps = pdf.getImageProperties(imgData);
       const pdfWidth = pdf.internal.pageSize.getWidth();
       const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`${this.nameEmployee}_payslip.pdf`);
+      this.isLoading = false
+    });
+  }
+
+  sendEmailPayslip() {
+
+    this.isLoading = true
+    const content: HTMLElement = document.getElementById(this.componentId) as HTMLElement;
+    html2canvas(content).then((canvas) => {
+      const pdf = new jsPDF('p', 'mm', 'a4');
+
+      const imgData = canvas.toDataURL('image/png');
+      const imgProps = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
 
       pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-      pdf.save('exported-document.pdf');
+      const pdfBlob = pdf.output('blob')
+
+      const formData = new FormData();
+
+      formData.append('pdfFile', pdfBlob, `payslip.pdf`);
+      this.employeeService.sendEmailPayslip(this.dataSource.empSalary._id, formData).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+        console.log(res);
+      })
+      this.isLoading = false
     });
+  }
+
+  dataURLtoBlob(dataURL) {
+    const arr = dataURL.split(',');
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
   }
 
   back() {

@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Employee, EmployeeSalary, SearchModal } from 'src/app/models/employee.model';
 import { BaseComponent } from 'src/app/utils/base.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,6 +14,7 @@ import { EmployeeService } from '../../../services/employee.service';
 import { EmployeeLeaveTypeReponse } from 'src/app/models/leaveType.model';
 import { WorkLogModel } from 'src/app/models/workLog.models';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
+import { PayslipPdfComponent } from '../payslip-pdf/payslip-pdf.component';
 
 
 @Component({
@@ -33,11 +34,12 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
     new OptionModel("Valid", 1),
     new OptionModel("Invalid", 0)
   ]
-
+  dialogRef: MatDialogRef<PayslipPdfComponent>;
   employeeId: string;
+  dataSource: any;
   dataSourceLeaveType: any;
   dataEmployeeSalary: EmployeeSalary;
-  userData: Employee;
+  userData: Employee = new Employee();
   dataCalcSalary: any;
   isLoading = false
   paramSearch: SearchModal = {};
@@ -47,6 +49,8 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
   countAllData = 0
   keyword = ''
   workingTime = 0;
+  month = new Date().getMonth() + 1;
+  year = new Date().getFullYear();
   constructor(
     private router: Router,
     private dialog: MatDialog,
@@ -57,8 +61,10 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
     super();
   }
   ngOnInit(): void {
-    this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
+    this.route.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.employeeId = params['id'];
+      this.month = params['month'];
+      this.year = params['year'];
     });
     this.initParamSearch();
     this.loadData();
@@ -70,7 +76,8 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
       pageIndex: this.pageIndex,
       keyword: this.keyword,
       employeeId: this.employeeId,
-      month: 12,
+      month: this.month,
+      year: this.year,
     }
   }
 
@@ -107,11 +114,12 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
 
   loadDataEmployee() {
     this.isLoading = true;
-    this.employeeService.getEmployeeSalaryById(this.employeeId).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: EmployeeLeaveTypeReponse) => {
+    this.employeeService.getEmployeeSalaryById(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: EmployeeLeaveTypeReponse) => {
       if (res) {
+        this.dataSource = res
         this.userData = res.employeeInfo
         this.dataSourceLeaveType = res.leaveType
-        this.dataEmployeeSalary = res.employeeSalary
+        this.dataEmployeeSalary = res.empSalary
         this.isLoading = false
       }
 
@@ -131,7 +139,14 @@ export class CalculateSalaryComponent extends BaseComponent implements OnInit {
     })
   }
   exportPayslip() {
-
+    this.dialogRef = this.dialog.open(PayslipPdfComponent, {
+      width: '97vw',
+      maxWidth: '97vw',
+      maxHeight: '97vh',
+      height: '97vh',
+      disableClose: true
+    });
+    this.dialogRef.componentInstance.dataSource = this.dataSource
   }
   changeStatus(item: WorkLogModel) {
     this.isLoading = true

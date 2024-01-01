@@ -15,8 +15,8 @@ export class EmployeeService extends BaseService {
     return this.get(`employee/${employeeId}`);
   }
 
-  getEmployeeSalaryById(employeeId: string): Observable<EmployeeLeaveTypeReponse> {
-    return this.get(`employee/getEmployeeSalaryById/${employeeId}`);
+  getEmployeeSalaryById(request: SearchModal): Observable<EmployeeLeaveTypeReponse> {
+    return this.get(`employee/getEmployeeSalary`, request);
   }
 
   updateEmployeeById(request: Employee): Observable<boolean> {
@@ -40,5 +40,9 @@ export class EmployeeService extends BaseService {
 
   calcSalaryEmployeeByMonth(request: EmployeeSalary): Observable<any> {
     return this.post("employee/calcSalaryEmployeeByMonth", request);
+  }
+
+  sendEmailPayslip(employeeId: string, formData: FormData): Observable<any> {
+    return this.post(`employee/sendEmailPayslip/${employeeId}`, formData);
   }
 }

@@ -43,7 +43,7 @@ export class EmployeeLeaveTypeRequest {
 export class EmployeeLeaveTypeReponse {
   employeeInfo: Employee;
   leaveType: EmployeeLeaveType[];
-  employeeSalary: EmployeeSalary;
+  empSalary: EmployeeSalary;
 }
 
 export class LeaveTypePopupModel {

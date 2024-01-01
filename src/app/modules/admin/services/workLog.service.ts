@@ -19,8 +19,8 @@ export class WorkLogService extends BaseService {
   getAllWorkLog(): Observable<WorkLogModel[]> {
     return this.get("workLog/getAllWorkLog");
   }
-  getWorkLogByMonth(month: number, userId: string): Observable<WorkLogModel[]> {
-    return this.get(`workLog/getWorkLogByMonth`, { userId: userId, month: month });
+  getWorkLogByMonth(request: SearchModal): Observable<WorkLogModel[]> {
+    return this.get(`workLog/getWorkLogByMonth`, request);
   }
   getWorkLogById(id: string): Observable<WorkLogModel> {
     return this.get(`workLog/getWorkLogById/${id}`);

@@ -43,6 +43,5 @@ export class LeaveRequestFormComponent extends BaseComponent implements OnInit {
 
   submitRequest() {
     this.submitLeaveRequest.emit(this.leaveRequestFormGroup.value)
-    this.leaveRequestFormGroup.reset()
   }
 }

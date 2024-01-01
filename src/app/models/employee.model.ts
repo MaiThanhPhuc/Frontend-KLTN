@@ -61,6 +61,7 @@ export class SearchModal {
   dateTo?: Date;
   currentDate?: boolean;
   month?: number;
+  year?: number;
   isGetAll?: boolean;
 }
 

@@ -50,7 +50,7 @@ const routes: Routes = [{
     },
     { path: 'leave-type', component: LeaveTypeManagementComponent },
     { path: 'work-log', component: WorklogManagementComponent },
-    { path: 'detail-worklog/:id', component: CalculateSalaryComponent },
+    { path: 'detail-worklog', component: CalculateSalaryComponent },
     { path: 'holidays', component: HolidaysManagementComponent },
     { path: 'import-data', component: ImportDataComponent },
   ]

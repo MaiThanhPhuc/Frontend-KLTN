@@ -97,7 +97,6 @@ export class LeaveRequestComponent extends BaseComponent implements OnInit {
       disableClose: true
     });
     confirmRequestPopup.componentInstance.data = inputPopupData;
-    console.log(leaveRequestData);
     confirmRequestPopup.afterClosed().pipe(takeUntil(this.ngUnsubscribe)).subscribe(confirm => {
       if (confirm) {
         this.isLoading = true

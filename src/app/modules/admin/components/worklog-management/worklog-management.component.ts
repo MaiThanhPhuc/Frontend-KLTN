@@ -77,7 +77,7 @@ export class WorklogManagementComponent extends BaseComponent implements OnInit 
   selectedOffice: string;
   selectedDepartment: string;
   selectedTeam: string;
-  date = new FormControl(moment());
+  date: Date;
   currentMonth = new Date().getMonth() + 1;
   constructor(
     private router: Router,
@@ -109,16 +109,19 @@ export class WorklogManagementComponent extends BaseComponent implements OnInit 
       pageIndex: this.pageIndex,
       keyword: this.keyword,
       month: this.currentMonth,
+      year: new Date().getFullYear()
     }
   }
 
   applyFilter() {
-    let month = this.date.value?.month();
+    const month = new Date(this.date).getMonth()
+    const year = new Date(this.date).getFullYear()
     this.paramSearch = {
       limit: this.pageSize,
       pageIndex: this.pageIndex,
       keyword: this.keyword,
       month: month ? month + 1 : this.currentMonth,
+      year: year ? year : new Date().getFullYear()
     }
     if (this.selectedTeam)
       this.paramSearch.teamId = this.selectedTeam;
@@ -218,11 +221,11 @@ export class WorklogManagementComponent extends BaseComponent implements OnInit 
 
   setMonthAndYear(event: any, dp: any, input: any) {
     dp.close();
+    this.date = event;
     input.value = event.toISOString().split('-').join('/').substr(0, 7);
   }
   calcSalary(item: any) {
-    this.router.navigate([`admin/detail-worklog/${item._id}`])
+    this.router.navigate([`admin/detail-worklog`], { queryParams: { id: item._id, month: this.paramSearch.month, year: this.paramSearch.year } });
   }
 
-  export
 }

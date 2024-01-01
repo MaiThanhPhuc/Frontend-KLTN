@@ -8,6 +8,7 @@ import { BaseComponent } from 'src/app/utils/base.component';
 import { WorkLogModel } from 'src/app/models/workLog.models';
 import { WorkLogService } from 'src/app/modules/admin/services/workLog.service';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
+import { SearchModal } from 'src/app/models/employee.model';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -40,7 +41,7 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   };
 
   actions: CalendarEventAction[] = [];
-
+  paramsSearch: SearchModal = {}
   refresh = new Subject<void>();
 
   events: CalendarEvent[] = [];
@@ -60,6 +61,8 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.currentUserId = localStorage.getItem('userId') || '';
     this.selectedMonth = new Date().getMonth() + 1;
+    this.paramsSearch.month = this.selectedMonth;
+    this.paramsSearch.year = new Date().getFullYear();
     this.loadData();
   }
 
@@ -97,11 +100,14 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
 
   onChangeMonth(date: Date) {
     this.selectedMonth = date.getMonth() + 1;
+    this.paramsSearch.month = this.selectedMonth;
+    this.paramsSearch.year = date.getFullYear();
     this.loadData()
   }
   loadData() {
     this.isLoading = true
-    this.workLogService.getWorkLogByMonth(this.selectedMonth, this.currentUserId).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
+    this.paramsSearch.employeeId = this.currentUserId
+    this.workLogService.getWorkLogByMonth(this.paramsSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) {
         this.isLoading = false
         this.dataSource = res;

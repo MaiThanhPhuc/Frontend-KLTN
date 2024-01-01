@@ -6,7 +6,13 @@
     <button mat-flat-button color="primary" class="btn-item" (click)="exportPdf()">Export PDF
       <mat-icon>picture_as_pdf</mat-icon></button>
     <button mat-flat-button color="primary" class="btn-item" (click)="print()">Print <mat-icon>print</mat-icon></button>
+    <form id="uploadForm">
+      <input type="file" name="file" id="fileInput" hidden>
+      <button mat-flat-button color="primary" class="btn-item" (click)="sendEmailPayslip()">Send Email
+        <mat-icon>email</mat-icon></button>
+    </form>
   </div>
+
   <div [id]="componentId" class="payslip">
     <div class="header">
       <h2>PAYSLIP - {{time}}</h2>
@@ -27,3 +33,5 @@
     </div>
   </div>
 </div>
+
+<app-loading [manualLoadingInput]="isLoading"></app-loading>
