@@ -35,7 +35,7 @@ export class AuthPermissionService implements CanActivate {
     if (token) {
       const helper = new JwtHelperService();
       const decodeToken = helper.decodeToken(token);
-      if (decodeToken.role === Constants.ManagerRole.id) return true
+      if (decodeToken.role !== Constants.MemberRole.id) return true
     }
     return false;
   }
