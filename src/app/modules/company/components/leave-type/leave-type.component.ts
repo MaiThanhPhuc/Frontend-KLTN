@@ -70,6 +70,5 @@ export class LeaveTypeComponent extends BaseComponent implements OnInit {
       }
 
     });
-    this.isLoading = false
   }
 }

@@ -142,6 +142,5 @@ export class LeaveTypeManagementComponent extends BaseComponent implements OnIni
       }
 
     });
-    this.isLoading = false
   }
 }

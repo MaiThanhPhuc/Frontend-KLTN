@@ -62,7 +62,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     },
       (error => {
         this.isLoading = false
-        this.errorMsg = error.error
+        this.errorMsg = 'Invalid email or password'
       }))
   }
 }

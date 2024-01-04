@@ -110,7 +110,6 @@ export class CompanyTeamComponent extends BaseComponent implements OnInit, OnDes
       }
       this.isLoading = false
     });
-    this.isLoading = false
   }
 
   handlePageEvent(event: PageEvent) {

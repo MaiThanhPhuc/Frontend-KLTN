@@ -57,7 +57,6 @@ export class MyLeavesComponent extends BaseComponent implements OnInit {
       }
       this.isLoading = false
     });
-    this.isLoading = false
   }
 
   handlePageEvent(event: PageEvent) {

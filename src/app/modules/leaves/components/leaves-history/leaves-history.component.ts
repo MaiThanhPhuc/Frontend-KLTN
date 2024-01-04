@@ -31,7 +31,7 @@ export class LeavesHistoryComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     this.currentUserId = localStorage.getItem('userId') || '';
     this.initParamSearch();
-    this.loadDate();
+    this.loadData();
   }
 
   initParamSearch() {
@@ -44,9 +44,9 @@ export class LeavesHistoryComponent extends BaseComponent implements OnInit {
   }
   onSearchKeyword() {
     this.paramSearch.keyword = this.keyword
-    this.loadDate();
+    this.loadData();
   }
-  loadDate() {
+  loadData() {
     this.isLoading = true
 
     this.leaveTypeService.getLeaveRequestHistory(this.paramSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
@@ -56,7 +56,6 @@ export class LeavesHistoryComponent extends BaseComponent implements OnInit {
       }
       this.isLoading = false
     });
-    this.isLoading = false
   }
 
   handlePageEvent(event: PageEvent) {
@@ -67,6 +66,6 @@ export class LeavesHistoryComponent extends BaseComponent implements OnInit {
       this.paramSearch.pageIndex = event.pageIndex + 1
     }
     this.paramSearch.limit = event.pageSize
-    this.loadDate();
+    this.loadData();
   }
 }

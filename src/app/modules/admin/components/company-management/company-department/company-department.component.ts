@@ -124,7 +124,6 @@ export class CompanyDepartmentComponent extends BaseComponent implements OnInit,
       }
 
     });
-    this.isLoading = false
   }
 
   onSaveDepartment(data: DepartmentModel) {

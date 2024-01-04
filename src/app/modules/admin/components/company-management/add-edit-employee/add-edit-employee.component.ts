@@ -99,6 +99,7 @@ export class AddEditEmployeeComponent extends BaseComponent implements OnInit, H
   }
 
   updateEmployeeLeaveTypeItem(data: EmployeeLeaveType) {
+    this.isLoading = true;
     this.leaveTypeService.updateEmployeeLeaveType(data).pipe(takeUntil(this.ngUnsubscribe)).subscribe(res => {
       if (res) {
         ToastService.success("Update employee success")

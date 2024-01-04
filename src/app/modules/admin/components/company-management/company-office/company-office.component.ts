@@ -65,7 +65,6 @@ export class CompanyOfficeComponent extends BaseComponent implements OnInit, OnD
       }
       this.isLoading = false
     });
-    this.isLoading = false
   }
 
   handlePageEvent(event: PageEvent) {
