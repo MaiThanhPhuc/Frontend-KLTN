@@ -51,6 +51,7 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   dataSource: WorkLogModel[];
   dataSave: WorkLogModel;
   selectedMonth: number;
+  selectedYear: number;
   isLoading = false
   constructor(
     private dialog: MatDialog,
@@ -62,7 +63,8 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
     this.currentUserId = localStorage.getItem('userId') || '';
     this.selectedMonth = new Date().getMonth() + 1;
     this.paramsSearch.month = this.selectedMonth;
-    this.paramsSearch.year = new Date().getFullYear();
+    this.selectedYear = new Date().getFullYear();
+    this.paramsSearch.year = this.selectedYear;
     this.loadData();
   }
 
@@ -89,6 +91,7 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
       }
       else {
         this.dataSave.date = date;
+
         this.onSave()
       }
     });
@@ -101,7 +104,8 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   onChangeMonth(date: Date) {
     this.selectedMonth = date.getMonth() + 1;
     this.paramsSearch.month = this.selectedMonth;
-    this.paramsSearch.year = date.getFullYear();
+    this.selectedYear = date.getFullYear();
+    this.paramsSearch.year = this.selectedYear;
     this.loadData()
   }
   loadData() {
@@ -125,6 +129,8 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
     })
   }
   onSave() {
+    this.dataSave.year = this.paramsSearch.year || this.selectedYear;
+    this.dataSave.month = this.paramsSearch.month || this.selectedMonth;
     this.workLogService.createWorkLog(this.dataSave).subscribe(res => {
       if (res) {
         this.dialogRef.close(true);

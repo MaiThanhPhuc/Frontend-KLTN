@@ -10,6 +10,8 @@ export class WorkLogModel {
   employee: any;
   status: number;
   checked?: boolean;
+  month: number;
+  year: number;
 }
 
 export class WorkLogReponse {

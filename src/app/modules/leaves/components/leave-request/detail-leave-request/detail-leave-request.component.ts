@@ -42,8 +42,6 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
     this.route.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe(params => {
       this.leaveRequestId = params['id'];
     });
-    this.currentUserId = localStorage.getItem('userId') || '';
-    this.loadDataEmployee()
     this.loadDataLeaveRequest()
   }
 
@@ -65,6 +63,7 @@ export class DetailLeaveRequestComponent extends BaseComponent implements OnInit
         this.leaveRequestData = res
         this.dataLeaveType = res.leaveType
         this.dataApproval = res.approvalStatus
+        this.userData = res.employee
         this.dataSourceLeaveTime = new MatTableDataSource([res]);
         this.dataSourceApproval = new MatTableDataSource(this.dataApproval);
       }
