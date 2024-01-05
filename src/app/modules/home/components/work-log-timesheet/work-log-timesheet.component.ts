@@ -9,6 +9,7 @@ import { WorkLogModel } from 'src/app/models/workLog.models';
 import { WorkLogService } from 'src/app/modules/admin/services/workLog.service';
 import { ToastService } from 'src/app/modules/common/toast/toast.service';
 import { SearchModal } from 'src/app/models/employee.model';
+import { LeaveTypeService } from 'src/app/modules/admin/services/leaveType.service';
 
 const colors: Record<string, EventColor> = {
   red: {
@@ -55,7 +56,8 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
   isLoading = false
   constructor(
     private dialog: MatDialog,
-    private workLogService: WorkLogService
+    private workLogService: WorkLogService,
+    private leaveTypeService: LeaveTypeService,
   ) {
     super();
   }
@@ -116,17 +118,41 @@ export class WorkLogTimesheetComponent extends BaseComponent implements OnInit {
         this.isLoading = false
         this.dataSource = res;
         this.initValueCalendar(res);
+        this.loadDataLeaveType()
       }
     })
   }
-  initValueCalendar(data: WorkLogModel[]) {
-    this.events = data.map((item) => {
-      return {
-        start: new Date(item.date),
-        title: item.description,
-        color: { ...colors.blue },
+
+  loadDataLeaveType() {
+    this.isLoading = true
+
+    this.leaveTypeService.searchLeaveRequest(this.paramsSearch).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
+      if (res) {
+        this.initValueCalendar(res.result, true);
       }
-    })
+      this.isLoading = false
+    });
+  }
+  initValueCalendar(data: any[], isLeave = false) {
+    if (isLeave) {
+      let eventsLeave: CalendarEvent[] = [];
+      eventsLeave = data.map((item) => {
+        return {
+          start: new Date(item.date),
+          title: item.leaveType.name,
+          color: { ...colors.yellow },
+        }
+      })
+      this.events = [...this.events, ...eventsLeave]
+    } else {
+      this.events = data.map((item) => {
+        return {
+          start: new Date(item.date),
+          title: item.description,
+          color: { ...colors.blue },
+        }
+      })
+    }
   }
   onSave() {
     this.dataSave.year = this.paramsSearch.year || this.selectedYear;

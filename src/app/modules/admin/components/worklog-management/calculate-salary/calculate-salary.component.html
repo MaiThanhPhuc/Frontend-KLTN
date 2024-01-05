@@ -30,7 +30,7 @@
             </div>
             <div class="item row">
               <div class="d-flex col-4">
-                <p class="keyword">Paid Days:</p>
+                <p class="keyword">Working Days:</p>
               </div>
               <div class="col-8">
                 <input [(ngModel)]="workingTime" />
@@ -39,11 +39,10 @@
             </div>
             <div class="item row">
               <div class="d-flex col-4">
-                <p class="keyword">Total OT Hours:</p>
+                <p class="keyword">Leave Paid Days:</p>
               </div>
               <div class="col-8">
-                <input [(ngModel)]="dataEmployeeSalary.otDay" />
-                <!-- <p>{{dataEmployeeSalary?.otDay}}</p> -->
+                <p>{{dataCalcSalary?.leavePaidDay}}</p>
               </div>
             </div>
           </div>

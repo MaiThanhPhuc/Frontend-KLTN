@@ -6,6 +6,9 @@
 
 .change-status-container {
   padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 
   .header {
     display: flex;
@@ -18,5 +21,11 @@
       @include textFont600(18px, 22px);
     }
 
+  }
+
+  .form-body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
   }
 }
